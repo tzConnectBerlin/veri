@@ -1,0 +1,11 @@
+{
+    "name": "EVENT BADGE COLLECTION",
+    "description": "POAP is a new way of keeping a reliable record of life experiences.Each time they take part on an event, POAP collectors get a unique badge that is supported by a cryptographic record.",
+    "interfaces": [
+        "TZIP-012",
+        "TZIP-016",
+        "TZIP-021"
+    ],
+    "creator": "BLA",
+    "tokenCategory": "POAP"
+}
