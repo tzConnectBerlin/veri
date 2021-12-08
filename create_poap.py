@@ -78,7 +78,7 @@ def queue_transfer_nft(recipient, token_id):
                 (NFT_OWNER,
                  json.dumps({
                      "handler": "nft",
-                     "name": "mint",
+                     "name": "transfer",
                      "args": {
                          "from_address": NFT_OWNER,
                          "token_id": token_id,
