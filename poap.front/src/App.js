@@ -2,8 +2,6 @@ import './App.css';
 import styled from '@emotion/styled';
 
 import { RPC_URL, KUKAI_NETWORK, NETWORK } from './config';
-import { Networks } from 'kukai-embed';
-import { KukaiEmbed } from 'kukai-embed';
 import { useEffect, useState } from 'react';
 import { BeaconWallet } from '@taquito/beacon-wallet';
 import { TezosToolkit, MichelCodecPacker } from '@taquito/taquito';
@@ -104,7 +102,22 @@ function App() {
   useEffect(() => {
     initTezos()
     setBeaconWallet(initWallet())
+    setBeaconLoading(true)
   }, []);
+
+  useEffect(() => {
+    if (beaconWallet) {
+      checkIfAlreadyConnected()
+    }
+  }, [beaconWallet])
+
+  const checkIfAlreadyConnected = async () => {
+    const activeAccount = await beaconWallet.client.getActiveAccount();
+
+    if (activeAccount) {
+      setUserAddress(activeAccount.address)
+    }
+  }
 
   const initTezos = (url = RPC_URL) => {
     const Tezos = new TezosToolkit(url);
@@ -116,14 +129,7 @@ function App() {
     const options = {
       name: 'POAP',
       iconUrl: 'https://tezostaquito.io/img/favicon.png',
-      preferredNetwork: NetworkType[NETWORK],
-      eventHandlers: {
-        PERMISSION_REQUEST_SUCCESS: {
-          handler: async (data) => {
-            console.log('permission data:', data);
-          },
-        },
-      },
+      preferredNetwork: NetworkType[NETWORK]
     };
 
     return new BeaconWallet(options);
@@ -149,6 +155,7 @@ function App() {
 
       setBeaconLoading(false);
     }
+
   };
 
   return (
@@ -164,8 +171,9 @@ function App() {
             userAddress === undefined ?
               <StyledButton
                 variant="contained"
-                onClick={() => requestUserWalletPermission('beacon')}
+                onClick={() => beaconLoading ? {} : requestUserWalletPermission('beacon')}
                 loading={beaconLoading}
+                disable={beaconLoading}
               >
                 Generate QR-code
               </StyledButton>
