@@ -109,6 +109,7 @@ function App() {
     if (beaconWallet) {
       checkIfAlreadyConnected()
     }
+    setBeaconLoading(false)
   }, [beaconWallet])
 
   const checkIfAlreadyConnected = async () => {
