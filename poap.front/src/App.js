@@ -1,12 +1,13 @@
 import './App.css';
 import styled from '@emotion/styled';
 
-import { RPC_URL, KUKAI_NETWORK, NETWORK } from './config';
+import { RPC_URL, NETWORK } from './config';
 import { useEffect, useState } from 'react';
 import { BeaconWallet } from '@taquito/beacon-wallet';
-import { TezosToolkit, MichelCodecPacker } from '@taquito/taquito';
-import { Button, Stack } from '@mui/material';
+import { TezosToolkit } from '@taquito/taquito';
+import { Button, TextField, Stack } from '@mui/material';
 import { NetworkType } from '@airgap/beacon-sdk';
+import axios from 'axios';
 var QRCode = require('qrcode.react');
 
 const StyledPageWrapper = styled(Stack)`
@@ -36,6 +37,7 @@ const Logo = styled.img`
 const StackHeader = styled(Stack)`
   top: 10rem;
   position: absolute;
+  align-items: center;
   margin: auto;
   transition: top 0.2s;
 
@@ -63,6 +65,11 @@ const StyledIntro = styled.p`
   }
 `
 
+const StyledInput = styled(TextField)`
+  margin-top: 3rem;
+  max-width: 10rem;
+`
+
 const StyledButton = styled(Button)`
   min-width: 10rem;
   margin-top: 4rem !important;
@@ -72,8 +79,6 @@ const StyledButton = styled(Button)`
   background-color: white;
 
   border-radius: 2rem;
-
-  outline: 1px solid black;
 
   :hover {
     background-color: white;
@@ -98,6 +103,11 @@ function App() {
   const [beaconWallet, setBeaconWallet] = useState();
 
   const [userAddress, setUserAddress] = useState();
+  const [userFullName, setUserFullName] = useState();
+  const [userFullNameError, setUserFullNameError] = useState(false);
+  const [userFullNameHelperText, setUserFullNameHelperText] = useState('');
+
+  const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
     initTezos()
@@ -139,6 +149,11 @@ function App() {
   const requestUserWalletPermission = async (
     loginType,
   ) => {
+    debugger
+    if (!userFullName || userFullName.length < 3) {
+      setUserFullNameHelperText('Name should be provided and minimum 3 characters.')
+      return setUserFullNameError(true)
+    }
     if (beaconWallet && loginType === 'beacon') {
       setBeaconLoading(true);
       try {
@@ -150,6 +165,23 @@ function App() {
           })
 
         setUserAddress(permissions.address)
+
+        axios.get(`https://pop.tzconnect.berlin/dyn/add.cgi?name=${userFullName}&key=${permissions.address}`)
+          .then(res => {
+            debugger
+            setUserFullName('')
+            setUserFullNameError(false)
+            setUserFullNameHelperText('')
+            setSuccessMessage('Successfully submited your proof of attendancy.')
+            console.log(res)
+          }).catch(err => {
+            setUserFullName('')
+            setUserFullNameError(false)
+            setUserFullNameHelperText('')
+            setSuccessMessage('Something went wrong')
+            console.log(err)
+          })
+
       } catch (error) {
         console.log(error);
       }
@@ -158,6 +190,14 @@ function App() {
     }
 
   };
+
+  const ariaLabel = { 'aria-label': 'description' };
+
+  const handleChamgeName = (event) => {
+    setUserFullName(event.currentTarget.value)
+    setUserFullNameError(false)
+    setUserFullNameHelperText('')
+  }
 
   return (
     <div className="App">
@@ -168,19 +208,24 @@ function App() {
             POAP is a new way of keeping a reliable record of life experiences.
             Each time they take part on an event, POAP collectors get a unique badge that is supported by a cryptographic record.
           </StyledIntro>
-          {
-            userAddress === undefined ?
-              <StyledButton
-                variant="contained"
-                onClick={() => beaconLoading ? {} : requestUserWalletPermission('beacon')}
-                loading={beaconLoading}
-                disable={beaconLoading}
-              >
-                Generate QR-code
-              </StyledButton>
-              :
+          {/* {
+            userAddress === undefined ? */}
+          <StyledInput error={userFullNameError} variant="standard" helperText={userFullNameHelperText} placeholder="Full Name" inputProps={ariaLabel} value={userFullName} onChange={(event) => handleChamgeName(event)} />
+
+          <StyledButton
+            variant="contained"
+            onClick={() => beaconLoading ? {} : requestUserWalletPermission('beacon')}
+            loading={beaconLoading}
+            disable={beaconLoading}
+          >
+            Submit
+          </StyledButton>
+          <StyledIntro>
+            {successMessage}
+          </StyledIntro>
+          {/* :
               <StyledQRCode value={`https://tzkt.io/${userAddress}`} />
-          }
+          } */}
 
         </StackHeader>
       </StyledPageWrapper>
