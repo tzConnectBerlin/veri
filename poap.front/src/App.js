@@ -205,8 +205,8 @@ function App() {
         <StackHeader direction="column">
           <Logo src='./Logo.svg' />
           <StyledIntro>
-            POAP is a new way of keeping a reliable record of life experiences.
-            Each time they take part on an event, POAP collectors get a unique badge that is supported by a cryptographic record.
+          Formally verfified is a new way of keeping a reliable record of life experiences.
+            Each time they take part on an event, Formally verfified collectors get a unique badge that is supported by a cryptographic record.
           </StyledIntro>
           {/* {
             userAddress === undefined ? */}
