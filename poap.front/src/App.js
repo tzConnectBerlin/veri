@@ -138,7 +138,7 @@ function App() {
 
   const initWallet = () => {
     const options = {
-      name: 'POAP',
+      name: 'Veri',
       iconUrl: 'https://tezostaquito.io/img/favicon.png',
       preferredNetwork: NetworkType[NETWORK]
     };
