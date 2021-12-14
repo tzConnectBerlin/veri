@@ -6,17 +6,18 @@ import QrReader from "react-qr-reader";
 const Logo = styled.img`
   margin: auto;
   width: 13rem;
-  display: block
+  display: block;
 `;
 
 const ScanContainer = styled(Box)`
-    width: 10rem;
-    padding: 1rem;
-    margin: 1rem auto;
+  width: 100%;
+  padding: 2rem 0;
+  margin: auto;
+  max-width: 400px;
 `;
 
 const MainContainer = styled(Container)`
-    padding: 2rem;
+  padding: 2rem;
 `;
 
 const App = () => {
