@@ -145,7 +145,6 @@ function App() {
   };
 
   const requestUserWalletPermission = async (loginType) => {
-    debugger;
     if (!userFullName || userFullName.length < 3) {
       setUserFullNameHelperText(
         "Name should be provided and minimum 3 characters."
@@ -168,7 +167,6 @@ function App() {
             `https://pop.tzconnect.berlin/dyn/add.cgi?name=${userFullName}&key=${permissions.address}`
           )
           .then((res) => {
-            debugger;
             setUserFullName("");
             setUserFullNameError(false);
             setUserFullNameHelperText("");
