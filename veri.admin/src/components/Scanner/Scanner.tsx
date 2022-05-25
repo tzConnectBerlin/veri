@@ -15,7 +15,6 @@ const ScanContainer = styled(Box)`
   align-items: center;
   justify-content: center;
   color: #000000;
-  transition: background-color .1s;
 
   &.Error {
     background-color: #cc2800;
@@ -105,10 +104,13 @@ export const Scanner: React.FC = () => {
               }, 1000);
             })
             .catch((err) => {
-              setMessage({
-                type: "Error",
-                msg: "Something goes wrong.",
-              });
+              setTimeout(() => {
+                setMessage({
+                  type: "Error",
+                  msg: "Something went wrong.",
+                });
+                console.log(err);
+              }, 1000);
             })
             .finally(() => refreshPage());
         } catch (error) {
@@ -129,7 +131,7 @@ export const Scanner: React.FC = () => {
     handleTransitions(true);
     setMessage({
       type: "Error",
-      msg: "Unable to scan the code",
+      msg: "Unable to scan the code.",
     });
     refreshPage();
   };
@@ -138,29 +140,29 @@ export const Scanner: React.FC = () => {
     setTimeout(() => {
       handleTransitions(false);
       setMessage({});
-    }, 7000);
+    }, 3000);
   };
   return (
     <ScanContainer className={message?.type}>
       {msgLoaded && (
-        <Grow in={msgLoaded}>
-          <Typography align="center" variant="h4">
-            <p>{message?.type}!</p>
-            {message?.msg}
-          </Typography>
-        </Grow>
+        <Typography align="center" variant="h4">
+          <p>
+            {message?.type}
+            {message?.type === "Processing" ? "..." : "!"}
+          </p>
+          {message?.msg}
+        </Typography>
       )}
       {scannerLoaded && (
-        <Grow in={scannerLoaded}>
-          <Box>
-            <QRScanner
-              delay={300}
-              onError={handleError}
-              onScan={handleScan}
-              style={{ width: "100%", height: "100%" }}
-            />
-          </Box>
-        </Grow>
+        <Box>
+          <QRScanner
+            delay={100}
+            facingMode="user"
+            onError={handleError}
+            onScan={handleScan}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </Box>
       )}
     </ScanContainer>
   );
