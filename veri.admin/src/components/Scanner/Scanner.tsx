@@ -54,7 +54,7 @@ export const Scanner: React.FC = () => {
   const [msgLoaded, setMsgLoaded] = React.useState(false);
   const [scannerLoaded, setScannerLoaded] = React.useState(true);
   const [message, setMessage] = React.useState<msgType>();
-  const BaseUrl = "https://65.108.212.0:4242/mint?destination=";
+  const BaseUrl = "http://65.108.212.0:4242/mint?destination=";
 
   const handleTransitions = (msgData: boolean = false) => {
     setMsgLoaded(msgData);
