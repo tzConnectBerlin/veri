@@ -38,6 +38,7 @@ const FooterData: FooterProps = {
 };
 
 const App = () => {
+
   return (
     <MainContainer>
       <Header {...HeaderData} />
