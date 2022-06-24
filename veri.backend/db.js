@@ -11,8 +11,8 @@ const { URLSearchParams } = require('url');
 
 const pool = new Pool();
 
-const CHECK_UNIQUENESS_SQL = "SELECT COUNT(*) FROM veri.addresses WHERE address = $1 AND token_id = $2";
-const INSERT_ADDRESS_SQL = "INSERT INTO veri.addresses (address, token_id, session) VALUES ($1, $2, $3)";
+const CHECK_UNIQUENESS_SQL = "SELECT COUNT(*) FROM veriadmin.addresses WHERE address = $1 AND token_id = $2";
+const INSERT_ADDRESS_SQL = "INSERT INTO veriadmin.addresses (address, token_id, session) VALUES ($1, $2, $3)";
 const INSERT_COMMAND_SQL = `INSERT INTO peppermint.operations (originator, command) VALUES ('${ORIGINATOR}', $1)`;
 console.log(INSERT_COMMAND_SQL);
 
