@@ -50,7 +50,7 @@ export const UserPage = (): JSX.Element => {
               </Avatar>
             </Center>
             <Center w="full">
-              <Button w="full">Change Icon</Button>
+              <Button w="full">Change Profile Photo</Button>
             </Center>
           </Stack>
         </FormControl>
