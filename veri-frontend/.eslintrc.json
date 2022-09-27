@@ -12,9 +12,7 @@
   ],
   "overrides": [
     {
-      "files": [
-        "**/*.stories.*"
-      ],
+      "files": ["**/*.stories.*"],
       "rules": {
         "import/no-anonymous-default-export": "off"
       }
@@ -38,7 +36,6 @@
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
-    "import/no-cycle": "warn",
     "@typescript-eslint/no-unused-expressions": [
       "off",
       {

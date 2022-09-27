@@ -1,5 +1,3 @@
-  export const SettingsPage = (): JSX.Element => {
-    return (
-      <div> settings</div>
-    );
-  }
+export const SettingsPage = (): JSX.Element => {
+  return <div> settings</div>;
+};
