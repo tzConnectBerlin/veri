@@ -1,7 +1,16 @@
+import { createBrowserRouter } from "react-router-dom";
 import {
-  createBrowserRouter,
-} from "react-router-dom";
-import { Dashboard, ForgotPassword, Landing, Login, Register, NotFound, ResetPassword, User, Veris, Settings } from '../Pages'
+  Dashboard,
+  ForgotPassword,
+  Landing,
+  Login,
+  Register,
+  NotFound,
+  ResetPassword,
+  User,
+  Veris,
+  Settings,
+} from "../Pages";
 
 export const routes = createBrowserRouter([
   {
