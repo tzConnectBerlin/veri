@@ -50,6 +50,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Run complete solution
-      run: docker-comope up -d
+      run: docker-compose up -d
     - name: Health check
       run: curl -I http://localhost:3000
