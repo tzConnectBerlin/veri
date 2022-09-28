@@ -4,11 +4,11 @@ import { Tasks } from '../model/task.model';
 
 export const connect = () => {
 
-    const hostName = 'localhost' //process.env.HOST;
-    const userName = 'veri' //process.env.USER;
-    const password = 'veri' //process.env.PASSWORD;
-    const database = 'veri' //process.env.DB;
-    const dialect: Dialect = 'postgres' //process.env.DIALECT;
+    const hostName = process.env.DB_HOST;
+    const userName = process.env.DB_USER;
+    const password = process.env.DB_PASSWORD;
+    const database = process.env.DB_DATATBASE;
+    const dialect  = 'postgres' //process.env.DIALECT;
 
     console.log('dialect  ', dialect)
 
