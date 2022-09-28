@@ -1,0 +1,10 @@
+export { DashboardPage as Dashboard } from "./Dashboard/DashboardPage";
+export { ForgotPasswordPage as ForgotPassword } from "./ForgotPassword/ForgotPasswordPage";
+export { LandingPage as Landing } from "./Landing/LandingPage";
+export { LoginPage as Login } from "./Login/LoginPage";
+export { RegisterPage as Register } from "./Register/RegisterPage";
+export { NotFoundPage as NotFound } from "./NotFound/NotFoundPage";
+export { ResetPasswordPage as ResetPassword } from "./ResetPassword/ResetPasswordPage";
+export { UserPage as User } from "../Pages/Dashboard/User/UserPage";
+export { VerisPage as Veris } from "../Pages/Dashboard/Veris/VerisPage";
+export { SettingsPage as Settings } from "../Pages/Dashboard/Settings/SettingsPage";
