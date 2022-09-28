@@ -10,9 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: 'veri-backend'
     env:
       DB_HOST: postgres
       DB_USER: veri
@@ -42,6 +39,7 @@ jobs:
       with:
         node-version: "16"
         cache: npm
+        cache-dependency-path: veri-backend/package-lock.json
     - name: Test frontend individual
       working-directory: veri-fronend
       run: npm install && npm run test
