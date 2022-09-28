@@ -1,4 +1,13 @@
-import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE, PG_CONNECTION_STRING } from './src/config';
+// import {
+//   DB_PROTOCOL,
+//   DB_HOST,
+//   DB_PORT,
+//   DB_USER,
+//   DB_PASSWORD,
+//   DB_DATABASE,
+// } from './src/config';
+
+// const connectionString = `${DB_PROTOCOL}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
 
 const dbConfig = {
   client: 'pg',

@@ -22,7 +22,7 @@ class App {
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
-    this.port = PORT || 3000;
+    this.port = PORT || 5000;
 
     this.connectToDatabase();
     this.initializeMiddlewares();
@@ -60,7 +60,7 @@ class App {
   }
 
   private initializeRoutes(routes: Routes[]) {
-    routes.forEach(route => {
+    routes.forEach((route) => {
       this.app.use('/', route.router);
     });
   }
