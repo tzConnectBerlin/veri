@@ -54,6 +54,4 @@ jobs:
     - name: Run complete solution
       run: docker-compose up -d
     - name: Health check
-      uses: wei/curl@master
-      with:
-        args: -I http://localhost:3000
+      run: docker ps -a
