@@ -10,8 +10,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'veri-backend'
     env:
-      DAY_OF_WEEK: Monday
       DB_HOST: postgres
       DB_USER: veri
       DB_PASSWORD: veri
