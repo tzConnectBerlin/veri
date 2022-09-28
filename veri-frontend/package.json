@@ -72,17 +72,10 @@
     "prop-types": "^15.8.1",
     "webpack": "^5.74.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "cd veri-frontend",
-      "npx prettier --write .",
+    "**/**/*.{js,jsx,ts,tsx}": [
       "npx eslint --fix",
-      "git add"
+      "npx prettier --write ."
     ]
   },
   "config": {
