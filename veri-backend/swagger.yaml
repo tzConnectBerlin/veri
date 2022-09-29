@@ -1,8 +1,110 @@
 tags:
+- name: events
+  description: events API
 - name: users
-  description: users API
+  description: Experimental users API
 
 paths:
+# [GET] events
+  /events:
+    get:
+        tags:
+        - events
+        summary: Find All Events
+        responses:
+          200:
+            description: 'OK'
+          500:
+            description: 'Server Error'
+
+# [POST] events
+    post:
+      tags:
+      - events
+      summary: Add Events
+      parameters:
+      - name: body
+        in: body
+        description: event Data
+        required: true
+        schema:
+          $ref: '#/definitions/events'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] events/id
+  /events/{id}:
+    get:
+      tags:
+      - events
+      summary: Find Event By Id
+      parameters:
+      - name: id
+        in: path
+        description: Event Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] events/id
+    put:
+      tags:
+      - events
+      summary: Update Event By Id
+      parameters:
+      - name: id
+        in: path
+        description: event Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: event Data
+        required: true
+        schema:
+          $ref: '#/definitions/events'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] events/id
+    delete:
+      tags:
+      - events
+      summary: Delete Event By Id
+      parameters:
+      - name: id
+        in: path
+        description: event Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # [GET] users
   /users:
     get:
@@ -117,6 +219,19 @@ definitions:
       password:
         type: string
         description: user Password
+  events:
+    type: object
+    required:
+        - name
+        - description
+    properties:
+      name:
+        type: string
+        description: event Name
+      description:
+        type: string
+        description: event Password
+
 
 schemes:
  - https
