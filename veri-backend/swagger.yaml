@@ -1,34 +1,34 @@
 tags:
-- name: events
-  description: events API
+- name: veris
+  description: veris API
 - name: users
   description: Experimental users API
 
 paths:
-# [GET] events
-  /events:
+# [GET] veris
+  /veris:
     get:
         tags:
-        - events
-        summary: Find All Events
+        - veris
+        summary: Find All Veris
         responses:
           200:
             description: 'OK'
           500:
             description: 'Server Error'
 
-# [POST] events
+# [POST] veris
     post:
       tags:
-      - events
-      summary: Add Events
+      - veris
+      summary: Add Veris
       parameters:
       - name: body
         in: body
-        description: event Data
+        description: veri Data
         required: true
         schema:
-          $ref: '#/definitions/events'
+          $ref: '#/definitions/veris'
       responses:
         201:
           description: 'Created'
@@ -39,16 +39,16 @@ paths:
         500:
           description: 'Server Error'
 
-# [GET] events/id
-  /events/{id}:
+# [GET] veris/id
+  /veris/{id}:
     get:
       tags:
-      - events
-      summary: Find Event By Id
+      - veris
+      summary: Find Veri By Id
       parameters:
       - name: id
         in: path
-        description: Event Id
+        description: Veri Id
         required: true
         type: integer
       responses:
@@ -59,23 +59,23 @@ paths:
         500:
           description: 'Server Error'
 
-# [PUT] events/id
+# [PUT] veris/id
     put:
       tags:
-      - events
-      summary: Update Event By Id
+      - veris
+      summary: Update Veri By Id
       parameters:
       - name: id
         in: path
-        description: event Id
+        description: veri Id
         required: true
         type: integer
       - name: body
         in: body
-        description: event Data
+        description: veri Data
         required: true
         schema:
-          $ref: '#/definitions/events'
+          $ref: '#/definitions/veris'
       responses:
         200:
           description: 'OK'
@@ -86,15 +86,15 @@ paths:
         500:
           description: 'Server Error'
 
-# [DELETE] events/id
+# [DELETE] veris/id
     delete:
       tags:
-      - events
-      summary: Delete Event By Id
+      - veris
+      summary: Delete Veri By Id
       parameters:
       - name: id
         in: path
-        description: event Id
+        description: veri Id
         required: true
         type: integer
       responses:
@@ -219,20 +219,48 @@ definitions:
       password:
         type: string
         description: user Password
-  events:
+  veris:
     type: object
     required:
-        - name
-        - description
+        - event_name
+        - event_contact_email
+        - event_type
+        - event_start_date
+        - event_end_date
+        - artwork_name
+        - live_distribution
+    optional:
+        - event_description
+        - artwork_description
+        - live_distribution_url
     properties:
-      name:
+      event_name:
         type: string
         description: event Name
-      description:
+      event_contact_email:
         type: string
-        description: event Password
-
-
+        description: event description
+      event_type:
+        type: string
+        description: single/ multiday event
+      event_start_date:
+        type: string
+        description: event starting date
+      event_end_date:
+        type: string
+        description: event ending date 
+      artwork_name:
+        type: string
+        description: name of the included artwork
+      artwork_description:
+        type: string
+        description: artwork description
+      live_distribution:
+        type: boolean
+        description: artwork description
+      live_distribution_url:
+        type: string
+        description: artwork description
 schemes:
  - https
  - http

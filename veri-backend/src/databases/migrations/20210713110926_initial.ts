@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('event_name', 45).notNullable();
     table.string('event_description', 512);
     table.string('event_contact_email', 45).notNullable();
-    table.boolean('event_type').notNullable();
+    table.string('event_type').notNullable();
     table.datetime('event_start_date', { useTz: true }).notNullable();
     table.datetime('event_end_date', { useTz: true }).notNullable();
     table.string('artwork_name', 255).notNullable();
@@ -27,6 +27,6 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTable('users');
   await knex.schema.dropTable('veris');
+  await knex.schema.dropTable('users');
 }

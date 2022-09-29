@@ -17,7 +17,7 @@ export class CreateVeriDto {
   public event_contact_email: string;
 
   @IsString()
-  public event_type: boolean;
+  public event_type: string;
 
   @IsDateString()
   public event_start_date: string;
