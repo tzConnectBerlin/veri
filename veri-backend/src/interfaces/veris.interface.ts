@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export interface Veri {
   id: number;
   event_name: string;
@@ -10,4 +12,8 @@ export interface Veri {
   artwork_description: string;
   live_distribution: boolean;
   live_distribution_url: string;
+}
+
+export interface RequestWithFile extends Request {
+  file: Express.Multer.File;
 }

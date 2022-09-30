@@ -3,6 +3,7 @@ import VerisController from '../controllers/veris.controller';
 import { CreateVeriDto } from '../dtos/veris.dto';
 import { Routes } from '../interfaces/routes.interface';
 import validationMiddleware from '../middlewares/validation.middleware';
+import fileMiddleware from '../middlewares/file.middleware';
 
 class VerisRoute implements Routes {
   public path = '/veris';
@@ -18,6 +19,7 @@ class VerisRoute implements Routes {
     this.router.get(`${this.path}/:id(\\d+)`, this.verisController.getVeriById);
     this.router.post(
       `${this.path}`,
+      fileMiddleware,
       validationMiddleware(CreateVeriDto, 'body'),
       this.verisController.createVeri
     );

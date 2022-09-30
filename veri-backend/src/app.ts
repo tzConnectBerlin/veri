@@ -13,6 +13,7 @@ import knex from './databases';
 import { Routes } from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
+import fileUpload from 'express-fileupload';
 
 class App {
   public app: express.Application;
@@ -68,10 +69,19 @@ class App {
   private initializeSwagger() {
     const options = {
       swaggerDefinition: {
+        openapi: '3.0.1',
         info: {
-          title: 'REST API',
+          title: 'VERI REST APIs',
           version: '1.0.0',
-          description: 'Example docs',
+        },
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              bearerFormat: 'JWT',
+            },
+          },
         },
       },
       apis: ['swagger.yaml'],

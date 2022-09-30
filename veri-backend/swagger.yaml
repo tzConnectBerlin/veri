@@ -1,6 +1,9 @@
+
 tags:
 - name: veris
   description: veris API
+- name: authorize
+  description: authotization API
 - name: users
   description: Experimental users API
 
@@ -16,6 +19,8 @@ paths:
             description: 'OK'
           500:
             description: 'Server Error'
+        security:
+          - bearerAuth: []
 
 # [POST] veris
     post:
@@ -38,6 +43,8 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+      security:
+          - bearerAuth: []
 
 # [GET] veris/id
   /veris/{id}:
@@ -58,6 +65,8 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+      security:
+          - bearerAuth: []
 
 # [PUT] veris/id
     put:
@@ -85,6 +94,8 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+      security:
+          - bearerAuth: []
 
 # [DELETE] veris/id
     delete:
@@ -104,6 +115,47 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
+      security:
+          - bearerAuth: []
+
+# [POST] login
+  /login:
+    # [POST] users
+    post:
+      tags:
+      - authorize
+      summary: Add User
+      requestBody:
+         content:
+           application/json:
+              schema:
+                $ref: '#/definitions/login'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [POST] signup
+  /signup:
+    post:
+      tags:
+      - authorize
+      summary: register a user
+      parameters:
+      - email: id
+        password: path
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
 
 # [GET] users
   /users:
@@ -116,6 +168,8 @@ paths:
           description: 'OK'
         500:
           description: 'Server Error'
+      security:
+      - bearerAuth: []
 
 # [POST] users
     post:
@@ -219,6 +273,20 @@ definitions:
       password:
         type: string
         description: user Password
+  login:
+    type: object
+    required:
+        - email
+        - password
+    properties:
+      email:
+        type: string
+        description: user Email
+        example: superadmin@veri.com
+      password:
+        type: string
+        description: user Password
+        example: veriisawesome
   veris:
     type: object
     required:
@@ -236,31 +304,49 @@ definitions:
     properties:
       event_name:
         type: string
-        description: event Name
-      event_contact_email:
+        description: event name
+        example: test event
+      event_description:
         type: string
         description: event description
+        example: test event description
+      event_contact_email:
+        type: string
+        description: event contact person
+        example: contactperson@eventorg.com
       event_type:
         type: string
         description: single/ multiday event
+        example: single
+        enum:
+          - single
+          - multi
       event_start_date:
         type: string
         description: event starting date
+        example: '2022-09-29 14:48:17.845045+02'
       event_end_date:
         type: string
-        description: event ending date 
+        description: event ending date
+        example: '2022-09-29 14:48:17.845045+02'
       artwork_name:
         type: string
         description: name of the included artwork
+        example: test artwork
       artwork_description:
         type: string
         description: artwork description
+        example: test artwork description
       live_distribution:
         type: boolean
-        description: artwork description
+        description: artwork distribution option
+        example: true
       live_distribution_url:
         type: string
-        description: artwork description
+        description: live distribution url
+        example: 'https://formallyverified.com/distribute/123456/authorize'
+
 schemes:
  - https
  - http
+

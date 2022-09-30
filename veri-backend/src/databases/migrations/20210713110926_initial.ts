@@ -17,7 +17,7 @@ export async function up(knex: Knex): Promise<void> {
     table.datetime('event_end_date', { useTz: true }).notNullable();
     table.string('artwork_name', 255).notNullable();
     table.string('artwork_description', 512);
-    table.string('artwork_filepath', 512).notNullable();
+    table.string('artwork_filepath', 512);
     table.boolean('live_distribution').notNullable();
     table.string('live_distribution_url', 512);
     table.integer('created_by').references('id').inTable('users').defaultTo(1);
