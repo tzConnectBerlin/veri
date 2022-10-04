@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "dev": "./node_modules/nodemon/bin/nodemon.js",
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Warning: no test specified\"; exit 0"
   },
   "repository": {
     "type": "git",
