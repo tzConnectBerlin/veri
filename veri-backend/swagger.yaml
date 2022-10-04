@@ -27,13 +27,11 @@ paths:
       tags:
       - veris
       summary: Add Veris
-      parameters:
-      - name: body
-        in: body
-        description: veri Data
-        required: true
-        schema:
-          $ref: '#/definitions/veris'
+      requestBody:
+         content:
+           application/json:
+              schema:
+                $ref: '#/definitions/veris'
       responses:
         201:
           description: 'Created'
