@@ -1,8 +1,11 @@
+import { File } from '../interfaces/file.interface';
+import { Files } from '../models/files.model';
 import { CreateVeriDto } from '../dtos/veris.dto';
 import { HttpException } from '../exceptions/HttpException';
 import { Veri } from '../interfaces/veris.interface';
 import { Veris } from '../models/veris.model';
 import { isEmpty } from '../utils/util';
+import { CreateFileDto } from '@/dtos/files.dto';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
@@ -17,7 +20,10 @@ class VeriService {
     return findVeri;
   }
 
-  public async createVeri(veriData: CreateVeriDto): Promise<Veri> {
+  public async createVeri(
+    veriData: CreateVeriDto,
+    file: CreateFileDto
+  ): Promise<Veri> {
     if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
 
     const findVeri: Veri = await Veris.query()
@@ -31,8 +37,14 @@ class VeriService {
         `Veri for this event ${veriData.event_name} already exists`
       );
 
+    const createFileEntry: File = await Files.query()
+      .insert({ ...file })
+      .into('files');
+
+    if (!createFileEntry) throw new HttpException(500, `Internal server error`);
+
     const createVeriData: Veri = await Veris.query()
-      .insert({ ...veriData })
+      .insert({ ...veriData, file_id: createFileEntry.id })
       .into('veris');
 
     return createVeriData;

@@ -1,3 +1,4 @@
+import { CreateFileDto } from '@/dtos/files.dto';
 import { NextFunction, Request, Response } from 'express';
 import { CreateVeriDto } from '../dtos/veris.dto';
 import { Veri } from '../interfaces/veris.interface';
@@ -42,7 +43,11 @@ class VeriController {
   ): Promise<void> => {
     try {
       const veriData: CreateVeriDto = req.body;
-      const createVeriData: Veri = await this.veriService.createVeri(veriData);
+      const file: CreateFileDto = req.file;
+      const createVeriData: Veri = await this.veriService.createVeri(
+        veriData,
+        file
+      );
 
       res.status(201).json({ data: createVeriData, message: 'created' });
     } catch (error) {

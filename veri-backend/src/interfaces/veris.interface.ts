@@ -10,8 +10,9 @@ export interface Veri {
   event_end_date: string;
   artwork_name: string;
   artwork_description: string;
-  live_distribution: boolean;
+  live_distribution: string;
   live_distribution_url: string;
+  file_id: number;
 }
 
 export interface RequestWithFile extends Request {

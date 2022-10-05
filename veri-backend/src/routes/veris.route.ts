@@ -19,6 +19,7 @@ class VerisRoute implements Routes {
     this.router.get(`${this.path}/:id(\\d+)`, this.verisController.getVeriById);
     this.router.post(
       `${this.path}`,
+      fileMiddleware,
       validationMiddleware(CreateVeriDto, 'body'),
       this.verisController.createVeri
     );

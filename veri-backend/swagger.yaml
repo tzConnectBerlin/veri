@@ -28,10 +28,13 @@ paths:
       - veris
       summary: Add Veris
       requestBody:
-         content:
-           application/json:
-              schema:
-                $ref: '#/definitions/veris'
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/definitions/veris'
+            encoding:
+              artwork:
+                contentType: image/png, image/jpeg, image/gif
       responses:
         201:
           description: 'Created'
@@ -294,6 +297,7 @@ definitions:
         - event_start_date
         - event_end_date
         - artwork_name
+        - artwork_file
         - live_distribution
     optional:
         - event_description
@@ -302,46 +306,50 @@ definitions:
     properties:
       event_name:
         type: string
-        description: event name
-        example: test event
+        description: Event name
+        example: Test Event
       event_description:
         type: string
-        description: event description
-        example: test event description
+        description: Event description
+        example: Test Event Description
       event_contact_email:
         type: string
-        description: event contact person
-        example: contactperson@eventorg.com
+        description: Event contact person
+        example: contactperson@event.com
       event_type:
         type: string
-        description: single/ multiday event
+        description: Single/multiday event
         example: single
         enum:
           - single
           - multi
       event_start_date:
         type: string
-        description: event starting date
+        description: Event starting date
         example: '2022-09-29 14:48:17.845045+02'
       event_end_date:
         type: string
-        description: event ending date
+        description: Event ending date
         example: '2022-09-29 14:48:17.845045+02'
       artwork_name:
         type: string
-        description: name of the included artwork
+        description: Name of the included artwork
         example: test artwork
       artwork_description:
         type: string
-        description: artwork description
+        description: Artwork description
         example: test artwork description
+      artwork_file:
+        type: string
+        format: binary
+        description: Artwork file
       live_distribution:
         type: boolean
-        description: artwork distribution option
+        description: Artwork distribution option
         example: true
       live_distribution_url:
         type: string
-        description: live distribution url
+        description: Live distribution url
         example: 'https://formallyverified.com/distribute/123456/authorize'
 
 schemes:

@@ -1,9 +1,10 @@
 import {
   IsString,
-  IsBoolean,
   IsEmail,
   IsDateString,
   IsUrl,
+  IsBooleanString,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateVeriDto {
@@ -31,8 +32,8 @@ export class CreateVeriDto {
   @IsString()
   public artwork_description: string;
 
-  @IsBoolean()
-  public live_distribution: boolean;
+  @IsBooleanString()
+  public live_distribution: string;
 
   @IsUrl()
   public live_distribution_url: string;

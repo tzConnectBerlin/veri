@@ -11,11 +11,12 @@ export class Veris extends Model implements Veri {
   event_end_date!: string;
   artwork_name!: string;
   artwork_description: string;
-  live_distribution!: boolean;
+  live_distribution!: string;
   live_distribution_url: string;
+  file_id: number;
 
   static tableName = 'veris'; // database table name
   static idColumn = 'id'; // id column name
 }
 
-export type UsersShape = ModelObject<Veris>;
+export type VerisShape = ModelObject<Veris>;
