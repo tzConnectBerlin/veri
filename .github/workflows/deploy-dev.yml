@@ -55,6 +55,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          context: veri-backend
+          file: Dockerfile
           tags: ${{ steps.meta-be.outputs.tags }}
           labels: ${{ steps.meta-be.outputs.labels }}
 
@@ -62,6 +64,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          context: veri-frontend
+          file: Dockerfile
           tags: ${{ steps.meta-fe.outputs.tags }}
           labels: ${{ steps.meta-fe.outputs.labels }}
 
