@@ -3,7 +3,10 @@ services:
   backend:
     container_name: veri-backend
     restart: unless-stopped
-    build: veri-backend/
+    build:
+      context: veri-backend/
+      target: production-build-stage
+      dockerfile: Dockerfile
     env_file: .env
     ports:
       - 5000:5000
