@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const password = 'veriisawesome'; //has to come from env var SECRET_KEY
 
