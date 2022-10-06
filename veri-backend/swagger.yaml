@@ -19,8 +19,6 @@ paths:
             description: 'OK'
           500:
             description: 'Server Error'
-        security:
-          - bearerAuth: []
 
 # [POST] veris
     post:
@@ -44,8 +42,7 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
-      security:
-          - bearerAuth: []
+      
 
 # [GET] veris/id
   /veris/{id}:
@@ -66,8 +63,7 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
-      security:
-          - bearerAuth: []
+      
 
 # [PUT] veris/id
     put:
@@ -80,8 +76,14 @@ paths:
         description: veri Id
         required: true
         type: integer
-      - name: body
-        in: body
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/definitions/veris'
+            encoding:
+              artwork:
+                contentType: image/png, image/jpeg, image/gif
         description: veri Data
         required: true
         schema:
@@ -95,8 +97,7 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
-      security:
-          - bearerAuth: []
+      
 
 # [DELETE] veris/id
     delete:
@@ -116,8 +117,7 @@ paths:
           description: 'Conflict'
         500:
           description: 'Server Error'
-      security:
-          - bearerAuth: []
+      
 
 # [POST] login
   /login:
@@ -169,8 +169,6 @@ paths:
           description: 'OK'
         500:
           description: 'Server Error'
-      security:
-      - bearerAuth: []
 
 # [POST] users
     post:
@@ -334,11 +332,11 @@ definitions:
       artwork_name:
         type: string
         description: Name of the included artwork
-        example: test artwork
+        example: Test artwork
       artwork_description:
         type: string
         description: Artwork description
-        example: test artwork description
+        example: Test artwork description
       artwork_file:
         type: string
         format: binary

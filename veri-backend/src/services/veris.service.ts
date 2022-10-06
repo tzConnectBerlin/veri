@@ -6,6 +6,7 @@ import { Veri } from '../interfaces/veris.interface';
 import { Veris } from '../models/veris.model';
 import { isEmpty } from '../utils/util';
 import { CreateFileDto } from '@/dtos/files.dto';
+import { User } from '@/interfaces/users.interface';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
@@ -22,7 +23,8 @@ class VeriService {
 
   public async createVeri(
     veriData: CreateVeriDto,
-    file: CreateFileDto
+    file: CreateFileDto,
+    user: User
   ): Promise<Veri> {
     if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
 
@@ -44,23 +46,44 @@ class VeriService {
     if (!createFileEntry) throw new HttpException(500, `Internal server error`);
 
     const createVeriData: Veri = await Veris.query()
-      .insert({ ...veriData, file_id: createFileEntry.id })
+      .insert({
+        ...veriData,
+        file_id: createFileEntry.id,
+        created_by: user.id,
+        updated_by: user.id,
+      })
       .into('veris');
 
     return createVeriData;
   }
 
-  public async updateVeri(veriId: number, veriData: Veri): Promise<Veri> {
+  public async updateVeri(
+    veriId: number,
+    veriData: Veri,
+    file: File,
+    user: User
+  ): Promise<Veri> {
     if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
 
-    const findVeri: Veri[] = await Veris.query()
+    const findVeri: Veri = await Veris.query()
       .select()
       .from('veris')
-      .where('id', '=', veriId);
+      .where('id', '=', veriId)
+      .first();
+
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
+    await Files.query()
+      .update({ ...file })
+      .where('id', '=', findVeri.file_id)
+      .into('files');
+
     await Veris.query()
-      .update({ ...veriData })
+      .update({
+        ...veriData,
+        file_id: findVeri.file_id,
+        updated_by: user.id,
+      })
       .where('id', '=', veriId)
       .into('veris');
 

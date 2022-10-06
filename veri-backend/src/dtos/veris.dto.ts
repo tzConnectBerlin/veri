@@ -4,7 +4,6 @@ import {
   IsDateString,
   IsUrl,
   IsBooleanString,
-  IsNumber,
 } from 'class-validator';
 
 export class CreateVeriDto {

@@ -14,6 +14,8 @@ export class Veris extends Model implements Veri {
   live_distribution!: string;
   live_distribution_url: string;
   file_id: number;
+  created_by: number;
+  updated_by: number;
 
   static tableName = 'veris'; // database table name
   static idColumn = 'id'; // id column name
