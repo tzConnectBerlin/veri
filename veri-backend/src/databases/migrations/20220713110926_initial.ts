@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
+  await knex.raw(ON_UPDATE_TIMESTAMP_FUNCTION);
   await knex.schema.createTable('users', (table) => {
     table.bigIncrements('id').unsigned().primary();
     table.string('email', 64).notNullable();
@@ -36,10 +37,35 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('updated_by').references('id').inTable('users').defaultTo(1);
     table.timestamps(true, true);
   });
+  await knex.raw(onUpdateTrigger('users'));
+  await knex.raw(onUpdateTrigger('files'));
+  await knex.raw(onUpdateTrigger('veris'));
 }
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTable('veris');
   await knex.schema.dropTable('files');
   await knex.schema.dropTable('users');
+  await knex.raw(DROP_ON_UPDATE_TIMESTAMP_FUNCTION);
 }
+
+function onUpdateTrigger(table: string): Knex.Value {
+  return `
+    CREATE TRIGGER ${table}_updated_at
+    BEFORE UPDATE ON ${table}
+    FOR EACH ROW
+    EXECUTE PROCEDURE on_update_timestamp();
+  `;
+}
+
+const ON_UPDATE_TIMESTAMP_FUNCTION = `
+  CREATE OR REPLACE FUNCTION on_update_timestamp()
+  RETURNS trigger AS $$
+  BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+  END;
+$$ language 'plpgsql';
+`;
+
+const DROP_ON_UPDATE_TIMESTAMP_FUNCTION = `DROP FUNCTION on_update_timestamp`;
