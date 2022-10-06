@@ -11,6 +11,11 @@ jobs:
       DB_PASSWORD: veri
       DB_DATABASE: veri
       DB_DIALECT: postgres
+      DB_PORT: 3081
+      SECRET_KEY: secretKey
+      LOG_FORMAT: combined
+      LOG_DIR: ../logs
+      PORT: 5000
     services:
       postgres:
         image: postgres:10
