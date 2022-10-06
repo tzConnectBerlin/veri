@@ -1,17 +1,17 @@
-// import {
-//   DB_PROTOCOL,
-//   DB_HOST,
-//   DB_PORT,
-//   DB_USER,
-//   DB_PASSWORD,
-//   DB_DATABASE,
-// } from './src/config';
+import {
+  DB_PROTOCOL,
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD,
+  DB_DATABASE,
+} from './src/config';
 
-// const connectionString = `${DB_PROTOCOL}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
+const connectionString = `${DB_PROTOCOL}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
 
 const dbConfig = {
   client: 'pg',
-  connection: 'postgresql://veri:veri@localhost:5432/veri',
+  connection: connectionString,
   migrations: {
     directory: 'src/databases/migrations',
     tableName: 'migrations',

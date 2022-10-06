@@ -1,34 +1,136 @@
+
 tags:
-- name: events
-  description: events API
+- name: veris
+  description: veris API
+- name: authorize
+  description: authotization API
 - name: users
   description: Experimental users API
 
 paths:
-# [GET] events
-  /events:
+# [GET] veris
+  /veris:
     get:
         tags:
-        - events
-        summary: Find All Events
+        - veris
+        summary: Find All Veris
         responses:
           200:
             description: 'OK'
           500:
             description: 'Server Error'
 
-# [POST] events
+# [POST] veris
     post:
       tags:
-      - events
-      summary: Add Events
+      - veris
+      summary: Add Veris
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/definitions/veris'
+            encoding:
+              artwork:
+                contentType: image/png, image/jpeg, image/gif
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [GET] veris/id
+  /veris/{id}:
+    get:
+      tags:
+      - veris
+      summary: Find Veri By Id
       parameters:
-      - name: body
-        in: body
-        description: event Data
+      - name: id
+        in: path
+        description: Veri Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [PUT] veris/id
+    put:
+      tags:
+      - veris
+      summary: Update Veri By Id
+      parameters:
+      - name: id
+        in: path
+        description: veri Id
+        required: true
+        type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/definitions/veris'
+            encoding:
+              artwork:
+                contentType: image/png, image/jpeg, image/gif
+        description: veri Data
         required: true
         schema:
-          $ref: '#/definitions/events'
+          $ref: '#/definitions/veris'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [DELETE] veris/id
+    delete:
+      tags:
+      - veris
+      summary: Delete Veri By Id
+      parameters:
+      - name: id
+        in: path
+        description: veri Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [POST] login
+  /login:
+    # [POST] users
+    post:
+      tags:
+      - authorize
+      summary: Add User
+      requestBody:
+         content:
+           application/json:
+              schema:
+                $ref: '#/definitions/login'
       responses:
         201:
           description: 'Created'
@@ -39,64 +141,15 @@ paths:
         500:
           description: 'Server Error'
 
-# [GET] events/id
-  /events/{id}:
-    get:
+# [POST] signup
+  /signup:
+    post:
       tags:
-      - events
-      summary: Find Event By Id
+      - authorize
+      summary: register a user
       parameters:
-      - name: id
-        in: path
-        description: Event Id
-        required: true
-        type: integer
-      responses:
-        200:
-          description: 'OK'
-        409:
-          description: 'Conflict'
-        500:
-          description: 'Server Error'
-
-# [PUT] events/id
-    put:
-      tags:
-      - events
-      summary: Update Event By Id
-      parameters:
-      - name: id
-        in: path
-        description: event Id
-        required: true
-        type: integer
-      - name: body
-        in: body
-        description: event Data
-        required: true
-        schema:
-          $ref: '#/definitions/events'
-      responses:
-        200:
-          description: 'OK'
-        400:
-          description: 'Bad Request'
-        409:
-          description: 'Conflict'
-        500:
-          description: 'Server Error'
-
-# [DELETE] events/id
-    delete:
-      tags:
-      - events
-      summary: Delete Event By Id
-      parameters:
-      - name: id
-        in: path
-        description: event Id
-        required: true
-        type: integer
+      - email: id
+        password: path
       responses:
         200:
           description: 'OK'
@@ -219,20 +272,85 @@ definitions:
       password:
         type: string
         description: user Password
-  events:
+  login:
     type: object
     required:
-        - name
-        - description
+        - email
+        - password
     properties:
-      name:
+      email:
         type: string
-        description: event Name
-      description:
+        description: user Email
+        example: superadmin@veri.com
+      password:
         type: string
-        description: event Password
-
+        description: user Password
+        example: veriisawesome
+  veris:
+    type: object
+    required:
+        - event_name
+        - event_contact_email
+        - event_type
+        - event_start_date
+        - event_end_date
+        - artwork_name
+        - artwork_file
+        - live_distribution
+    optional:
+        - event_description
+        - artwork_description
+        - live_distribution_url
+    properties:
+      event_name:
+        type: string
+        description: Event name
+        example: Test Event
+      event_description:
+        type: string
+        description: Event description
+        example: Test Event Description
+      event_contact_email:
+        type: string
+        description: Event contact person
+        example: contactperson@event.com
+      event_type:
+        type: string
+        description: Single/multiday event
+        example: single
+        enum:
+          - single
+          - multi
+      event_start_date:
+        type: string
+        description: Event starting date
+        example: '2022-09-29 14:48:17.845045+02'
+      event_end_date:
+        type: string
+        description: Event ending date
+        example: '2022-09-29 14:48:17.845045+02'
+      artwork_name:
+        type: string
+        description: Name of the included artwork
+        example: Test artwork
+      artwork_description:
+        type: string
+        description: Artwork description
+        example: Test artwork description
+      artwork_file:
+        type: string
+        format: binary
+        description: Artwork file
+      live_distribution:
+        type: boolean
+        description: Artwork distribution option
+        example: true
+      live_distribution_url:
+        type: string
+        description: Live distribution url
+        example: 'https://formallyverified.com/distribute/123456/authorize'
 
 schemes:
  - https
  - http
+
