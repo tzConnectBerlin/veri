@@ -21,7 +21,11 @@ class VerisRoute implements Routes {
       authMiddleware,
       this.verisController.getVeris
     );
-    this.router.get(`${this.path}/:id(\\d+)`, this.verisController.getVeriById);
+    this.router.get(
+      `${this.path}/:id(\\d+)`,
+      authMiddleware,
+      this.verisController.getVeriById
+    );
     this.router.post(
       `${this.path}`,
       authMiddleware,
@@ -38,6 +42,7 @@ class VerisRoute implements Routes {
     );
     this.router.delete(
       `${this.path}/:id(\\d+)`,
+      authMiddleware,
       this.verisController.deleteVeri
     );
   }

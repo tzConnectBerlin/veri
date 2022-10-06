@@ -103,6 +103,11 @@ class VeriService {
       .first();
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
+    await Files.query()
+      .delete()
+      .where('id', '=', findVeri.file_id)
+      .into('files');
+
     await Veris.query().delete().where('id', '=', veriId).into('veris');
     return findVeri;
   }
