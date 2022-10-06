@@ -56,7 +56,7 @@ jobs:
         with:
           push: true
           context: veri-backend
-          file: Dockerfile
+          file: veri-backend/Dockerfile
           tags: ${{ steps.meta-be.outputs.tags }}
           labels: ${{ steps.meta-be.outputs.labels }}
 
@@ -65,7 +65,7 @@ jobs:
         with:
           push: true
           context: veri-frontend
-          file: Dockerfile
+          file: veri-frontend/Dockerfile
           tags: ${{ steps.meta-fe.outputs.tags }}
           labels: ${{ steps.meta-fe.outputs.labels }}
 
