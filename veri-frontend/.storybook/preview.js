@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { MemoryRouter } from "react-router-dom";
-import { ChakraProvider, CSSReset } from "@chakra-ui/core";
-import { theme, ColorModeScript } from "@chakra-ui/react";
+import { ChakraProvider, theme, ColorModeScript } from "@chakra-ui/react";
 
 export const decorators = [
   (Story) => (
@@ -9,7 +8,6 @@ export const decorators = [
       <ColorModeScript />
       <ChakraProvider theme={theme}>
         <MemoryRouter>
-          <CSSReset />
           <Story />
         </MemoryRouter>
       </ChakraProvider>
