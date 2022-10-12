@@ -1,6 +1,5 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
-// chakra imports
+import { NavLink } from "react-router-dom";
 import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
 
 export interface SidebarLinkProps {
@@ -14,36 +13,25 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({
   name,
   path,
   icon,
+  isActive,
 }) => {
-  //   Chakra color mode
-  const location = useLocation();
-  const activeColor = useColorModeValue("gray.700", "white");
-  // const inactiveColor = useColorModeValue(
-  //   "secondaryGray.600",
-  //   "secondaryGray.600"
-  // );
-  const activeIcon = useColorModeValue("brand.500", "white");
+  const LayoutUrl = process.env.REACT_APP_ADMIN_URL || "/admin";
+  const activeColor = useColorModeValue("blue.600", "white");
+  const activeBg = useColorModeValue("blue.50", "white.100");
+  const activeIcon = useColorModeValue("blue.600", "white");
   const textColor = useColorModeValue("secondaryGray.500", "white");
 
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName: string) => {
-    return location.pathname.includes(routeName);
-  };
-
   return (
-    <NavLink to={path}>
-      <HStack w="100%" alignItems="center" px={5} py={2}>
-        <Box
-          color={activeRoute(path.toLowerCase()) ? activeIcon : textColor}
-          me="18px"
-        >
-          {icon}
-        </Box>
-        <Text
-          me="auto"
-          color={activeRoute(path.toLowerCase()) ? activeColor : textColor}
-          fontWeight={activeRoute(path.toLowerCase()) ? "bold" : "normal"}
-        >
+    <NavLink to={LayoutUrl + path}>
+      <HStack
+        w="100%"
+        alignItems="center"
+        px={5}
+        py={2}
+        backgroundColor={isActive ? activeBg : undefined}
+      >
+        <Box color={isActive ? activeIcon : textColor}>{icon}</Box>
+        <Text me="auto" color={isActive ? activeColor : textColor}>
           {name}
         </Text>
       </HStack>

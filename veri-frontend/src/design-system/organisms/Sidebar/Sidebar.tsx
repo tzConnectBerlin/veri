@@ -12,6 +12,7 @@ import {
   Text,
   BoxProps,
 } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
 
 export interface SidebarProps extends BoxProps {
   links: SidebarLinkProps[];
@@ -25,6 +26,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onClose,
   ...rest
 }) => {
+  const location = useLocation();
+  const activeRoute = (routeName: string) => {
+    return location.pathname.includes(routeName);
+  };
   return (
     <Box
       transition="3s ease"
@@ -43,7 +48,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {links.map((link, index) => (
-        <SidebarLink {...link} key={index} />
+        <SidebarLink
+          isActive={activeRoute(link.path.toLowerCase()) ? true : false}
+          {...link}
+          key={index}
+        />
       ))}
     </Box>
   );

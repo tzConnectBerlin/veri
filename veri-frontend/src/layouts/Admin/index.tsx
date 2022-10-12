@@ -15,9 +15,9 @@ import { MobileNav } from "../../design-system/organisms/MobileNav";
 import { Sidebar } from "../../design-system/organisms/Sidebar";
 
 const adminRoutes: SidebarLinkProps[] = [
-  { name: "All VERIs", icon: <MdViewList />, path: "/veries" },
+  { name: "All VERIs", icon: <MdViewList />, path: "/" },
   { name: "User", icon: <FiUsers />, path: "/user" },
-  { name: "Settings", icon: <FiSettings />, path: "/setting" },
+  { name: "Settings", icon: <FiSettings />, path: "/settings" },
 ];
 
 export const DashboardLayout = () => {
@@ -45,7 +45,7 @@ export const DashboardLayout = () => {
             <Sidebar links={adminRoutes} onClose={() => onClose} logo={logo} />
           </DrawerContent>
         </Drawer>
-        {/* mobilenav */}
+
         <MobileNav onOpen={onOpen} logo={logo} />
         <Box ml={{ base: 0, md: 60 }} p="4">
           <Outlet />
