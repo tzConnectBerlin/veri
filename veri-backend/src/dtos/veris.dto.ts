@@ -1,15 +1,39 @@
-import { IsFQDN, IsString, IsBoolean, IsInt } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsDateString,
+  IsUrl,
+  IsBooleanString,
+} from 'class-validator';
 
 export class CreateVeriDto {
-  @IsInt()
-  public event: string;
-
-  @IsBoolean()
-  public live_distribution: boolean;
-
-  @IsFQDN()
-  public live_distribution_url: string;
+  @IsString()
+  public event_name: string;
 
   @IsString()
-  public note: string;
+  public event_description: string;
+
+  @IsEmail()
+  public event_contact_email: string;
+
+  @IsString()
+  public event_type: string;
+
+  @IsDateString()
+  public event_start_date: string;
+
+  @IsDateString()
+  public event_end_date: string;
+
+  @IsString()
+  public artwork_name: string;
+
+  @IsString()
+  public artwork_description: string;
+
+  @IsBooleanString()
+  public live_distribution: string;
+
+  @IsUrl()
+  public live_distribution_url: string;
 }

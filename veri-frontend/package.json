@@ -28,7 +28,7 @@
     "prepare": "cd .. && husky install veri-frontend/.husky",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
     "commit": "cz",
     "storybook": "start-storybook -p 6006 -s public",

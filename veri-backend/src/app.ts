@@ -68,10 +68,10 @@ class App {
   private initializeSwagger() {
     const options = {
       swaggerDefinition: {
+        openapi: '3.0.1',
         info: {
-          title: 'REST API',
+          title: 'VERI REST APIs',
           version: '1.0.0',
-          description: 'Example docs',
         },
       },
       apis: ['swagger.yaml'],
