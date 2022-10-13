@@ -18,7 +18,7 @@ import React from "react";
 
 interface column {
   field: string;
-  type: "Image" | "Number" | "String" | "Date";
+  type: "Image" | "Number" | "String";
   value: string | number;
   sortable?: boolean;
 }
@@ -47,7 +47,11 @@ export const DataTable: React.FC<DataTableProps> = ({
   return (
     <TableContainer>
       <Table variant="simple">
-        {title && <TableCaption>{title}</TableCaption>}
+        {title && (
+          <TableCaption placement="top" fontSize="2xl">
+            {title}
+          </TableCaption>
+        )}
         <Thead>
           <Tr>
             {header.map((h) => (
@@ -78,16 +82,24 @@ export const DataTable: React.FC<DataTableProps> = ({
                   key={col.field}
                   isNumeric={col.type === "Number" ? true : undefined}
                 >
-                  {col.type === "Date" ? col.value.toLocaleString() : col.value}
+                  {col.value}
                 </Td>
               ))}
               {hasActions && row.actions && (
                 <Td>
                   <ButtonGroup gap="4">
-                    <Button leftIcon={<MdEdit />} colorScheme="blue">
+                    <Button
+                      leftIcon={<MdEdit />}
+                      colorScheme="blue"
+                      onClick={row.actions.onEdit}
+                    >
                       Edit
                     </Button>
-                    <Button leftIcon={<MdDelete />} colorScheme="red">
+                    <Button
+                      leftIcon={<MdDelete />}
+                      colorScheme="red"
+                      onClick={row.actions.onEdit}
+                    >
                       Delete
                     </Button>
                   </ButtonGroup>
