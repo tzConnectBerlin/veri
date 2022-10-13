@@ -11,7 +11,7 @@ import { FiSettings, FiUsers } from "react-icons/fi";
 import { MdViewList } from "react-icons/md";
 import { Outlet } from "react-router-dom";
 import { SidebarLinkProps } from "../../design-system/atoms/SidebarLink";
-import { MobileNav } from "../../design-system/organisms/MobileNav";
+import { Navbar } from "../../design-system/organisms/Navbar";
 import { Sidebar } from "../../design-system/organisms/Sidebar";
 
 const adminRoutes: SidebarLinkProps[] = [
@@ -42,11 +42,11 @@ export const DashboardLayout = () => {
           size="full"
         >
           <DrawerContent>
-            <Sidebar links={adminRoutes} onClose={() => onClose} logo={logo} />
+            <Sidebar links={adminRoutes} onClose={onClose} logo={logo} />
           </DrawerContent>
         </Drawer>
 
-        <MobileNav onOpen={onOpen} logo={logo} />
+        <Navbar onOpen={onOpen} logo={logo} />
         <Box ml={{ base: 0, md: 60 }} p="4">
           <Outlet />
         </Box>
