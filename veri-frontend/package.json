@@ -74,10 +74,7 @@
     "webpack": "^5.74.0"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "npx eslint --fix .",
-      "npx prettier --write ."
-    ]
+    "**/*.{js,jsx,ts,tsx}": []
   },
   "config": {
     "commitizen": {
