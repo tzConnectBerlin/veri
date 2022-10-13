@@ -12,19 +12,18 @@ import {
   MenuButton,
   Avatar,
   VStack,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { FiBell, FiChevronDown, FiMenu } from "react-icons/fi";
 
-export interface MobileNavProps extends FlexProps {
+export interface NavbarProps extends FlexProps {
   onOpen: () => void;
   logo: string;
 }
 
-export const MobileNav: React.FC<MobileNavProps> = ({
-  onOpen,
-  logo,
-  ...rest
-}) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpen, logo, ...rest }) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -90,6 +89,15 @@ export const MobileNav: React.FC<MobileNavProps> = ({
                 </Box>
               </HStack>
             </MenuButton>
+            <MenuList
+              bg={useColorModeValue("white", "gray.900")}
+              borderColor={useColorModeValue("gray.200", "gray.700")}
+            >
+              <MenuItem>User</MenuItem>
+              <MenuItem>Settings</MenuItem>
+              <MenuDivider />
+              <MenuItem>Sign out</MenuItem>
+            </MenuList>
           </Menu>
         </Flex>
       </HStack>
