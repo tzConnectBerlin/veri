@@ -9,10 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { FiSettings, FiUsers } from "react-icons/fi";
 import { MdViewList } from "react-icons/md";
-import { Outlet } from "react-router-dom";
+import { Outlet, useRoutes } from "react-router-dom";
 import { SidebarLinkProps } from "../../design-system/atoms/SidebarLink";
 import { Navbar } from "../../design-system/organisms/Navbar";
 import { Sidebar } from "../../design-system/organisms/Sidebar";
+import { routes } from "../../Router";
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: "All VERIs", icon: <MdViewList />, path: "/" },
@@ -22,6 +23,8 @@ const adminRoutes: SidebarLinkProps[] = [
 
 export const DashboardLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // const isLoggedIn = true;
+  // const routing = useRoutes(routes(isLoggedIn));
   const logo = "VERI Admin";
   return (
     <ChakraProvider theme={theme}>
