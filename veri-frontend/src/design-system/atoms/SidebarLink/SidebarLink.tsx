@@ -1,6 +1,6 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Box, HStack, Text, useColorModeValue } from '@chakra-ui/react';
 
 export interface SidebarLinkProps {
   name: string;
@@ -15,11 +15,11 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({
   icon,
   isActive,
 }) => {
-  const LayoutUrl = process.env.REACT_APP_ADMIN_URL || "/admin";
-  const activeColor = useColorModeValue("blue.600", "white");
-  const activeBg = useColorModeValue("blue.50", "white.100");
-  const activeIcon = useColorModeValue("blue.600", "white");
-  const textColor = useColorModeValue("secondaryGray.500", "white");
+  const LayoutUrl = process.env.REACT_APP_ADMIN_URL || '/admin';
+  const activeColor = useColorModeValue('blue.600', 'white');
+  const activeBg = useColorModeValue('blue.50', 'white.100');
+  const activeIcon = useColorModeValue('blue.600', 'white');
+  const textColor = useColorModeValue('secondaryGray.500', 'white');
 
   return (
     <NavLink to={LayoutUrl + path}>

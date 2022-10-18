@@ -11,14 +11,14 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { MdEdit, MdDelete } from "react-icons/md";
-import React from "react";
+} from '@chakra-ui/react';
+import { IoMdArrowDropdown } from 'react-icons/io';
+import { MdEdit, MdDelete } from 'react-icons/md';
+import React from 'react';
 
 interface column {
   field: string;
-  type: "Image" | "Number" | "String";
+  type: 'Image' | 'Number' | 'String';
   value: string | number;
   sortable?: boolean;
 }
@@ -54,8 +54,8 @@ export const DataTable: React.FC<DataTableProps> = ({
         )}
         <Thead>
           <Tr>
-            {header.map((h) => (
-              <Th key={h.field} isNumeric={h.type === "Number" ? true : false}>
+            {header.map(h => (
+              <Th key={h.field} isNumeric={h.type === 'Number' ? true : false}>
                 {h.sortable ? (
                   <Flex alignItems="center">
                     {h.value}
@@ -77,10 +77,10 @@ export const DataTable: React.FC<DataTableProps> = ({
         <Tbody>
           {rows.map((row, i) => (
             <Tr key={i}>
-              {row.cols.map((col) => (
+              {row.cols.map(col => (
                 <Td
                   key={col.field}
-                  isNumeric={col.type === "Number" ? true : undefined}
+                  isNumeric={col.type === 'Number' ? true : undefined}
                 >
                   {col.value}
                 </Td>

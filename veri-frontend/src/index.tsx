@@ -1,14 +1,14 @@
-import { ColorModeScript } from "@chakra-ui/react";
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
-import reportWebVitals from "./reportWebVitals";
-import * as serviceWorker from "./serviceWorker";
-import { RouterProvider } from "react-router-dom";
-import { routes } from "./Router";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ColorModeScript } from '@chakra-ui/react';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom/client';
+import reportWebVitals from './reportWebVitals';
+import * as serviceWorker from './serviceWorker';
+import { RouterProvider } from 'react-router-dom';
+import { routes } from './Router';
+import { ChakraProvider } from '@chakra-ui/react';
 
-const container = document.getElementById("root");
-if (!container) throw new Error("Failed to find the root element");
+const container = document.getElementById('root');
+if (!container) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(container);
 
 root.render(
@@ -17,7 +17,7 @@ root.render(
     <ChakraProvider>
       <RouterProvider router={routes} />
     </ChakraProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want your app to work offline and load faster, you can change
