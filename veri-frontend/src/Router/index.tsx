@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import {
   ForgotPassword,
   Landing,
@@ -9,9 +9,9 @@ import {
   User,
   VerisOverview,
   Settings,
-} from "../Pages";
+} from '../Pages';
 
-import { DashboardLayout } from "../layouts/Admin";
+import { DashboardLayout } from '../layouts/Admin';
 
 const PrivateRoutes = () => {
   const auth = { token: true };
@@ -20,12 +20,12 @@ const PrivateRoutes = () => {
 
 export const routes = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Landing />,
     errorElement: <NotFound />,
   },
   {
-    path: "/admin",
+    path: '/admin',
     element: <PrivateRoutes />,
     children: [
       {
@@ -33,29 +33,29 @@ export const routes = createBrowserRouter([
         element: <VerisOverview />,
       },
       {
-        path: "profile",
+        path: 'profile',
         element: <User />,
       },
       {
-        path: "settings",
+        path: 'settings',
         element: <Settings />,
       },
     ],
   },
   {
-    path: "register",
+    path: 'register',
     element: <Register />,
   },
   {
-    path: "login",
+    path: 'login',
     element: <Login />,
   },
   {
-    path: "forgot",
+    path: 'forgot',
     element: <ForgotPassword />,
   },
   {
-    path: "reset",
+    path: 'reset',
     element: <ResetPassword />,
   },
 ]);

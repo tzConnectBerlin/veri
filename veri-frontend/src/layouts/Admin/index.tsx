@@ -6,34 +6,31 @@ import {
   useDisclosure,
   ChakraProvider,
   theme,
-} from "@chakra-ui/react";
-import { FiSettings, FiUsers } from "react-icons/fi";
-import { MdViewList } from "react-icons/md";
-import { Outlet, useRoutes } from "react-router-dom";
-import { SidebarLinkProps } from "../../design-system/atoms/SidebarLink";
-import { Navbar } from "../../design-system/organisms/Navbar";
-import { Sidebar } from "../../design-system/organisms/Sidebar";
-import { routes } from "../../Router";
+} from '@chakra-ui/react';
+import { FiSettings, FiUsers } from 'react-icons/fi';
+import { MdViewList } from 'react-icons/md';
+import { Outlet } from 'react-router-dom';
+import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
+import { Navbar } from '../../design-system/organisms/Navbar';
+import { Sidebar } from '../../design-system/organisms/Sidebar';
 
 const adminRoutes: SidebarLinkProps[] = [
-  { name: "All VERIs", icon: <MdViewList />, path: "/" },
-  { name: "User", icon: <FiUsers />, path: "/user" },
-  { name: "Settings", icon: <FiSettings />, path: "/settings" },
+  { name: 'All VERIs', icon: <MdViewList />, path: '/' },
+  { name: 'User', icon: <FiUsers />, path: '/user' },
+  { name: 'Settings', icon: <FiSettings />, path: '/settings' },
 ];
 
 export const DashboardLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const isLoggedIn = true;
-  // const routing = useRoutes(routes(isLoggedIn));
-  const logo = "VERI Admin";
+  const logo = 'VERI Admin';
   return (
     <ChakraProvider theme={theme}>
-      <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
         <Sidebar
           links={adminRoutes}
           logo={logo}
           onClose={() => onClose}
-          display={{ base: "none", md: "block" }}
+          display={{ base: 'none', md: 'block' }}
         />
         <Drawer
           autoFocus={false}
