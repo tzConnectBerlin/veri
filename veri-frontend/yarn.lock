@@ -5535,6 +5535,11 @@ axe-core@^4.4.3:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.4.3.tgz#11c74d23d5013c0fa5d183796729bc3482bd2f6f"
   integrity sha512-32+ub6kkdhhWick/UjvEwRchgoetXqTK14INLqbGm5U2TzBkBNF3nQtLYm8ovxSkQWArjEQvftCKryjZaATu3w==
 
+axios-auth-refresh@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/axios-auth-refresh/-/axios-auth-refresh-3.3.4.tgz#95a2b1dc89a566b67ba525fb54de2f9dd7b65d20"
+  integrity sha512-cGq3bZu+lip5j+byaQRZaZ3wpCUxs93jGV0614VYP5k2H1vbdoaw6HGazaUJxcRsFMctR3DItCAx1Dn7KerlcA==
+
 axios@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.1.2.tgz#8b6f6c540abf44ab98d9904e8daf55351ca4a331"
