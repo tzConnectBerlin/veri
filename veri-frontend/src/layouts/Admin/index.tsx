@@ -10,7 +10,6 @@ import { FiSettings, FiUsers } from 'react-icons/fi';
 import { MdViewList } from 'react-icons/md';
 import { Outlet } from 'react-router-dom';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
-import { Navbar } from '../../design-system/organisms/Navbar';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
 import theme from '../../design-system/theme/theme';
 
@@ -21,7 +20,7 @@ const adminRoutes: SidebarLinkProps[] = [
 ];
 
 export const DashboardLayout = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   const logo = 'VERI Admin';
   return (
     <ChakraProvider theme={theme}>
@@ -31,6 +30,7 @@ export const DashboardLayout = () => {
           logo={logo}
           onClose={() => onClose}
           display={{ base: 'none', md: 'block' }}
+          userName="test"
         />
         <Drawer
           autoFocus={false}
@@ -42,12 +42,15 @@ export const DashboardLayout = () => {
           size="full"
         >
           <DrawerContent>
-            <Sidebar links={adminRoutes} onClose={onClose} logo={logo} />
+            <Sidebar
+              links={adminRoutes}
+              onClose={onClose}
+              logo={logo}
+              userName="test"
+            />
           </DrawerContent>
         </Drawer>
-
-        <Navbar onOpen={onOpen} logo={logo} />
-        <Box ml={{ base: 0, md: 60 }} p="4">
+        <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
           <Outlet />
         </Box>
       </Box>

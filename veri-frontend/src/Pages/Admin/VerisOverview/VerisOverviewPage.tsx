@@ -1,3 +1,4 @@
+import { Badge, Button, Circle, Heading, HStack } from '@chakra-ui/react';
 import {
   DataTable,
   DataTableProps,
@@ -6,85 +7,90 @@ import { Wrapper } from '../../../design-system/atoms/Wrapper';
 
 const SamleData: DataTableProps = {
   header: [
-    { field: 'event_name', value: 'Event Name', type: 'String' },
-    { field: 'organizer', value: 'Organizer', type: 'String' },
-    { field: 'status', value: 'Status', type: 'String', sortable: true },
+    { field: 'img', value: 'Image' },
+    { field: 'event_name', value: 'Event Name' },
+    { field: 'organizer', value: 'Organizer' },
     {
       field: 'mint_date',
       value: 'Mint Date',
-      type: 'String',
     },
+    { field: 'status', value: 'Status', sortable: true },
   ],
   rows: [
     {
       cols: [
-        { field: 'event_name', value: 'Event1', type: 'String' },
-        { field: 'organizer', value: 'Organizer1', type: 'String' },
-        {
-          field: 'status',
-          value: 'Draft',
-          type: 'String',
-          sortable: true,
-        },
+        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
+        { field: 'event_name', value: 'Event1' },
+        { field: 'organizer', value: 'Organizer1' },
         {
           field: 'mint_date',
           value: '21 Nov 2022',
-          type: 'String',
+        },
+        {
+          field: 'status',
+          value: <Badge variant="draft">Draft</Badge>,
+          sortable: true,
         },
       ],
-      actions: {
-        onDelete: () => '',
-        onEdit: () => '',
-      },
     },
     {
       cols: [
-        { field: 'event_name', value: 'Event1', type: 'String' },
-        { field: 'organizer', value: 'Organizer1', type: 'String' },
-        {
-          field: 'status',
-          value: 'Draft',
-          type: 'String',
-          sortable: true,
-        },
+        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
+        { field: 'event_name', value: 'Event1' },
+        { field: 'organizer', value: 'Organizer1' },
         {
           field: 'mint_date',
           value: '21 Nov 2022',
-          type: 'String',
+        },
+        {
+          field: 'status',
+          value: <Badge variant="created">Created</Badge>,
+          sortable: true,
         },
       ],
-      actions: {
-        onDelete: () => '',
-        onEdit: () => '',
-      },
     },
     {
       cols: [
-        { field: 'event_name', value: 'Event1', type: 'String' },
-        { field: 'organizer', value: 'Organizer1', type: 'String' },
-        {
-          field: 'status',
-          value: 'Draft',
-          type: 'String',
-          sortable: true,
-        },
+        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
+        { field: 'event_name', value: 'Event1' },
+        { field: 'organizer', value: 'Organizer1' },
         {
           field: 'mint_date',
           value: '21 Nov 2022',
-          type: 'String',
+        },
+        {
+          field: 'status',
+          value: <Badge variant="minting">Minting</Badge>,
+          sortable: true,
         },
       ],
-      actions: {
-        onDelete: () => '',
-        onEdit: () => '',
-      },
+    },
+    {
+      cols: [
+        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
+        { field: 'event_name', value: 'Event1' },
+        { field: 'organizer', value: 'Organizer1' },
+        {
+          field: 'mint_date',
+          value: '21 Nov 2022',
+        },
+        {
+          field: 'status',
+          value: <Badge variant="minted">Minted</Badge>,
+          sortable: true,
+        },
+      ],
     },
   ],
-  hasActions: false,
 };
+
 export const VerisOverviewPage = (): JSX.Element => {
   return (
     <>
+      <HStack justifyContent="space-between" mb={10}>
+        <Heading>All VERIs</Heading>
+        <Button colorScheme="primary">Create New Veri</Button>
+      </HStack>
       <Wrapper>
         <DataTable {...SamleData} />
       </Wrapper>

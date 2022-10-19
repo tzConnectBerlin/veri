@@ -19,31 +19,26 @@ import React from 'react';
 
 interface column {
   field: string;
-  type: 'Image' | 'Number' | 'String';
-  value: string | number;
+  isNum?: boolean;
+  value: string | number | React.ReactNode;
   sortable?: boolean;
 }
 
 interface row {
   cols: column[];
-  actions?: {
-    onEdit: () => void;
-    onDelete: () => void;
-  };
+  action?: () => void;
 }
 
 export interface DataTableProps {
   title?: string;
   header: column[];
   rows: row[];
-  hasActions: boolean;
 }
 
 export const DataTable: React.FC<DataTableProps> = ({
   title,
   header,
   rows,
-  hasActions,
 }) => {
   return (
     <Box>
@@ -57,10 +52,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           <Thead>
             <Tr>
               {header.map(h => (
-                <Th
-                  key={h.field}
-                  isNumeric={h.type === 'Number' ? true : false}
-                >
+                <Th key={h.field} isNumeric={h.isNum}>
                   {h.sortable ? (
                     <Flex alignItems="center">
                       {h.value}
@@ -76,16 +68,15 @@ export const DataTable: React.FC<DataTableProps> = ({
                   )}
                 </Th>
               ))}
-              {hasActions && <Th>Actions</Th>}
             </Tr>
           </Thead>
           <Tbody>
             {rows.map((row, i) => (
-              <Tr key={i}>
+              <Tr key={i} onClick={row.action}>
                 {row.cols.map(col => (
                   <Td
                     key={col.field}
-                    isNumeric={col.type === 'Number' ? true : undefined}
+                    isNumeric={col.isNum}
                     borderBottomColor={
                       i === rows.length - 1 ? 'transparent' : 'inherit'
                     }
@@ -93,30 +84,6 @@ export const DataTable: React.FC<DataTableProps> = ({
                     {col.value}
                   </Td>
                 ))}
-                {hasActions && row.actions && (
-                  <Td
-                    borderBottomColor={
-                      i === rows.length - 1 ? 'transparent' : 'inherit'
-                    }
-                  >
-                    <ButtonGroup gap="4">
-                      <Button
-                        leftIcon={<MdEdit />}
-                        colorScheme="blue"
-                        onClick={row.actions.onEdit}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        leftIcon={<MdDelete />}
-                        colorScheme="red"
-                        onClick={row.actions.onEdit}
-                      >
-                        Delete
-                      </Button>
-                    </ButtonGroup>
-                  </Td>
-                )}
               </Tr>
             ))}
           </Tbody>

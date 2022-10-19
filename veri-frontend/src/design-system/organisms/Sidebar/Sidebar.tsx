@@ -11,6 +11,7 @@ import {
   useColorModeValue,
   Text,
   BoxProps,
+  Button,
 } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 
@@ -18,12 +19,14 @@ export interface SidebarProps extends BoxProps {
   links: SidebarLinkProps[];
   onClose: () => void;
   logo: string;
+  userName: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   links,
   logo,
   onClose,
+  userName,
   ...rest
 }) => {
   const location = useLocation();
@@ -54,6 +57,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           key={index}
         />
       ))}
+
+      <Box position="absolute" bottom={0} p={6}>
+        {userName}
+        <br />
+        <Button colorScheme="primary" variant="link">
+          Log out
+        </Button>
+      </Box>
     </Box>
   );
 };

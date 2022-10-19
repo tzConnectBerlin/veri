@@ -11,81 +11,64 @@ const Template: Story<WrapperProps> = args => <Wrapper {...args} />;
 
 const SamleData: DataTableProps = {
   header: [
-    { field: 'event_name', value: 'Event Name', type: 'String' },
-    { field: 'organizer', value: 'Organizer', type: 'String' },
-    { field: 'status', value: 'Status', type: 'String', sortable: true },
+    { field: 'event_name', value: 'Event Name' },
+    { field: 'organizer', value: 'Organizer' },
+    { field: 'status', value: 'Status', sortable: true },
     {
       field: 'mint_date',
       value: 'Mint Date',
-      type: 'String',
     },
   ],
   rows: [
     {
       cols: [
-        { field: 'event_name', value: 'Event1', type: 'String' },
-        { field: 'organizer', value: 'Organizer1', type: 'String' },
+        { field: 'event_name', value: 'Event1' },
+        { field: 'organizer', value: 'Organizer1' },
         {
           field: 'status',
           value: 'Draft',
-          type: 'String',
+
           sortable: true,
         },
         {
           field: 'mint_date',
           value: '21 Nov 2022',
-          type: 'String',
         },
       ],
-      actions: {
-        onDelete: () => '',
-        onEdit: () => '',
-      },
     },
     {
       cols: [
-        { field: 'event_name', value: 'Event1', type: 'String' },
-        { field: 'organizer', value: 'Organizer1', type: 'String' },
+        { field: 'event_name', value: 'Event1' },
+        { field: 'organizer', value: 'Organizer1' },
         {
           field: 'status',
           value: 'Draft',
-          type: 'String',
+
           sortable: true,
         },
         {
           field: 'mint_date',
           value: '21 Nov 2022',
-          type: 'String',
         },
       ],
-      actions: {
-        onDelete: () => '',
-        onEdit: () => '',
-      },
     },
     {
       cols: [
-        { field: 'event_name', value: 'Event1', type: 'String' },
-        { field: 'organizer', value: 'Organizer1', type: 'String' },
+        { field: 'event_name', value: 'Event1' },
+        { field: 'organizer', value: 'Organizer1' },
         {
           field: 'status',
           value: 'Draft',
-          type: 'String',
+
           sortable: true,
         },
         {
           field: 'mint_date',
           value: '21 Nov 2022',
-          type: 'String',
         },
       ],
-      actions: {
-        onDelete: () => '',
-        onEdit: () => '',
-      },
     },
   ],
-  hasActions: false,
 };
 
 export const DataTableWrapper = Template.bind({});

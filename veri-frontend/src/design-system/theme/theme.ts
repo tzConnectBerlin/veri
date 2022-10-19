@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react';
+import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
 
 const styles = {
@@ -29,5 +29,38 @@ const colors = {
   },
 };
 
-const theme = extendTheme({ styles, colors });
+const Badge = defineStyleConfig({
+  baseStyle: {
+    textTransform: 'normal',
+    fontWeight: 'normal',
+    padding: '4px 8px',
+    borderRadius: '6px',
+  },
+  variants: {
+    draft: {
+      bg: 'pink.100',
+      color: 'pink.600',
+    },
+    created: {
+      bg: 'yellow.100',
+      color: 'yellow.600',
+    },
+    minting: {
+      bg: 'teal.100',
+      color: 'teal.600',
+    },
+    minted: {
+      bg: 'cyan.100',
+      color: 'cyan.600',
+    },
+  },
+});
+
+const theme = extendTheme({
+  styles,
+  colors,
+  components: {
+    Badge,
+  },
+});
 export default theme;
