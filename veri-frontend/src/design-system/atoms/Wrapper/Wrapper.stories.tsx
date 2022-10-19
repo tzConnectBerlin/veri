@@ -1,8 +1,13 @@
-import {
-  DataTable,
-  DataTableProps,
-} from '../../../design-system/atoms/DataTable';
-import { Wrapper } from '../../../design-system/atoms/Wrapper';
+import { Story, Meta } from '@storybook/react/types-6-0';
+import { DataTable, DataTableProps } from '../DataTable';
+import { Wrapper, WrapperProps } from '../Wrapper';
+
+export default {
+  title: 'Atoms/Wrapper',
+  component: Wrapper,
+} as Meta;
+
+const Template: Story<WrapperProps> = args => <Wrapper {...args} />;
 
 const SamleData: DataTableProps = {
   header: [
@@ -82,12 +87,8 @@ const SamleData: DataTableProps = {
   ],
   hasActions: false,
 };
-export const VerisOverviewPage = (): JSX.Element => {
-  return (
-    <>
-      <Wrapper>
-        <DataTable {...SamleData} />
-      </Wrapper>
-    </>
-  );
+
+export const DataTableWrapper = Template.bind({});
+DataTableWrapper.args = {
+  children: <DataTable {...SamleData} />,
 };

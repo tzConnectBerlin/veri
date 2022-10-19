@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Flex,
@@ -45,70 +46,82 @@ export const DataTable: React.FC<DataTableProps> = ({
   hasActions,
 }) => {
   return (
-    <TableContainer>
-      <Table variant="simple">
-        {title && (
-          <TableCaption placement="top" fontSize="2xl">
-            {title}
-          </TableCaption>
-        )}
-        <Thead>
-          <Tr>
-            {header.map(h => (
-              <Th key={h.field} isNumeric={h.type === 'Number' ? true : false}>
-                {h.sortable ? (
-                  <Flex alignItems="center">
-                    {h.value}
-                    <IconButton
-                      size="xs"
-                      variant="ghost"
-                      aria-label="sort"
-                      icon={<IoMdArrowDropdown />}
-                    />
-                  </Flex>
-                ) : (
-                  h.value
-                )}
-              </Th>
-            ))}
-            {hasActions && <Th>Actions</Th>}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {rows.map((row, i) => (
-            <Tr key={i}>
-              {row.cols.map(col => (
-                <Td
-                  key={col.field}
-                  isNumeric={col.type === 'Number' ? true : undefined}
+    <Box>
+      <TableContainer>
+        <Table variant="simple">
+          {title && (
+            <TableCaption placement="top" fontSize="2xl">
+              {title}
+            </TableCaption>
+          )}
+          <Thead>
+            <Tr>
+              {header.map(h => (
+                <Th
+                  key={h.field}
+                  isNumeric={h.type === 'Number' ? true : false}
                 >
-                  {col.value}
-                </Td>
+                  {h.sortable ? (
+                    <Flex alignItems="center">
+                      {h.value}
+                      <IconButton
+                        size="xs"
+                        variant="ghost"
+                        aria-label="sort"
+                        icon={<IoMdArrowDropdown />}
+                      />
+                    </Flex>
+                  ) : (
+                    h.value
+                  )}
+                </Th>
               ))}
-              {hasActions && row.actions && (
-                <Td>
-                  <ButtonGroup gap="4">
-                    <Button
-                      leftIcon={<MdEdit />}
-                      colorScheme="blue"
-                      onClick={row.actions.onEdit}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      leftIcon={<MdDelete />}
-                      colorScheme="red"
-                      onClick={row.actions.onEdit}
-                    >
-                      Delete
-                    </Button>
-                  </ButtonGroup>
-                </Td>
-              )}
+              {hasActions && <Th>Actions</Th>}
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+          </Thead>
+          <Tbody>
+            {rows.map((row, i) => (
+              <Tr key={i}>
+                {row.cols.map(col => (
+                  <Td
+                    key={col.field}
+                    isNumeric={col.type === 'Number' ? true : undefined}
+                    borderBottomColor={
+                      i === rows.length - 1 ? 'transparent' : 'inherit'
+                    }
+                  >
+                    {col.value}
+                  </Td>
+                ))}
+                {hasActions && row.actions && (
+                  <Td
+                    borderBottomColor={
+                      i === rows.length - 1 ? 'transparent' : 'inherit'
+                    }
+                  >
+                    <ButtonGroup gap="4">
+                      <Button
+                        leftIcon={<MdEdit />}
+                        colorScheme="blue"
+                        onClick={row.actions.onEdit}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        leftIcon={<MdDelete />}
+                        colorScheme="red"
+                        onClick={row.actions.onEdit}
+                      >
+                        Delete
+                      </Button>
+                    </ButtonGroup>
+                  </Td>
+                )}
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };

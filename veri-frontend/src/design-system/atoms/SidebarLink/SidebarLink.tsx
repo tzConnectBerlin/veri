@@ -16,9 +16,9 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({
   isActive,
 }) => {
   const LayoutUrl = process.env.REACT_APP_ADMIN_URL || '/admin';
-  const activeColor = useColorModeValue('blue.600', 'white');
-  const activeBg = useColorModeValue('blue.50', 'white.100');
-  const activeIcon = useColorModeValue('blue.600', 'white');
+  const activeColor = useColorModeValue('primary.main', 'white');
+  const activeBg = useColorModeValue('primary.50', 'white.100');
+  const activeIcon = useColorModeValue('primary.main', 'white');
   const textColor = useColorModeValue('secondaryGray.500', 'white');
 
   return (

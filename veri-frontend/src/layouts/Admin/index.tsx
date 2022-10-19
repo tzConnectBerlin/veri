@@ -5,7 +5,6 @@ import {
   DrawerContent,
   useDisclosure,
   ChakraProvider,
-  theme,
 } from '@chakra-ui/react';
 import { FiSettings, FiUsers } from 'react-icons/fi';
 import { MdViewList } from 'react-icons/md';
@@ -13,6 +12,7 @@ import { Outlet } from 'react-router-dom';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Navbar } from '../../design-system/organisms/Navbar';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
+import theme from '../../design-system/theme/theme';
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: 'All VERIs', icon: <MdViewList />, path: '/' },
@@ -25,7 +25,7 @@ export const DashboardLayout = () => {
   const logo = 'VERI Admin';
   return (
     <ChakraProvider theme={theme}>
-      <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+      <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
         <Sidebar
           links={adminRoutes}
           logo={logo}
