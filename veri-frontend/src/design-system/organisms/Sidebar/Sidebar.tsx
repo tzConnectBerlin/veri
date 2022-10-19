@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom';
 
 export interface SidebarProps extends BoxProps {
   links: SidebarLinkProps[];
-  onClose: () => void;
+  onLogout: () => void;
   logo: string;
   userName: string;
 }
@@ -25,7 +25,7 @@ export interface SidebarProps extends BoxProps {
 export const Sidebar: React.FC<SidebarProps> = ({
   links,
   logo,
-  onClose,
+  onLogout,
   userName,
   ...rest
 }) => {
@@ -48,7 +48,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <Text fontSize="2xl" fontWeight="bold">
           {logo}
         </Text>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {links.map((link, index) => (
         <SidebarLink
@@ -61,7 +60,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <Box position="absolute" bottom={0} p={6}>
         {userName}
         <br />
-        <Button colorScheme="primary" variant="link">
+        <Button colorScheme="primary" variant="link" onClick={onLogout}>
           Log out
         </Button>
       </Box>
