@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Flex,
@@ -11,104 +12,83 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { MdEdit, MdDelete } from "react-icons/md";
-import React from "react";
+} from '@chakra-ui/react';
+import { IoMdArrowDropdown } from 'react-icons/io';
+import { MdEdit, MdDelete } from 'react-icons/md';
+import React from 'react';
 
 interface column {
   field: string;
-  type: "Image" | "Number" | "String";
-  value: string | number;
+  isNum?: boolean;
+  value: string | number | React.ReactNode;
   sortable?: boolean;
 }
 
 interface row {
   cols: column[];
-  actions?: {
-    onEdit: () => void;
-    onDelete: () => void;
-  };
+  action?: () => void;
 }
 
 export interface DataTableProps {
   title?: string;
   header: column[];
   rows: row[];
-  hasActions: boolean;
 }
 
 export const DataTable: React.FC<DataTableProps> = ({
   title,
   header,
   rows,
-  hasActions,
 }) => {
   return (
-    <TableContainer>
-      <Table variant="simple">
-        {title && (
-          <TableCaption placement="top" fontSize="2xl">
-            {title}
-          </TableCaption>
-        )}
-        <Thead>
-          <Tr>
-            {header.map((h) => (
-              <Th key={h.field} isNumeric={h.type === "Number" ? true : false}>
-                {h.sortable ? (
-                  <Flex alignItems="center">
-                    {h.value}
-                    <IconButton
-                      size="xs"
-                      variant="ghost"
-                      aria-label="sort"
-                      icon={<IoMdArrowDropdown />}
-                    />
-                  </Flex>
-                ) : (
-                  h.value
-                )}
-              </Th>
-            ))}
-            {hasActions && <Th>Actions</Th>}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {rows.map((row, i) => (
-            <Tr key={i}>
-              {row.cols.map((col) => (
-                <Td
-                  key={col.field}
-                  isNumeric={col.type === "Number" ? true : undefined}
-                >
-                  {col.value}
-                </Td>
+    <Box>
+      <TableContainer>
+        <Table variant="simple">
+          {title && (
+            <TableCaption placement="top" fontSize="2xl">
+              {title}
+            </TableCaption>
+          )}
+          <Thead>
+            <Tr>
+              {header.map(h => (
+                <Th key={h.field} isNumeric={h.isNum}>
+                  {h.sortable ? (
+                    <Flex alignItems="center">
+                      {h.value}
+                      <IconButton
+                        size="xs"
+                        variant="ghost"
+                        aria-label="sort"
+                        icon={<IoMdArrowDropdown />}
+                      />
+                    </Flex>
+                  ) : (
+                    h.value
+                  )}
+                </Th>
               ))}
-              {hasActions && row.actions && (
-                <Td>
-                  <ButtonGroup gap="4">
-                    <Button
-                      leftIcon={<MdEdit />}
-                      colorScheme="blue"
-                      onClick={row.actions.onEdit}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      leftIcon={<MdDelete />}
-                      colorScheme="red"
-                      onClick={row.actions.onEdit}
-                    >
-                      Delete
-                    </Button>
-                  </ButtonGroup>
-                </Td>
-              )}
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+          </Thead>
+          <Tbody>
+            {rows.map((row, i) => (
+              <Tr key={i} onClick={row.action}>
+                {row.cols.map(col => (
+                  <Td
+                    key={col.field}
+                    isNumeric={col.isNum}
+                    borderBottomColor={
+                      i === rows.length - 1 ? 'transparent' : 'inherit'
+                    }
+                  >
+                    {col.value}
+                  </Td>
+                ))}
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };

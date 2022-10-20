@@ -1,12 +1,13 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
-import { DataTable, DataTableProps } from './DataTable';
+import { DataTable, DataTableProps } from '../DataTable';
+import { Wrapper, WrapperProps } from '../Wrapper';
 
 export default {
-  title: 'Atoms/DataTable',
-  component: DataTable,
+  title: 'Atoms/Wrapper',
+  component: Wrapper,
 } as Meta;
 
-const Template: Story<DataTableProps> = args => <DataTable {...args} />;
+const Template: Story<WrapperProps> = args => <Wrapper {...args} />;
 
 const SamleData: DataTableProps = {
   header: [
@@ -26,6 +27,7 @@ const SamleData: DataTableProps = {
         {
           field: 'status',
           value: 'Draft',
+
           sortable: true,
         },
         {
@@ -41,6 +43,7 @@ const SamleData: DataTableProps = {
         {
           field: 'status',
           value: 'Draft',
+
           sortable: true,
         },
         {
@@ -56,6 +59,7 @@ const SamleData: DataTableProps = {
         {
           field: 'status',
           value: 'Draft',
+
           sortable: true,
         },
         {
@@ -67,12 +71,7 @@ const SamleData: DataTableProps = {
   ],
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  ...SamleData,
-};
-export const WithTitle = Template.bind({});
-WithTitle.args = {
-  ...SamleData,
-  title: 'All Veris',
+export const DataTableWrapper = Template.bind({});
+DataTableWrapper.args = {
+  children: <DataTable {...SamleData} />,
 };

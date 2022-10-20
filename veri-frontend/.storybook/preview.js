@@ -1,9 +1,9 @@
-import React, { Suspense } from "react";
-import { MemoryRouter } from "react-router-dom";
-import { ChakraProvider, theme, ColorModeScript } from "@chakra-ui/react";
+import React, { Suspense } from 'react';
+import { MemoryRouter } from 'react-router-dom';
+import { ChakraProvider, theme, ColorModeScript } from '@chakra-ui/react';
 
 export const decorators = [
-  (Story) => (
+  Story => (
     <Suspense fallback="Loading...">
       <ColorModeScript />
       <ChakraProvider theme={theme}>
@@ -16,7 +16,7 @@ export const decorators = [
 ];
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   chakra: {
     theme,
   },

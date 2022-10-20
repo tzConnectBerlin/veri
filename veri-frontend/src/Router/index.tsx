@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import {
   ForgotPassword,
   Landing,
@@ -7,50 +7,55 @@ import {
   NotFound,
   ResetPassword,
   User,
-  Veris,
+  VerisOverview,
   Settings,
-} from "../Pages";
+} from '../Pages';
 
-import { DashboardLayout } from "../layouts/Admin";
+import { DashboardLayout } from '../layouts/Admin';
+
+const PrivateRoutes = () => {
+  const auth = { token: true };
+  return auth.token ? <DashboardLayout /> : <Navigate to="/login" />;
+};
 
 export const routes = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Landing />,
     errorElement: <NotFound />,
   },
   {
-    path: "/admin",
-    element: <DashboardLayout />,
+    path: '/admin',
+    element: <PrivateRoutes />,
     children: [
       {
         index: true,
-        element: <Veris />,
+        element: <VerisOverview />,
       },
       {
-        path: "profile",
+        path: 'profile',
         element: <User />,
       },
       {
-        path: "settings",
+        path: 'settings',
         element: <Settings />,
       },
     ],
   },
   {
-    path: "register",
+    path: 'register',
     element: <Register />,
   },
   {
-    path: "login",
+    path: 'login',
     element: <Login />,
   },
   {
-    path: "forgot",
+    path: 'forgot',
     element: <ForgotPassword />,
   },
   {
-    path: "reset",
+    path: 'reset',
     element: <ResetPassword />,
   },
 ]);

@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import {
   SidebarLink,
   SidebarLinkProps,
-} from "../../atoms/SidebarLink/SidebarLink";
+} from '../../atoms/SidebarLink/SidebarLink';
 // chakra imports
 import {
   Box,
@@ -11,19 +11,22 @@ import {
   useColorModeValue,
   Text,
   BoxProps,
-} from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+  Button,
+} from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
 
 export interface SidebarProps extends BoxProps {
   links: SidebarLinkProps[];
-  onClose: () => void;
+  onLogout: () => void;
   logo: string;
+  userName: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   links,
   logo,
-  onClose,
+  onLogout,
+  userName,
   ...rest
 }) => {
   const location = useLocation();
@@ -33,10 +36,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <Box
       transition="3s ease"
-      bg={useColorModeValue("white", "gray.900")}
+      bg={useColorModeValue('white', 'gray.900')}
       borderRight="1px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
-      w={{ base: "full", md: 60 }}
+      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
       {...rest}
@@ -45,7 +48,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <Text fontSize="2xl" fontWeight="bold">
           {logo}
         </Text>
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {links.map((link, index) => (
         <SidebarLink
@@ -54,6 +56,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           key={index}
         />
       ))}
+
+      <Box position="absolute" bottom={0} p={6}>
+        {userName}
+        <br />
+        <Button colorScheme="primary" variant="link" onClick={onLogout}>
+          Log out
+        </Button>
+      </Box>
     </Box>
   );
 };
