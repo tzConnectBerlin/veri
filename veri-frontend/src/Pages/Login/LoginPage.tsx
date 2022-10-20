@@ -12,6 +12,14 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { login } from '../../Api/Services/AuthService';
+import { LoginData } from '../../Interface';
+
+const handleLogin = async (e: Event): Promise<any> => {
+  e.preventDefault();
+  const response = await login({ username: 'test', password: 'test' });
+  console.log(response);
+};
 
 export const LoginPage = () => {
   return (
