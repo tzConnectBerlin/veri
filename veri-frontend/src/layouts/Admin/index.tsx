@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
 import theme from '../../design-system/theme/theme';
+import { AuthToken } from '../../Global';
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: 'All VERIs', icon: <MdViewList />, path: '/' },
@@ -17,6 +18,7 @@ export const DashboardLayout = () => {
   const navigate = useNavigate();
 
   const onLogout = () => {
+    localStorage.removeItem(AuthToken);
     navigate('/');
   };
   return (

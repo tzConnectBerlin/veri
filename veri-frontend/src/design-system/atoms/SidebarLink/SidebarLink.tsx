@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box, HStack, Text, useColorModeValue } from '@chakra-ui/react';
+import { ADMIN_URL } from '../../../Global';
 
 export interface SidebarLinkProps {
   name: string;
@@ -15,14 +16,13 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({
   icon,
   isActive,
 }) => {
-  const LayoutUrl = process.env.REACT_APP_ADMIN_URL || '/admin';
   const activeColor = useColorModeValue('primary.main', 'white');
   const activeBg = useColorModeValue('primary.50', 'white.100');
   const activeIcon = useColorModeValue('primary.main', 'white');
   const textColor = useColorModeValue('secondaryGray.500', 'white');
 
   return (
-    <NavLink to={LayoutUrl + path}>
+    <NavLink to={ADMIN_URL + path}>
       <HStack
         w="100%"
         alignItems="center"

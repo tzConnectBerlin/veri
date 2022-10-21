@@ -1,7 +1,5 @@
 FROM node:16-alpine as builder
 
-ENV REACT_APP_ADMIN_URL /admin
-
 WORKDIR /app
 
 COPY package*.json ./

@@ -12,10 +12,11 @@ import {
 } from '../Pages';
 
 import { DashboardLayout } from '../layouts/Admin';
+import { AuthToken } from '../Global';
 
 const PrivateRoutes = () => {
-  const auth = { token: true };
-  return auth.token ? <DashboardLayout /> : <Navigate to="/login" />;
+  const auth = localStorage.getItem(AuthToken);
+  return auth ? <DashboardLayout /> : <Navigate to="/login" />;
 };
 
 export const routes = createBrowserRouter([
