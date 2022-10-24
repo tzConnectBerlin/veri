@@ -13,5 +13,5 @@ export const signUp = (signUpData: SignUp) => {
 };
 
 export const logout = () => {
-  return axios.post(`${BASE_URL}/logout`);
+  return axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
 };

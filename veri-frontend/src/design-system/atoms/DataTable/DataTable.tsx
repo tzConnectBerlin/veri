@@ -1,7 +1,5 @@
 import {
   Box,
-  Button,
-  ButtonGroup,
   Flex,
   IconButton,
   Table,
@@ -14,7 +12,6 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { IoMdArrowDropdown } from 'react-icons/io';
-import { MdEdit, MdDelete } from 'react-icons/md';
 import React from 'react';
 
 interface column {

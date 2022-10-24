@@ -33,8 +33,10 @@ export function AuthProvider({
   useEffect(() => {
     (async () => {
       try {
-        // const user = await userService.getUser();
-        // setUser(user);
+        const response = await userService.getUser();
+        if (response.status === 200) {
+          setUser(response.data.data);
+        }
       } catch (_err) {
         console.log(_err);
       } finally {
@@ -46,10 +48,8 @@ export function AuthProvider({
   async function login(loginData: Login) {
     setLoading(true);
     try {
-      await authService.login(loginData);
-      console.log('here');
-      // const user = await userService.getUser();
-      // setUser(user);
+      const response = await authService.login(loginData);
+      setUser(response.data.data);
       navigate('/admin');
     } catch (error) {
       setError(error);
@@ -63,7 +63,7 @@ export function AuthProvider({
     try {
       await authService.signUp(signUpData);
       const user = await userService.getUser();
-      setUser(user);
+      setUser(user.data.data);
       navigate('/admin');
     } catch (error) {
       setError(error);

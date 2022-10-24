@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
-// import useAuth from '../contexts/useAuth';
+import useAuth from '../contexts/useAuth';
 import { DashboardLayout } from '../layouts/Admin';
 import {
   Landing,
@@ -12,23 +12,29 @@ import {
   User,
   Settings,
 } from '../Pages';
-// As the router is wrapped with the provider,
-// we can use our hook to check for a logged in user.
 
 const PrivateRoutes = () => {
-  const user = {};
+  const { user } = useAuth();
   if (!user) return <Navigate to="/login" />;
   return <DashboardLayout />;
+};
+
+const AuthRoutes = () => {
+  const { user } = useAuth();
+  if (user) return <Navigate to="/admin" />;
+  return <Login />;
 };
 
 export const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot" element={<ForgotPassword />} />
-      <Route path="/reset" element={<ResetPassword />} />
+      <Route element={<AuthRoutes />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgotPassword />} />
+        <Route path="/reset" element={<ResetPassword />} />
+      </Route>
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/admin" element={<VerisOverview />} />
