@@ -1,62 +1,40 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
+// import useAuth from '../contexts/useAuth';
+import { DashboardLayout } from '../layouts/Admin';
 import {
-  ForgotPassword,
   Landing,
+  NotFound,
   Login,
   Register,
-  NotFound,
+  ForgotPassword,
   ResetPassword,
-  User,
   VerisOverview,
+  User,
   Settings,
 } from '../Pages';
-
-import { DashboardLayout } from '../layouts/Admin';
-import { AuthToken } from '../Global';
+// As the router is wrapped with the provider,
+// we can use our hook to check for a logged in user.
 
 const PrivateRoutes = () => {
-  const auth = localStorage.getItem(AuthToken);
-  return auth ? <DashboardLayout /> : <Navigate to="/login" />;
+  const user = {};
+  if (!user) return <Navigate to="/login" />;
+  return <DashboardLayout />;
 };
 
-export const routes = createBrowserRouter([
-  {
-    path: '/',
-    element: <Landing />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: '/admin',
-    element: <PrivateRoutes />,
-    children: [
-      {
-        index: true,
-        element: <VerisOverview />,
-      },
-      {
-        path: 'profile',
-        element: <User />,
-      },
-      {
-        path: 'settings',
-        element: <Settings />,
-      },
-    ],
-  },
-  {
-    path: 'register',
-    element: <Register />,
-  },
-  {
-    path: 'login',
-    element: <Login />,
-  },
-  {
-    path: 'forgot',
-    element: <ForgotPassword />,
-  },
-  {
-    path: 'reset',
-    element: <ResetPassword />,
-  },
-]);
+export const Router = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot" element={<ForgotPassword />} />
+      <Route path="/reset" element={<ResetPassword />} />
+      <Route path="*" element={<NotFound />} />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/admin" element={<VerisOverview />} />
+        <Route path="/profile" element={<User />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Routes>
+  );
+};

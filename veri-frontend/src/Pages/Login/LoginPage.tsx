@@ -14,16 +14,13 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { login } from '../../Api/Services/AuthService';
-import { AuthToken } from '../../Global';
-import { LoginData } from '../../Interface';
-
-// const handleLogin = async (e: Event): Promise<any> => {};
+import { Login } from '../../types';
+import useAuth from '../../contexts/useAuth';
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .trim()
@@ -32,13 +29,9 @@ export const LoginPage = () => {
     password: Yup.string().trim().required('This field is required'),
   });
 
-  const onSubmit = async (values: LoginData) => {
+  const onSubmit = async (values: Login) => {
     try {
-      console.log(values);
-      const response = await login(values);
-      console.log(response);
-      localStorage.setItem(AuthToken, response.data);
-      navigate('/admin');
+      await login(values);
     } catch (error) {
       console.error(error);
     }

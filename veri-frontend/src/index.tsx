@@ -3,9 +3,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
-import { RouterProvider } from 'react-router-dom';
-import { routes } from './Router';
+import { BrowserRouter } from 'react-router-dom';
+import { Router } from './Router';
 import { ChakraProvider } from '@chakra-ui/react';
+import { AuthProvider } from './contexts/useAuth';
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Failed to find the root element');
@@ -15,7 +16,11 @@ root.render(
   <React.StrictMode>
     <ColorModeScript />
     <ChakraProvider>
-      <RouterProvider router={routes} />
+      <BrowserRouter>
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
+      </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>,
 );
