@@ -15,6 +15,7 @@ const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
+    console.log(req);
     const Authorization =
       req.cookies['Authorization'] ||
       (req.header('Authorization')
@@ -37,7 +38,11 @@ const authMiddleware = async (
         next(new HttpException(401, 'Wrong authentication token'));
       }
     } else {
-      next(new HttpException(404, 'Authentication token missing'));
+      if (req.path == '/currentuser') {
+        next();
+      } else {
+        next(new HttpException(404, 'Authentication token missing'));
+      }
     }
   } catch (error) {
     next(new HttpException(401, 'Wrong authentication token'));

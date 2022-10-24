@@ -30,6 +30,11 @@ class AuthRoute implements Routes {
       authMiddleware,
       this.authController.logOut
     );
+    this.router.post(
+      `${this.path}currentuser`,
+      authMiddleware,
+      this.authController.currentUser
+    );
   }
 }
 
