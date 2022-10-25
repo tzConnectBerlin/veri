@@ -1,61 +1,46 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import useAuth from '../contexts/useAuth';
+import { DashboardLayout } from '../layouts/Admin';
 import {
-  ForgotPassword,
   Landing,
+  NotFound,
   Login,
   Register,
-  NotFound,
+  ForgotPassword,
   ResetPassword,
-  User,
   VerisOverview,
+  User,
   Settings,
 } from '../Pages';
 
-import { DashboardLayout } from '../layouts/Admin';
-
 const PrivateRoutes = () => {
-  const auth = { token: true };
-  return auth.token ? <DashboardLayout /> : <Navigate to="/login" />;
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" />;
+  return <DashboardLayout />;
 };
 
-export const routes = createBrowserRouter([
-  {
-    path: '/',
-    element: <Landing />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: '/admin',
-    element: <PrivateRoutes />,
-    children: [
-      {
-        index: true,
-        element: <VerisOverview />,
-      },
-      {
-        path: 'profile',
-        element: <User />,
-      },
-      {
-        path: 'settings',
-        element: <Settings />,
-      },
-    ],
-  },
-  {
-    path: 'register',
-    element: <Register />,
-  },
-  {
-    path: 'login',
-    element: <Login />,
-  },
-  {
-    path: 'forgot',
-    element: <ForgotPassword />,
-  },
-  {
-    path: 'reset',
-    element: <ResetPassword />,
-  },
-]);
+const AuthRoutes = () => {
+  const { user } = useAuth();
+  if (user) return <Navigate to="/admin" />;
+  return <Login />;
+};
+
+export const Router = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route element={<AuthRoutes />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgotPassword />} />
+        <Route path="/reset" element={<ResetPassword />} />
+      </Route>
+      <Route path="*" element={<NotFound />} />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/admin" element={<VerisOverview />} />
+        <Route path="/profile" element={<User />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Routes>
+  );
+};

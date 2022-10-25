@@ -2,6 +2,7 @@ import { Box, useColorModeValue, ChakraProvider } from '@chakra-ui/react';
 import { FiSettings, FiUsers } from 'react-icons/fi';
 import { MdViewList } from 'react-icons/md';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { logout } from '../../api/services/authService';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
 import theme from '../../design-system/theme/theme';
@@ -16,8 +17,13 @@ export const DashboardLayout = () => {
   const logo = 'VERI Admin';
   const navigate = useNavigate();
 
-  const onLogout = () => {
-    navigate('/');
+  const onLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <ChakraProvider theme={theme}>

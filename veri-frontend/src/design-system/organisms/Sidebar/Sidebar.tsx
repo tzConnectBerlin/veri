@@ -6,7 +6,6 @@ import {
 // chakra imports
 import {
   Box,
-  CloseButton,
   Flex,
   useColorModeValue,
   Text,
