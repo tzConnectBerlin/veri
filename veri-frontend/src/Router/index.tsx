@@ -9,6 +9,7 @@ import {
   ForgotPassword,
   ResetPassword,
   VerisOverview,
+  VeriForm,
   User,
   Settings,
 } from '../Pages';
@@ -38,6 +39,7 @@ export const Router = () => {
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/admin" element={<VerisOverview />} />
+        <Route path="/veri" element={<VeriForm />} />
         <Route path="/profile" element={<User />} />
         <Route path="/settings" element={<Settings />} />
       </Route>

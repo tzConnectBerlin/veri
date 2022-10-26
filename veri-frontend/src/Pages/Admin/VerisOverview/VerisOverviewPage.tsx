@@ -1,5 +1,6 @@
 import { Badge, Button, Circle, Heading, HStack } from '@chakra-ui/react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getVeris } from '../../../api/services/veriService';
 import {
   DataTable,
@@ -87,6 +88,7 @@ const SamleData: DataTableProps = {
 };
 
 export const VerisOverviewPage = (): JSX.Element => {
+  const navigate = useNavigate();
   React.useEffect(() => {
     getVeris()
       .then(res => console.log(res.data))
@@ -96,7 +98,9 @@ export const VerisOverviewPage = (): JSX.Element => {
     <>
       <HStack justifyContent="space-between" mb={10}>
         <Heading>All VERIs</Heading>
-        <Button colorScheme="primary">Create New Veri</Button>
+        <Button colorScheme="primary" onClick={() => navigate('/veri')}>
+          Create New Veri
+        </Button>
       </HStack>
       <Wrapper>
         <DataTable {...SamleData} />
