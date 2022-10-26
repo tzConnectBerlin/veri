@@ -1,4 +1,6 @@
 import { Badge, Button, Circle, Heading, HStack } from '@chakra-ui/react';
+import React from 'react';
+import { getVeris } from '../../../api/services/veriService';
 import {
   DataTable,
   DataTableProps,
@@ -85,6 +87,11 @@ const SamleData: DataTableProps = {
 };
 
 export const VerisOverviewPage = (): JSX.Element => {
+  React.useEffect(() => {
+    getVeris()
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+  }, []);
   return (
     <>
       <HStack justifyContent="space-between" mb={10}>

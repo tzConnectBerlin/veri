@@ -2,5 +2,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../Global';
 
 export const getVeris = () => {
-  return axios.get(`${BASE_URL}/veris`);
+  return axios.get(`${BASE_URL}/veris`, {
+    withCredentials: true,
+  });
 };
