@@ -15,7 +15,6 @@ const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req);
     const Authorization =
       req.cookies['Authorization'] ||
       (req.header('Authorization')

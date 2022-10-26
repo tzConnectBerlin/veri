@@ -4,6 +4,7 @@ import {
   IsDateString,
   IsUrl,
   IsBooleanString,
+  IsArray,
 } from 'class-validator';
 
 export class CreateVeriDto {
@@ -36,4 +37,13 @@ export class CreateVeriDto {
 
   @IsUrl()
   public live_distribution_url: string;
+
+  @IsString()
+  public live_distribution_password: string;
+
+  @IsString()
+  public status: string;
+
+  @IsArray()
+  public recipients: string[];
 }

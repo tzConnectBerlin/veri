@@ -297,10 +297,13 @@ definitions:
         - artwork_name
         - artwork_file
         - live_distribution
+        - status
     optional:
         - event_description
         - artwork_description
         - live_distribution_url
+        - live_distribution_password
+        - recipients
     properties:
       event_name:
         type: string
@@ -349,6 +352,20 @@ definitions:
         type: string
         description: Live distribution url
         example: 'https://formallyverified.com/distribute/123456/authorize'
+      live_distribution_password:
+        type: string
+        description: Password for live distribution page
+        example: 'supersecurepass'
+      status:
+        type: string
+        description: Current status of Veri 
+        example: 'created'
+      recipients:
+        type: array
+        description: Recipient list
+        items:
+          type: string
+        example: ["str1", "str2", "str3"]
 
 schemes:
  - https

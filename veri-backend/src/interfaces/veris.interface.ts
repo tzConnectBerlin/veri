@@ -11,8 +11,11 @@ export interface Veri {
   artwork_name: string;
   artwork_description: string;
   live_distribution: string;
-  live_distribution_url: string;
+  live_distribution_password?: string;
+  live_distribution_url?: string;
   file_id: number;
+  status: string;
+  recipients?: string[];
 }
 
 export interface RequestWithFile extends Request {
