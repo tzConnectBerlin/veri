@@ -7,6 +7,8 @@ import { Veris } from '../models/veris.model';
 import { isEmpty } from '../utils/util';
 import { CreateFileDto } from '@/dtos/files.dto';
 import { User } from '@/interfaces/users.interface';
+import { SECRET_KEY } from '@config';
+import { hash, compare } from 'bcryptjs';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
@@ -45,10 +47,12 @@ class VeriService {
 
     if (!createFileEntry) throw new HttpException(500, `Internal server error`);
 
+    const hashedPassword = await hash(veriData.live_distribution_password, 10);
     const createVeriData: Veri = await Veris.query()
       .insert({
         ...veriData,
         file_id: createFileEntry.id,
+        live_distribution_password: hashedPassword,
         created_by: user.id,
         updated_by: user.id,
       })
