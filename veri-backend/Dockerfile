@@ -9,6 +9,13 @@ RUN npm install
 
 EXPOSE 5000
 
+# Test build stage
+FROM common-build-stage as test-build-stage
+
+ENV NODE_ENV test
+
+CMD npm run migrate && npm run seed && npm run start
+
 # Development build stage
 FROM common-build-stage as development-build-stage
 

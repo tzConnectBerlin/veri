@@ -68,6 +68,7 @@ jobs:
           file: veri-frontend/Dockerfile
           tags: ${{ steps.meta-fe.outputs.tags }}
           labels: ${{ steps.meta-fe.outputs.labels }}
+          build-args: REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}
 
   deploy-to-gcp:
     name: Deploy to GCP

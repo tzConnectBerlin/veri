@@ -11,7 +11,7 @@ jobs:
       DB_PASSWORD: veri
       DB_DATABASE: veri
       DB_DIALECT: postgres
-      DB_PORT: 3081
+      DB_PORT: 5432
       SECRET_KEY: secretKey
       LOG_FORMAT: combined
       LOG_DIR: ../logs
