@@ -59,6 +59,7 @@ jobs:
           file: veri-backend/Dockerfile
           tags: ${{ steps.meta-be.outputs.tags }}
           labels: ${{ steps.meta-be.outputs.labels }}
+          target: production-build-stage
 
       - name: Build and push frontend
         uses: docker/build-push-action@v2
