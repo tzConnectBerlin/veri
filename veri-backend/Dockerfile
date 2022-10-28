@@ -29,13 +29,11 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nodejs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nodejs -g nodejs
 
-COPY --from=common-build-stage /app/node_modules ./node_modules
-COPY . .
-
-RUN chown nodejs:nodejs /app
+COPY --from=common-build-stage --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --chown=nodejs:nodejs . .
 
 USER nodejs
 
