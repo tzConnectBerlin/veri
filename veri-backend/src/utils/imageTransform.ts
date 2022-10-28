@@ -1,30 +1,25 @@
+import { HttpException } from '@/exceptions/HttpException';
 import sharp from 'sharp';
 
-export const roundedCorners = async (file) => {
-  try {
-    const image = sharp(file);
-    const metadata = await image.metadata();
-    const res = Math.min(metadata.width, metadata.height);
-    const radius = res / 2;
-    const roundedCornerLayer = await createCompositeLayer(res, res, radius);
-    const cornerlayerComposite = await createCompositePipe(roundedCornerLayer);
-    return writeImage(image, res, res, cornerlayerComposite);
-  } catch (error) {
-    console.log(error);
-  }
+export const createRoundedCorners = async (file: Express.Multer.File) => {
+  const image = sharp(file.buffer);
+  const metadata = await image.metadata();
+  const res = Math.min(metadata.width, metadata.height);
+  const radius = res / 2;
+  const roundedCornerLayer = await createCompositeLayer(res, res, radius);
+  const roundedlayerComposite = await createCompositePipe(roundedCornerLayer);
+  const ws = await writeStream(image, res, res, roundedlayerComposite);
+  return ws;
 };
 
-export const thumbnail = async (file) => {
-  try {
-    const image = sharp(file);
-    const res = 150;
-    const radius = 75;
-    const thumbnailLayer = await createCompositeLayer(res, res, radius);
-    const thumbnailComposite = await createCompositePipe(thumbnailLayer);
-    return writeImage(image, res, res, thumbnailComposite);
-  } catch (error) {
-    console.log(error);
-  }
+export const createThumbnailImage = async (file: Express.Multer.File) => {
+  const image = sharp(file.buffer);
+  const res = 150;
+  const radius = 75;
+  const thumbnailLayer = await createCompositeLayer(res, res, radius);
+  const thumbnailComposite = await createCompositePipe(thumbnailLayer);
+  const ws = await writeStream(image, res, res, thumbnailComposite);
+  return ws;
 };
 
 const createCompositeLayer = async (
@@ -53,23 +48,34 @@ const createCompositePipe = async (layer: Buffer): Promise<sharp.Sharp> => {
         blend: 'dest-in',
       },
     ])
-    .png();
+    .png()
+    .on(
+      'error',
+      () => new HttpException(500, 'Cannot process file, please try again.')
+    );
 };
 
-const writeImage = async (
+const writeStream = async (
   image: sharp.Sharp,
   width: number,
   height: number,
   composite: sharp.Sharp
-): Promise<sharp.Sharp> => {
-  return image
+): Promise<Buffer> => {
+  const writeStream = image
     .resize(width, height)
     .pipe(composite)
-    .toFile('filename', (error) => {
-      console.log(error);
-    });
+    .on(
+      'error',
+      () => new HttpException(500, 'Cannot process file, please try again.')
+    )
+    .toBuffer();
+
+  return writeStream;
 };
 
-roundedCorners(
-  '/Users/nazmussakib/Work/veri/veri-backend/uploads/0bca4d300b3b1c2cf1119161b872d375'
-);
+// roundedCorners(
+//   '/Users/nazmussakib/Work/veri/veri-backend/uploads/0bca4d300b3b1c2cf1119161b872d375'
+// );
+// thumbnail(
+//   '/Users/nazmussakib/Work/veri/veri-backend/uploads/0bca4d300b3b1c2cf1119161b872d375'
+// );
