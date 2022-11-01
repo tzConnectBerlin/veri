@@ -1,24 +1,40 @@
 # Common build stage
-FROM node:14.14.0-alpine3.12 as common-build-stage
+FROM node:lts-alpine as common-build-stage
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 
 RUN npm install
 
 EXPOSE 5000
+ENV PORT 5000
 
-# Development build stage
-FROM common-build-stage as development-build-stage
+# Standalone-test build stage
+FROM node:lts-alpine as test-build-stage
+WORKDIR /app
 
-ENV NODE_ENV development
+ENV NODE_ENV test
 
-CMD ["npm", "run", "dev"]
+COPY --from=common-build-stage /app/node_modules ./node_modules
+COPY . .
+
+CMD npm run migrate && npm run seed && npm start
 
 # Production build stage
-FROM common-build-stage as production-build-stage
+FROM node:lts-alpine AS production-build-stage
+WORKDIR /app
 
 ENV NODE_ENV production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-CMD ["npm", "run", "start"]
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nodejs -g nodejs
+
+COPY --from=common-build-stage --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --chown=nodejs:nodejs . .
+
+USER nodejs
+
+CMD npm run migrate && npm start

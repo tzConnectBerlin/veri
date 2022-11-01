@@ -59,6 +59,7 @@ jobs:
           file: veri-backend/Dockerfile
           tags: ${{ steps.meta-be.outputs.tags }}
           labels: ${{ steps.meta-be.outputs.labels }}
+          target: production-build-stage
 
       - name: Build and push frontend
         uses: docker/build-push-action@v2
@@ -68,6 +69,7 @@ jobs:
           file: veri-frontend/Dockerfile
           tags: ${{ steps.meta-fe.outputs.tags }}
           labels: ${{ steps.meta-fe.outputs.labels }}
+          build-args: REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}
 
   deploy-to-gcp:
     name: Deploy to GCP

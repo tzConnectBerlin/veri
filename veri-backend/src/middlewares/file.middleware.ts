@@ -12,7 +12,7 @@ const fileMiddleware = async (
   const upload = multer({
     dest: 'uploads/',
     limits: {
-      fields: 10,
+      fields: 13,
       fieldNameSize: 50,
       fieldSize: 20000,
       fileSize: 64000,
