@@ -28,5 +28,5 @@ ByEventTitle.args = {
     artwork: '',
     description: '',
   },
-  eventTitle: 'test',
+  eventName: 'test',
 };

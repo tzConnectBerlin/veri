@@ -19,13 +19,13 @@ export interface VeriDetailFormProps {
   title?: string;
   onSubmit: () => void;
   initialValues: VeriDetailValues;
-  eventTitle: string;
+  eventName: string;
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({
   onSubmit,
   title,
   initialValues,
-  eventTitle,
+  eventName,
 }) => {
   const validationSchema = Yup.object().shape({
     artwork: Yup.string().trim().required('This field is required'),
@@ -67,7 +67,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({
           <FormLabel>Title</FormLabel>
           <Text display="flex">
             VERI -{' '}
-            {eventTitle || (
+            {eventName || (
               <Text color="gray.200" ml={1}>
                 Event Name
               </Text>

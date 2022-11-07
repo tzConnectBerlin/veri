@@ -12,19 +12,16 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import React from 'react';
-import { EventDetailValues } from '../../../types';
+import React, { useContext } from 'react';
+import { VeriContext } from '../../../contexts/veri';
 
 export interface EventDetailFormProps {
   title?: string;
-  onSubmit: () => void;
-  initialValues: EventDetailValues;
 }
-export const EventDetailForm: React.FC<EventDetailFormProps> = ({
-  onSubmit,
-  title,
-  initialValues,
-}) => {
+export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
+  const value = useContext(VeriContext);
+  console.log(value);
+
   const validationSchema = Yup.object().shape({
     eventName: Yup.string().trim().required('This field is required'),
     organizer: Yup.string().trim().required('This field is required'),
@@ -36,9 +33,9 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({
   });
 
   const formik = useFormik({
-    initialValues,
+    initialValues: value.EventDetailValues,
     validationSchema: validationSchema,
-    onSubmit,
+    onSubmit: value.onSubmit,
   });
 
   return (

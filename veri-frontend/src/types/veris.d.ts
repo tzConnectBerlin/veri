@@ -16,3 +16,11 @@ export interface VeriDetailValues {
   artwork: string;
   description: string;
 }
+
+export interface VeriContextType {
+  EventDetailValues: EventDetailValues;
+  VeriDetailValues: VeriDetailValues;
+  recipients: string[];
+  distributionMethod?: 'QR code scanner' | 'Post-event drop';
+  onSubmit: () => void;
+}

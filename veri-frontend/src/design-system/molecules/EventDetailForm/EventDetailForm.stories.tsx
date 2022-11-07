@@ -13,10 +13,4 @@ const Template: Story<EventDetailFormProps> = args => (
 export const Default = Template.bind({});
 Default.args = {
   title: 'EVENT DETAILS',
-  onSubmit: () => console.log('hello'),
-  initialValues: {
-    eventName: '',
-    organizer: '',
-    organizerEmail: '',
-  },
 };
