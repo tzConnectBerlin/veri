@@ -1,14 +1,17 @@
-import { Button, Container, Heading, Stack } from '@chakra-ui/react';
+import { Container, Heading, Stack } from '@chakra-ui/react';
 import React from 'react';
-import { AddVeri } from '../../../design-system/organisms/AddVeri';
 import { VeriContext } from '../../../contexts/veri';
-import { VeriContextType } from '../../../types/veris';
+import { VeriFormValues, VeriFormikType } from '../../../types/veris';
+// import { FormikProvider, useFormik } from 'formik';
+// import EventDetailForm from '../../../design-system/molecules/EventDetailForm';
+import * as Yup from 'yup';
+import AddVeri from '../../../design-system/organisms/AddVeri';
+import { FormikHelpers } from 'formik';
+// import VeriDetailForm from '../../../design-system/molecules/VeriDetailForm';
+// import DistributionMethodForm from '../../../design-system/molecules/DistributionMethodForm';
+// import RecipientsForm from '../../../design-system/molecules/RecipientsForm';
 
 export const VeriFormPage = (): JSX.Element => {
-  const handleSubmit = () => {
-    console.log('submit');
-  };
-
   const EventDetailValues = {
     eventName: '',
     organizer: '',
@@ -19,12 +22,39 @@ export const VeriFormPage = (): JSX.Element => {
     artwork: '',
     description: '',
   };
-  const veriDefaultValue: VeriContextType = {
-    EventDetailValues,
-    VeriDetailValues,
-    recipients: [''],
-    distributionMethod: 'QR code scanner',
-    onSubmit: () => handleSubmit(),
+
+  const validationSchema = Yup.object().shape({
+    eventName: Yup.string().trim().required('This field is required'),
+    organizer: Yup.string().trim().required('This field is required'),
+    organizerEmail: Yup.string()
+      .trim()
+      .email('Should be a valid email')
+      .required('This field is required'),
+    eventDuration: Yup.string().trim().required('This field is required'),
+    artwork: Yup.string().trim().required('This field is required'),
+    description: Yup.string().trim().required('This field is required'),
+    distributionMethod: Yup.string().trim().required('This field is required'),
+    recipients: Yup.array().of(Yup.string()).min(1),
+  });
+
+  const handleSubmit = (
+    values: VeriFormValues,
+    actions: FormikHelpers<VeriFormValues>,
+  ) => {
+    console.log('hi');
+    console.log(values);
+    console.log(actions);
+  };
+
+  const veriDefaultValue: VeriFormikType = {
+    initialValues: {
+      ...EventDetailValues,
+      ...VeriDetailValues,
+      recipients: [''],
+      distributionMethod: 'QR code scanner',
+    },
+    validationSchema: validationSchema,
+    onSubmit: handleSubmit,
   };
 
   return (
@@ -33,7 +63,6 @@ export const VeriFormPage = (): JSX.Element => {
         <Heading mb={10}>Create New VERI</Heading>
         <VeriContext.Provider value={veriDefaultValue}>
           <AddVeri />
-          <Button onClick={handleSubmit}>Save</Button>
         </VeriContext.Provider>
       </Stack>
     </Container>

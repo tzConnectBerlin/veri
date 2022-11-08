@@ -12,32 +12,19 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
-import React from 'react';
+import React, { useContext } from 'react';
 import { MdDelete } from 'react-icons/md';
+import { VeriContext } from '../../../contexts/veri';
 
 export interface RecipientsFormProps {
   title?: string;
-  onSubmit: () => void;
-  initialValues: {
-    recipients: string[];
-  };
 }
-export const RecipientsForm: React.FC<RecipientsFormProps> = ({
-  onSubmit,
-  title,
-  initialValues = { recipients: [''] },
-}) => {
-  const validationSchema = Yup.object().shape({
-    recipients: Yup.array()
-      .of(Yup.string())
-      .min(1)
-      .required('This field is required'),
-  });
-
+export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
+  const value = useContext(VeriContext);
   const formik = useFormik({
-    initialValues,
-    validationSchema: validationSchema,
-    onSubmit,
+    initialValues: value.initialValues,
+    validationSchema: value.validationSchema,
+    onSubmit: () => console.log('inside'),
   });
 
   return (

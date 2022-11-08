@@ -17,10 +17,19 @@ export interface VeriDetailValues {
   description: string;
 }
 
-export interface VeriContextType {
-  EventDetailValues: EventDetailValues;
-  VeriDetailValues: VeriDetailValues;
+export interface VeriFormValues {
+  eventName: string;
+  organizer: string;
+  organizerEmail: string;
+  eventDuration?: string;
+  artwork: string;
+  description: string;
   recipients: string[];
   distributionMethod?: 'QR code scanner' | 'Post-event drop';
-  onSubmit: () => void;
+}
+
+export interface VeriFormikType {
+  initialValues: VeriFormValues;
+  validationSchema: any;
+  onSubmit: (values, actions) => void;
 }

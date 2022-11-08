@@ -16,8 +16,4 @@ const Template: Story<DistributionMethodFormProps> = args => (
 export const Default = Template.bind({});
 Default.args = {
   title: 'Distribution Method',
-  onSubmit: () => console.log('hello'),
-  initialValues: {
-    distributionMethod: 'QR code scanner',
-  },
 };

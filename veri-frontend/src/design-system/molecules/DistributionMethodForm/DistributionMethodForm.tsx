@@ -9,30 +9,21 @@ import {
   RadioGroup,
   Radio,
 } from '@chakra-ui/react';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useContext } from 'react';
+import { VeriContext } from '../../../contexts/veri';
 
 export interface DistributionMethodFormProps {
   title?: string;
-  onSubmit: () => void;
-  initialValues: {
-    distributionMethod?: 'QR code scanner' | 'Post-event drop';
-  };
 }
 export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
-  onSubmit,
   title,
-  initialValues,
 }) => {
-  const validationSchema = Yup.object().shape({
-    distributionMethod: Yup.string().trim().required('This field is required'),
-  });
-
+  const value = useContext(VeriContext);
   const formik = useFormik({
-    initialValues,
-    validationSchema: validationSchema,
-    onSubmit,
+    initialValues: value.initialValues,
+    validationSchema: value.validationSchema,
+    onSubmit: () => console.log('inside'),
   });
 
   return (

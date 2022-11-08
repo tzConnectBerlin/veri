@@ -13,17 +13,4 @@ const Template: Story<RecipientsFormProps> = args => (
 export const Default = Template.bind({});
 Default.args = {
   title: 'Recipients',
-  onSubmit: () => console.log('hello'),
-  initialValues: {
-    recipients: [''],
-  },
-};
-
-export const WithInitialVal = Template.bind({});
-WithInitialVal.args = {
-  title: 'Recipients',
-  onSubmit: () => console.log('hello'),
-  initialValues: {
-    recipients: ['sh.modarresy@gmail.com', 'shohreh.modarresi.tzconnect.com'],
-  },
 };

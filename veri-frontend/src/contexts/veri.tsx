@@ -1,6 +1,4 @@
 import { createContext } from 'react';
-import { VeriContextType } from '../types/veris';
+import { VeriFormikType } from '../types/veris';
 
-export const VeriContext = createContext<VeriContextType>(
-  {} as VeriContextType,
-);
+export const VeriContext = createContext<VeriFormikType>({} as VeriFormikType);

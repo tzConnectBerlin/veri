@@ -10,32 +10,19 @@ import {
   Textarea,
   Text,
 } from '@chakra-ui/react';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import React from 'react';
-import { VeriDetailValues } from '../../../types';
+import React, { useContext } from 'react';
+import { VeriContext } from '../../../contexts/veri';
 
 export interface VeriDetailFormProps {
   title?: string;
-  onSubmit: () => void;
-  initialValues: VeriDetailValues;
-  eventName: string;
 }
-export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({
-  onSubmit,
-  title,
-  initialValues,
-  eventName,
-}) => {
-  const validationSchema = Yup.object().shape({
-    artwork: Yup.string().trim().required('This field is required'),
-    description: Yup.string().trim().required('This field is required'),
-  });
-
+export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
+  const value = useContext(VeriContext);
   const formik = useFormik({
-    initialValues,
-    validationSchema: validationSchema,
-    onSubmit,
+    initialValues: value.initialValues,
+    validationSchema: value.validationSchema,
+    onSubmit: () => console.log('inside'),
   });
 
   return (
@@ -67,7 +54,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({
           <FormLabel>Title</FormLabel>
           <Text display="flex">
             VERI -{' '}
-            {eventName || (
+            {formik.values.eventName || (
               <Text color="gray.200" ml={1}>
                 Event Name
               </Text>

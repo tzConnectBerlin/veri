@@ -13,20 +13,4 @@ const Template: Story<VeriDetailFormProps> = args => (
 export const Default = Template.bind({});
 Default.args = {
   title: 'Veri DETAILS',
-  onSubmit: () => console.log('hello'),
-  initialValues: {
-    artwork: '',
-    description: '',
-  },
-};
-
-export const ByEventTitle = Template.bind({});
-ByEventTitle.args = {
-  title: 'Veri DETAILS',
-  onSubmit: () => console.log('hello'),
-  initialValues: {
-    artwork: '',
-    description: '',
-  },
-  eventName: 'test',
 };
