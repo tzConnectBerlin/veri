@@ -18,7 +18,6 @@ export const AddVeri = () => {
         {context.formik.distributionMethod === 'Post-event' && (
           <RecipientsForm title="Recipients" />
         )}
-        <div>{JSON.stringify(context.formik.values)}</div>
         <Button type="submit" colorScheme="primary">
           Save
         </Button>
