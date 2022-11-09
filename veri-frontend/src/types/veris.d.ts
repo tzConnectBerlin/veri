@@ -1,3 +1,5 @@
+import { FormikProps } from 'formik';
+
 export enum VeriStatus {
   Draft,
   Created,
@@ -29,7 +31,5 @@ export interface VeriFormValues {
 }
 
 export interface VeriFormikType {
-  initialValues: VeriFormValues;
-  validationSchema: any;
-  onSubmit: (values, actions) => void;
+  formik: FormikProps;
 }

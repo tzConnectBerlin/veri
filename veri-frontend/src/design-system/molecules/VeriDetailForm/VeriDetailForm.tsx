@@ -10,7 +10,6 @@ import {
   Textarea,
   Text,
 } from '@chakra-ui/react';
-import { useFormik } from 'formik';
 import React, { useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
 
@@ -19,11 +18,6 @@ export interface VeriDetailFormProps {
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const value = useContext(VeriContext);
-  const formik = useFormik({
-    initialValues: value.initialValues,
-    validationSchema: value.validationSchema,
-    onSubmit: () => console.log('inside'),
-  });
 
   return (
     <Box
@@ -38,23 +32,25 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
       <Stack spacing={4}>
         <FormControl
           isRequired
-          isInvalid={formik.touched.artwork && !!formik.errors.artwork}
+          isInvalid={
+            value.formik.touched.artwork && !!value.formik.errors.artwork
+          }
         >
           <FormLabel>Artwork</FormLabel>
           <Input
             type="file"
             name="artwork"
-            value={formik.values.artwork}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            value={value.formik.values.artwork}
+            onChange={value.formik.handleChange}
+            onBlur={value.formik.handleBlur}
           />
-          <FormErrorMessage>{formik.errors.artwork}</FormErrorMessage>
+          <FormErrorMessage>{value.formik.errors.artwork}</FormErrorMessage>
         </FormControl>
         <Stack>
           <FormLabel>Title</FormLabel>
           <Text display="flex">
             VERI -{' '}
-            {formik.values.eventName || (
+            {value.formik.values.eventName || (
               <Text color="gray.200" ml={1}>
                 Event Name
               </Text>
@@ -63,17 +59,20 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
         </Stack>
         <FormControl
           isRequired
-          isInvalid={formik.touched.description && !!formik.errors.description}
+          isInvalid={
+            value.formik.touched.description &&
+            !!value.formik.errors.description
+          }
         >
           <FormLabel>Description</FormLabel>
           <Textarea
             name="description"
-            value={formik.values.description}
+            value={value.formik.values.description}
             size="sm"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            onChange={value.formik.handleChange}
+            onBlur={value.formik.handleBlur}
           />
-          <FormErrorMessage>{formik.errors.description}</FormErrorMessage>
+          <FormErrorMessage>{value.formik.errors.description}</FormErrorMessage>
         </FormControl>
       </Stack>
     </Box>

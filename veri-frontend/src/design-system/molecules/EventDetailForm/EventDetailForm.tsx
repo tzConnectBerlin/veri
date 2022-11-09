@@ -12,94 +12,92 @@ import {
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
-import { useFormik } from 'formik';
 
 export interface EventDetailFormProps {
   title?: string;
 }
 export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
   const value = useContext(VeriContext);
-
-  const formik = useFormik({
-    initialValues: value.initialValues,
-    validationSchema: value.validationSchema,
-    onSubmit: () => console.log('inside'),
-  });
-
+  const BoxBg = useColorModeValue('white', 'gray.700');
   return (
-    <Box
-      rounded={'lg'}
-      bg={useColorModeValue('white', 'gray.700')}
-      boxShadow={'lg'}
-      p={8}
-    >
+    <Box rounded={'lg'} bg={BoxBg} boxShadow={'lg'} p={8}>
       <Heading fontSize={'xl'} mb={4}>
         {title}
       </Heading>
-      <form onSubmit={formik.handleSubmit}>
-        <Stack spacing={4}>
-          <FormControl
-            isRequired
-            isInvalid={formik.touched.eventName && !!formik.errors.eventName}
-          >
-            <FormLabel>Event Name</FormLabel>
-            <Input
-              type="text"
-              name="eventName"
-              value={formik.values.eventName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors.eventName}</FormErrorMessage>
-          </FormControl>
-          <FormControl
-            isRequired
-            isInvalid={formik.touched.organizer && !!formik.errors.organizer}
-          >
-            <FormLabel>Organizer</FormLabel>
-            <Input
-              type="text"
-              name="organizer"
-              value={formik.values.organizer}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors.organizer}</FormErrorMessage>
-          </FormControl>
-          <FormControl
-            isRequired
-            isInvalid={
-              formik.touched.organizerEmail && !!formik.errors.organizerEmail
-            }
-          >
-            <FormLabel>Organizer Email</FormLabel>
-            <Input
-              type="organizerEmail"
-              name="organizerEmail"
-              value={formik.values.organizerEmail}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors.organizerEmail}</FormErrorMessage>
-          </FormControl>
-          <FormControl
-            isRequired
-            isInvalid={
-              formik.touched.eventDuration && !!formik.errors.eventDuration
-            }
-          >
-            <FormLabel>Event Duration</FormLabel>
-            <RadioGroup name="eventDuration" onChange={formik.handleChange}>
-              <Stack>
-                <Radio value="single">Single Day</Radio>
-                <Radio value="multi">Multi Days</Radio>
-              </Stack>
-            </RadioGroup>
-            <FormErrorMessage>{formik.errors.eventDuration}</FormErrorMessage>
-          </FormControl>
-          {formik.values.eventDuration === 'multi' && <Heading>Hello</Heading>}
-        </Stack>
-      </form>
+      <Stack spacing={4}>
+        <FormControl
+          isRequired
+          isInvalid={
+            value.formik.touched.eventName && !!value.formik.errors.eventName
+          }
+        >
+          <FormLabel>Event Name</FormLabel>
+          <Input
+            type="text"
+            name="eventName"
+            value={value.formik.values.eventName}
+            onChange={value.formik.handleChange}
+            onBlur={value.formik.handleBlur}
+          />
+          <FormErrorMessage>{value.formik.errors.eventName}</FormErrorMessage>
+        </FormControl>
+        <FormControl
+          isRequired
+          isInvalid={
+            value.formik.touched.organizer && !!value.formik.errors.organizer
+          }
+        >
+          <FormLabel>Organizer</FormLabel>
+          <Input
+            type="text"
+            name="organizer"
+            value={value.formik.values.organizer}
+            onChange={value.formik.handleChange}
+            onBlur={value.formik.handleBlur}
+          />
+          <FormErrorMessage>{value.formik.errors.organizer}</FormErrorMessage>
+        </FormControl>
+        <FormControl
+          isRequired
+          isInvalid={
+            value.formik.touched.organizerEmail &&
+            !!value.formik.errors.organizerEmail
+          }
+        >
+          <FormLabel>Organizer Email</FormLabel>
+          <Input
+            type="organizerEmail"
+            name="organizerEmail"
+            value={value.formik.values.organizerEmail}
+            onChange={value.formik.handleChange}
+            onBlur={value.formik.handleBlur}
+          />
+          <FormErrorMessage>
+            {value.formik.errors.organizerEmail}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl
+          isRequired
+          isInvalid={
+            value.formik.touched.eventDuration &&
+            !!value.formik.errors.eventDuration
+          }
+        >
+          <FormLabel>Event Duration</FormLabel>
+          <RadioGroup name="eventDuration" onChange={value.formik.handleChange}>
+            <Stack>
+              <Radio value="single">Single Day</Radio>
+              <Radio value="multi">Multi Days</Radio>
+            </Stack>
+          </RadioGroup>
+          <FormErrorMessage>
+            {value.formik.errors.eventDuration}
+          </FormErrorMessage>
+        </FormControl>
+        {value.formik.values.eventDuration === 'multi' && (
+          <Heading>Hello</Heading>
+        )}
+      </Stack>
     </Box>
   );
 };

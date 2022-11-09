@@ -2,14 +2,9 @@ import { Container, Heading, Stack } from '@chakra-ui/react';
 import React from 'react';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormValues, VeriFormikType } from '../../../types/veris';
-// import { FormikProvider, useFormik } from 'formik';
-// import EventDetailForm from '../../../design-system/molecules/EventDetailForm';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
-import { FormikHelpers } from 'formik';
-// import VeriDetailForm from '../../../design-system/molecules/VeriDetailForm';
-// import DistributionMethodForm from '../../../design-system/molecules/DistributionMethodForm';
-// import RecipientsForm from '../../../design-system/molecules/RecipientsForm';
+import { FormikHelpers, useFormik } from 'formik';
 
 export const VeriFormPage = (): JSX.Element => {
   const EventDetailValues = {
@@ -46,7 +41,7 @@ export const VeriFormPage = (): JSX.Element => {
     console.log(actions);
   };
 
-  const veriDefaultValue: VeriFormikType = {
+  const formik = useFormik({
     initialValues: {
       ...EventDetailValues,
       ...VeriDetailValues,
@@ -55,6 +50,10 @@ export const VeriFormPage = (): JSX.Element => {
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
+  });
+
+  const veriDefaultValue: VeriFormikType = {
+    formik: formik,
   };
 
   return (
