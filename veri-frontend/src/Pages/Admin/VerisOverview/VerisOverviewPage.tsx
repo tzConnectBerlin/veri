@@ -1,4 +1,5 @@
 import { Badge, Button, Circle, Heading, HStack } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getVeris } from '../../../api/services/veriService';
@@ -95,7 +96,11 @@ export const VerisOverviewPage = (): JSX.Element => {
       .catch(err => console.log(err));
   }, []);
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <HStack justifyContent="space-between" mb={10}>
         <Heading>All VERIs</Heading>
         <Button colorScheme="primary" onClick={() => navigate('/veri')}>
@@ -105,6 +110,6 @@ export const VerisOverviewPage = (): JSX.Element => {
       <Wrapper>
         <DataTable {...SamleData} />
       </Wrapper>
-    </>
+    </motion.div>
   );
 };

@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
 import { DashboardLayout } from '../layouts/Admin';
 import {
@@ -13,6 +13,7 @@ import {
   User,
   Settings,
 } from '../Pages';
+import { AnimatePresence } from 'framer-motion';
 
 const PrivateRoutes = () => {
   const { user } = useAuth();
@@ -27,22 +28,25 @@ const AuthRoutes = () => {
 };
 
 export const Router = () => {
+  const location = useLocation();
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route element={<AuthRoutes />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot" element={<ForgotPassword />} />
-        <Route path="/reset" element={<ResetPassword />} />
-      </Route>
-      <Route path="*" element={<NotFound />} />
-      <Route element={<PrivateRoutes />}>
-        <Route path="/admin" element={<VerisOverview />} />
-        <Route path="/veri" element={<VeriForm />} />
-        <Route path="/profile" element={<User />} />
-        <Route path="/settings" element={<Settings />} />
-      </Route>
-    </Routes>
+    <AnimatePresence>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Landing />} />
+        <Route element={<AuthRoutes />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot" element={<ForgotPassword />} />
+          <Route path="/reset" element={<ResetPassword />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/admin" element={<VerisOverview />} />
+          <Route path="/veri" element={<VeriForm />} />
+          <Route path="/profile" element={<User />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </AnimatePresence>
   );
 };
