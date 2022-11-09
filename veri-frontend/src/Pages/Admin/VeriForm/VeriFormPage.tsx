@@ -7,6 +7,7 @@ import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers } from 'formik';
+import { motion } from 'framer-motion';
 // import VeriDetailForm from '../../../design-system/molecules/VeriDetailForm';
 // import DistributionMethodForm from '../../../design-system/molecules/DistributionMethodForm';
 // import RecipientsForm from '../../../design-system/molecules/RecipientsForm';
@@ -58,13 +59,19 @@ export const VeriFormPage = (): JSX.Element => {
   };
 
   return (
-    <Container maxW="2xl">
-      <Stack justifyContent="space-between">
-        <Heading mb={10}>Create New VERI</Heading>
-        <VeriContext.Provider value={veriDefaultValue}>
-          <AddVeri />
-        </VeriContext.Provider>
-      </Stack>
-    </Container>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <Container maxW="2xl">
+        <Stack justifyContent="space-between">
+          <Heading mb={10}>Create New VERI</Heading>
+          <VeriContext.Provider value={veriDefaultValue}>
+            <AddVeri />
+          </VeriContext.Provider>
+        </Stack>
+      </Container>
+    </motion.div>
   );
 };
