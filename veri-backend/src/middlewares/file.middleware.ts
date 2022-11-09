@@ -1,16 +1,15 @@
 import multer from 'multer';
-import { RequestWithFile } from '@/interfaces/veris.interface';
+import { RequestWithFiles } from '@/interfaces/veris.interface';
 import { Response, NextFunction } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import path from 'path';
 
 const fileMiddleware = async (
-  req: RequestWithFile,
+  req: RequestWithFiles,
   res: Response,
   next: NextFunction
 ) => {
   const upload = multer({
-    dest: 'uploads/',
     limits: {
       fields: 13,
       fieldNameSize: 50,

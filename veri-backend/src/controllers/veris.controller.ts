@@ -46,11 +46,13 @@ class VeriController {
   ): Promise<void> => {
     try {
       const veriData: CreateVeriDto = req.body;
-      const file: CreateFileDto = req.file;
+      const artwork: CreateFileDto = req.files[0];
+      const thumbnail: CreateFileDto = req.files[1];
       const user: User = req.user;
       const createVeriData: Veri = await this.veriService.createVeri(
         veriData,
-        file,
+        artwork,
+        thumbnail,
         user
       );
 
