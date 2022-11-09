@@ -11,7 +11,7 @@ export interface EventDetailValues {
   eventName: string;
   organizer: string;
   organizerEmail: string;
-  eventDuration?: string;
+  eventDuration?: 'single' | 'multi';
 }
 
 export interface VeriDetailValues {
@@ -23,11 +23,11 @@ export interface VeriFormValues {
   eventName: string;
   organizer: string;
   organizerEmail: string;
-  eventDuration?: string;
+  eventDuration?: 'single' | 'multi';
   artwork: string;
   description: string;
   recipients: string[];
-  distributionMethod?: 'QR code scanner' | 'Post-event drop';
+  distributionMethod?: 'QR-code' | 'Post-event';
 }
 
 export interface VeriFormikType {

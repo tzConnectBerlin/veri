@@ -1,5 +1,4 @@
 import { Container, Heading, Stack } from '@chakra-ui/react';
-import React from 'react';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
@@ -11,7 +10,7 @@ export const VeriFormPage = (): JSX.Element => {
     eventName: '',
     organizer: '',
     organizerEmail: '',
-    eventDuration: '',
+    eventDuration: undefined,
   };
   const VeriDetailValues = {
     artwork: '',
@@ -25,7 +24,6 @@ export const VeriFormPage = (): JSX.Element => {
       .trim()
       .email('Should be a valid email')
       .required('This field is required'),
-    eventDuration: Yup.string().trim().required('This field is required'),
     artwork: Yup.string().trim().required('This field is required'),
     description: Yup.string().trim().required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
@@ -46,7 +44,7 @@ export const VeriFormPage = (): JSX.Element => {
       ...EventDetailValues,
       ...VeriDetailValues,
       recipients: [''],
-      distributionMethod: 'QR code scanner',
+      distributionMethod: 'QR-code',
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmit,

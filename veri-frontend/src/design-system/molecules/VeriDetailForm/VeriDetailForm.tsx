@@ -51,7 +51,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
           <Text display="flex">
             VERI -{' '}
             {value.formik.values.eventName || (
-              <Text color="gray.200" ml={1}>
+              <Text color="gray.200" as="span" ml={1}>
                 Event Name
               </Text>
             )}

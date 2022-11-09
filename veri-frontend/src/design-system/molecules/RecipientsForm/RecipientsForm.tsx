@@ -68,6 +68,7 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
                     )}
                   <Button
                     variant="link"
+                    type="button"
                     colorScheme="primary"
                     onClick={() => arrayHelper.push('')}
                   >

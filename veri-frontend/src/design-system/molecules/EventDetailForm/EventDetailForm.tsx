@@ -76,18 +76,16 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
             {value.formik.errors.organizerEmail}
           </FormErrorMessage>
         </FormControl>
-        <FormControl
-          isRequired
-          isInvalid={
-            value.formik.touched.eventDuration &&
-            !!value.formik.errors.eventDuration
-          }
-        >
+        <FormControl>
           <FormLabel>Event Duration</FormLabel>
-          <RadioGroup name="eventDuration" onChange={value.formik.handleChange}>
+          <RadioGroup name="eventDuration">
             <Stack>
-              <Radio value="single">Single Day</Radio>
-              <Radio value="multi">Multi Days</Radio>
+              <Radio value="single" onChange={value.formik.handleChange}>
+                Single Day
+              </Radio>
+              <Radio value="multi" onChange={value.formik.handleChange}>
+                Multi Days
+              </Radio>
             </Stack>
           </RadioGroup>
           <FormErrorMessage>
