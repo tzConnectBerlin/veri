@@ -40,6 +40,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
           <Input
             type="file"
             name="artwork"
+            aria-hidden="true"
             value={value.formik.values.artwork}
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
