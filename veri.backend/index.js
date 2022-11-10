@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
-const { request_nft } = require("./db.js");
+const { request_nft } = require("./business.js");
 const port = process.env.PORT || 5001;
 
 const app = express();
@@ -19,7 +19,13 @@ app.use(bodyParser.json());
 app.post("/veri", async (req, res) => {
   console.log(req.body);
   let ip = req.headers['x-forwarded-for'];
-  return await request_nft(req.body, ip, res);
+  return await request_veri(req.body, ip, res);
+});
+
+app.post("/giveaway", async (req, res) => {
+  console.log(req.body);
+  let ip = req.headers['x-forwarded-for'];
+  return await request_transfer(req.body, ip, res);
 });
 
 app.listen(port, () => console.log("server is up on port", port));
