@@ -1,5 +1,5 @@
-const ORIGINATOR = "tz1StQky9qKipBNEpjtUtsGVSpsp6cYZeTwh";
-const TOKEN_ID = 14
+const ORIGINATOR = "tz1N9QRNJ98mY8ZNENvHAMiaxgr8tWPE9pCK";
+const TOKEN_ID = 32
 // const CAPTCHA_URI = "https://www.google.com/recaptcha/api/siteverify"
 // const RECAPTCHA_SECRET = ""
 // const HOSTNAME = ""
@@ -14,7 +14,8 @@ const pool = new Pool();
 const CHECK_UNIQUENESS_SQL = "SELECT COUNT(*) FROM veriadmin.addresses WHERE address = $1 AND token_id = $2";
 const INSERT_ADDRESS_SQL = "INSERT INTO veriadmin.addresses (address, token_id, session) VALUES ($1, $2, $3)";
 const INSERT_COMMAND_SQL = `INSERT INTO peppermint.operations (originator, command) VALUES ('${ORIGINATOR}', $1)`;
-console.log(INSERT_COMMAND_SQL);
+
+const GET_NUMBER_SQL = "SELECT COUNT(*) FROM veriadmin.addresses WHERE token_id = $1";
 
 // const validate_recaptcha = async function(recaptcha_response, remoteip) {
 //   let params = new URLSearchParams();
@@ -71,6 +72,43 @@ const request_nft = async ({ tz_address, recaptcha_response }, ip, res) => {
       });
       return;
     }
+
+// Nagel-Draxler specific code for 15 Sep 2022
+/*    result = await client.query(GET_NUMBER_SQL, [TOKEN_ID]);
+    let veri_no = parseInt(result.rows[0].count);
+
+    if (veri_no >= 70) {
+      res.status(401).json({
+	message: "Drop capacity exhausted"
+      });
+    }
+
+    let human_command = {
+      handler: "human",
+      name: "transfer",
+      args: {
+        amount: 1,
+	token_id: 0,
+	from_address: ORIGINATOR,
+	to_address: tz_address
+      }
+    };
+
+    let evolutionary_command = {
+      handler: "evolutionary",
+      name: "transfer",
+      args: {
+        amount: 1,
+        token_id: veri_no + 1,
+        from_address: ORIGINATOR,
+        to_address: tz_address
+      }
+    };
+
+    await client.query(INSERT_COMMAND_SQL, [human_command]);
+    await client.query(INSERT_COMMAND_SQL, [evolutionary_command]);
+*/
+// Nagel-Draxler block end
 
     await client.query(INSERT_ADDRESS_SQL, [tz_address, TOKEN_ID, null]);
 

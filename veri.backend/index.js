@@ -16,10 +16,10 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post("/", async (req, res) => {
+app.post("/veri", async (req, res) => {
   console.log(req.body);
   let ip = req.headers['x-forwarded-for'];
   return await request_nft(req.body, ip, res);
 });
 
-app.listen(port, () => console.log("server is up"));
+app.listen(port, () => console.log("server is up on port", port));
