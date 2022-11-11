@@ -15,9 +15,10 @@ export const AddVeri = () => {
         <EventDetailForm title="EVENT DETAILS" />
         <VeriDetailForm title="VERI DETAILS" />
         <DistributionMethodForm title="Distribution Method" />
-        {context.formik.distributionMethod === 'Post-event' && (
+        {context.formik.values.distributionMethod === 'Post-event' && (
           <RecipientsForm title="Recipients" />
         )}
+        {/* <>{JSON.stringify(context.formik.values)}</> */}
         <Button type="submit" colorScheme="primary">
           Save
         </Button>

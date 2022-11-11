@@ -1,67 +1,93 @@
-import { Box, Input, InputProps, Stack, Text, Image } from '@chakra-ui/react';
+import {
+  Box,
+  Input,
+  InputProps,
+  Stack,
+  Text,
+  Image,
+  Button,
+} from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
+import { GrFormClose } from 'react-icons/gr';
 
-const FileUploaderContainer = styled(Box)`
+const FileUploaderContainer = styled(Stack)`
   position: relative;
-  border-radius: 1rem;
-  border: dashed 1px;
+  border-radius: 6px;
+  border: dashed 1px var(--chakra-colors-gray-200);
   padding: 1rem;
   min-height: 160px;
   height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-export const FileUploader: React.FC<InputProps> = props => {
-  const [files, setFiles] = useState<File[]>([]);
+export const FileUploader: React.FC<InputProps> = ({
+  onChange,
+  value,
+  ...props
+}) => {
+  const [file, setFile] = useState<File>(value as any);
   const startAnimation = () => console.log('hover');
   const stopAnimation = () => console.log();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     if (e.target.files) {
-      setFiles([...files, e.target.files[0]]);
+      setFile(e.target.files[0]);
+      onChange && onChange(e);
     }
   };
+
   return (
-    <FileUploaderContainer height={40} width="100%" border="gray.200">
-      <Stack textAlign="center" justifyContent="center" height="100%">
-        {files && files.length > 0 ? (
-          files.map((file, index) => (
-            <Stack direction="row" alignItems="center" key={index}>
-              <Image
-                boxSize="30px"
-                borderRadius="full"
-                objectFit="cover"
-                src={URL.createObjectURL(file)}
-                alt=""
-              />
-              <Text as="span">{file.name}</Text>
-            </Stack>
-          ))
+    <>
+      <Box height="fit-content" width="100%">
+        {value && file ? (
+          <Stack direction="row" alignItems="center">
+            <Image
+              boxSize="30px"
+              borderRadius="full"
+              objectFit="cover"
+              src={URL.createObjectURL(file)}
+              alt=""
+            />
+            <Text as="span">{file.name}</Text>
+            <GrFormClose />
+          </Stack>
         ) : (
-          <Text>
-            Drag & drop or{' '}
-            <Text color="primary" textDecoration="underline" as="span">
-              click here
-            </Text>{' '}
-            to upload
-          </Text>
+          <FileUploaderContainer
+            textAlign="center"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
+            <Text color="gray.500">
+              Drag & drop or{' '}
+              <Text color="primary.main" textDecoration="underline" as="span">
+                click here
+              </Text>{' '}
+              to upload
+            </Text>
+          </FileUploaderContainer>
         )}
-      </Stack>
-      <Input
-        type="file"
-        height="100%"
-        width="100%"
-        position="absolute"
-        top="0"
-        left="0"
-        opacity="0"
-        aria-hidden="true"
-        accept="image/*"
-        onDragEnter={startAnimation}
-        onDragLeave={stopAnimation}
-        onChange={handleChange}
-        {...props}
-      />
-    </FileUploaderContainer>
+        <Input
+          type="file"
+          height="100%"
+          width="100%"
+          position="absolute"
+          top="0"
+          left="0"
+          opacity="0"
+          aria-hidden="true"
+          accept="image/*"
+          cursor="pointer"
+          onDragEnter={startAnimation}
+          onDragLeave={stopAnimation}
+          onChange={handleChange}
+          value={value}
+          {...props}
+        />
+      </Box>
+    </>
   );
 };

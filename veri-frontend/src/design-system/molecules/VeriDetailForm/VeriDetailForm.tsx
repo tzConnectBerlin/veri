@@ -12,12 +12,16 @@ import {
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
+import FileUploader from '../../atoms/FileUploader';
 
 export interface VeriDetailFormProps {
   title?: string;
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const value = useContext(VeriContext);
+  // const handleChange = (fn: any) => {
+  //   console.log(fn);
+  // };
 
   return (
     <Box
@@ -37,14 +41,25 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
           }
         >
           <FormLabel>Artwork</FormLabel>
-          <Input
+          <FileUploader
+            name="artwork"
+            aria-hidden="true"
+            value={value.formik.values.artwork}
+            onChange={value.formik.handleChange}
+            onBlur={value.formik.handleBlur}
+            onReset={() => {
+              value.formik.resetForm;
+              console.log('r');
+            }}
+          />
+          {/* <Input
             type="file"
             name="artwork"
             aria-hidden="true"
             value={value.formik.values.artwork}
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
-          />
+          /> */}
           <FormErrorMessage>{value.formik.errors.artwork}</FormErrorMessage>
         </FormControl>
         <Stack>
@@ -72,6 +87,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
             size="sm"
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
+            borderRadius={6}
           />
           <FormErrorMessage>{value.formik.errors.description}</FormErrorMessage>
         </FormControl>

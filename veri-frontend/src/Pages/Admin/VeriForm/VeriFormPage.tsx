@@ -37,7 +37,7 @@ export const VeriFormPage = (): JSX.Element => {
   ) => {
     console.log('hi');
     console.log(values);
-    console.log(actions);
+    actions.resetForm();
   };
 
   const formik = useFormik({
