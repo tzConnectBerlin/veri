@@ -14,10 +14,12 @@ import * as Yup from 'yup';
 import { Login } from '../../types';
 import useAuth from '../../contexts/useAuth';
 import { useState } from 'react';
+import { useToast } from '@chakra-ui/react';
 
 export const LoginPage = () => {
   const { login } = useAuth();
   const [isLoading, setisLoading] = useState(false);
+  const toast = useToast();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -30,9 +32,9 @@ export const LoginPage = () => {
   const onSubmit = async (values: Login) => {
     try {
       setisLoading(true);
-      await login(values);
+      login(values);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     } finally {
       setisLoading(false);
     }
