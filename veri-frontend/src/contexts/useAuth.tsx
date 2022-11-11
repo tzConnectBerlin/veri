@@ -50,7 +50,6 @@ export function AuthProvider({
     try {
       const response = await authService.login(loginData);
       setUser(response.data.data);
-      navigate('/admin');
     } catch (error) {
       setError(error);
     } finally {
@@ -77,7 +76,6 @@ export function AuthProvider({
     try {
       await authService.logout();
       setUser(undefined);
-      navigate('/');
     } catch (error) {
       console.log(error);
     } finally {

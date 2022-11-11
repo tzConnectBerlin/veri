@@ -1,6 +1,8 @@
-import { Box, Heading, Container, Text, Stack } from '@chakra-ui/react';
+import { Box, Heading, Container, Text, Stack, Link } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 export const LandingPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Container maxW={'3xl'}>
@@ -16,10 +18,13 @@ export const LandingPage = () => {
             lineHeight={'110%'}
           >
             <br />
-            <Text as={'span'} color={'green.400'}>
+            <Text as={'span'} color={'primary.main'}>
               Landing Page
             </Text>
           </Heading>
+          <Text as={'span'} color={'primary.main'}>
+            <Link onClick={() => navigate('/admin')}>Go to Admin Panel</Link>
+          </Text>
         </Stack>
       </Container>
     </>

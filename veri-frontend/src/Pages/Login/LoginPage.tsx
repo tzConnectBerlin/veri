@@ -2,14 +2,10 @@ import {
   Flex,
   Box,
   FormControl,
-  FormLabel,
   Input,
-  Checkbox,
   Stack,
-  Link,
   Button,
   Heading,
-  Text,
   useColorModeValue,
   FormErrorMessage,
 } from '@chakra-ui/react';
@@ -17,9 +13,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Login } from '../../types';
 import useAuth from '../../contexts/useAuth';
+import { useState } from 'react';
 
 export const LoginPage = () => {
   const { login } = useAuth();
+  const [isLoading, setisLoading] = useState(false);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -31,9 +29,12 @@ export const LoginPage = () => {
 
   const onSubmit = async (values: Login) => {
     try {
+      setisLoading(true);
       await login(values);
     } catch (error) {
       console.error(error);
+    } finally {
+      setisLoading(false);
     }
   };
 
@@ -50,30 +51,26 @@ export const LoginPage = () => {
     <Flex
       minH={'100vh'}
       align={'center'}
-      justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}
     >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-        <Stack align={'center'}>
-          <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-          <Text fontSize={'lg'} color={'gray.600'}>
-            to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️
-          </Text>
-        </Stack>
+      <Stack spacing={8} mx={'auto'} maxW={'lg'}>
         <Box
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
           p={8}
+          w="550px"
         >
-          <Stack spacing={4}>
-            <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack spacing={4} align={'center'}>
+              <Heading fontSize={'2xl'} pb={4}>
+                VERI Admin Login
+              </Heading>
               <FormControl
                 id="email"
                 isRequired
                 isInvalid={formik.touched.email && !!formik.errors.email}
               >
-                <FormLabel>Email address</FormLabel>
                 <Input
                   type="email"
                   name="email"
@@ -88,7 +85,6 @@ export const LoginPage = () => {
                 isRequired
                 isInvalid={formik.touched.password && !!formik.errors.password}
               >
-                <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
                   name="password"
@@ -98,28 +94,18 @@ export const LoginPage = () => {
                 />
                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
-              <Stack spacing={10}>
-                <Stack
-                  direction={{ base: 'column', sm: 'row' }}
-                  align={'start'}
-                  justify={'space-between'}
-                >
-                  <Checkbox>Remember me</Checkbox>
-                  <Link color={'primay.500'}>Forgot password?</Link>
-                </Stack>
+              <Stack style={{ alignSelf: 'stretch' }} pt={4}>
                 <Button
                   type="submit"
-                  disabled={
-                    !formik.dirty ||
-                    !!formik.errors.email ||
-                    !!formik.errors.password
-                  }
+                  colorScheme="primary"
+                  style={{ alignSelf: 'stretch' }}
+                  isLoading={isLoading}
                 >
-                  Sign in
+                  Log in
                 </Button>
               </Stack>
-            </form>
-          </Stack>
+            </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>
