@@ -66,6 +66,12 @@ const Button = defineStyleConfig({
         bg: 'transparent',
       },
     },
+    secondary: {
+      bg: 'primary.50',
+      color: 'primary.main',
+      borderWidth: 1,
+      borderColor: 'primary.100',
+    },
   },
 });
 

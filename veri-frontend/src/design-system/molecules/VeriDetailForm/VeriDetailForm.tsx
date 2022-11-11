@@ -9,6 +9,7 @@ import {
   Heading,
   Textarea,
   Text,
+  FormHelperText,
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
@@ -47,11 +48,10 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
             value={value.formik.values.artwork}
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
-            onReset={() => {
-              value.formik.resetForm;
-              console.log('r');
-            }}
           />
+          <FormHelperText>
+            Circle shape. PNG or GIF format. 1000x1000 px.
+          </FormHelperText>
           {/* <Input
             type="file"
             name="artwork"

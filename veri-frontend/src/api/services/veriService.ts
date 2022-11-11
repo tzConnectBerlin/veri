@@ -6,3 +6,13 @@ export const getVeris = () => {
     withCredentials: true,
   });
 };
+
+export const addVeri = (body: any) => {
+  return axios.post(
+    `${BASE_URL}/veris`,
+    { body },
+    {
+      withCredentials: true,
+    },
+  );
+};
