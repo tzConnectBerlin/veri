@@ -55,12 +55,32 @@ const Badge = defineStyleConfig({
     },
   },
 });
+const Button = defineStyleConfig({
+  variants: {
+    icon: {
+      bg: 'transparent',
+      height: 'auto',
+      padding: 1,
+      cursor: 'pointer',
+      _hover: {
+        bg: 'transparent',
+      },
+    },
+    secondary: {
+      bg: 'primary.50',
+      color: 'primary.main',
+      borderWidth: 1,
+      borderColor: 'primary.100',
+    },
+  },
+});
 
 const theme = extendTheme({
   styles,
   colors,
   components: {
     Badge,
+    Button,
   },
 });
 export default theme;

@@ -1,6 +1,10 @@
 import { Container, Heading, Stack } from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
-import { VeriFormValues, VeriFormikType } from '../../../types/veris';
+import {
+  VeriFormValues,
+  VeriFormikType,
+  VeriStatus,
+} from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers, useFormik } from 'formik';
@@ -37,7 +41,7 @@ export const VeriFormPage = (): JSX.Element => {
   ) => {
     console.log('hi');
     console.log(values);
-    console.log(actions);
+    actions.resetForm();
   };
 
   const formik = useFormik({
@@ -46,6 +50,7 @@ export const VeriFormPage = (): JSX.Element => {
       ...VeriDetailValues,
       recipients: [''],
       distributionMethod: 'QR-code',
+      status: 'Draft',
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
