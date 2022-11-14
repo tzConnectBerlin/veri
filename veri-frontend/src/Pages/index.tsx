@@ -8,3 +8,4 @@ export { UserPage as User } from './Admin/User/UserPage';
 export { VeriFormPage as VeriForm } from './Admin/VeriForm/VeriFormPage';
 export { VerisOverviewPage as VerisOverview } from './Admin/VerisOverview/VerisOverviewPage';
 export { SettingsPage as Settings } from './Admin/Settings/SettingsPage';
+export { BoothPage as Booth } from './Booth/BoothPage';

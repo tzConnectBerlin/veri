@@ -4,7 +4,7 @@ import { render } from '../utils/test-utils';
 describe('Login Page tests', () => {
   it('renders <Login /> component', async () => {
     const { getByText } = render(<Login />);
-    const loginText = getByText('Sign in to your account');
+    const loginText = getByText('VERI Admin Login');
     expect(loginText).toBeTruthy();
   });
   // it('should show validation on blur', async () => {

@@ -16,7 +16,7 @@ import useAuth from '../../contexts/useAuth';
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 
-export const LoginPage = () => {
+export const BoothPage = () => {
   const { login } = useAuth();
   const [isLoading, setisLoading] = useState(false);
   const toast = useToast();
@@ -66,22 +66,8 @@ export const LoginPage = () => {
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={4} align={'center'}>
               <Heading fontSize={'2xl'} pb={4}>
-                VERI Admin Login
+                Please enter the password
               </Heading>
-              <FormControl
-                id="email"
-                isRequired
-                isInvalid={formik.touched.email && !!formik.errors.email}
-              >
-                <Input
-                  type="email"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-              </FormControl>
               <FormControl
                 id="password"
                 isRequired
@@ -103,7 +89,7 @@ export const LoginPage = () => {
                   style={{ alignSelf: 'stretch' }}
                   isLoading={isLoading}
                 >
-                  Log in
+                  Get Access
                 </Button>
               </Stack>
             </Stack>
