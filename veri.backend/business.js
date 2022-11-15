@@ -1,5 +1,13 @@
 const ORIGINATOR = "tz1N9QRNJ98mY8ZNENvHAMiaxgr8tWPE9pCK";
-const TOKEN_ID = 32
+
+const CAMPAIGNS = {
+  example: {
+    peppermint_handler: 'example',
+    token_id: 1991,
+    availability: 100
+  }
+};
+
 // const CAPTCHA_URI = "https://www.google.com/recaptcha/api/siteverify"
 // const RECAPTCHA_SECRET = ""
 // const HOSTNAME = ""
@@ -46,7 +54,16 @@ const GET_NUMBER_SQL = "SELECT COUNT(*) FROM veriadmin.addresses WHERE token_id 
 //   return true;
 // };
 
-const request_nft = async ({ tz_address, recaptcha_response }, ip, res) => {
+
+const request_drop = async ({ tz_address, recaptcha_response, campaign }, ip, res) => {
+  let campaigndata = CAMPAIGNS.campaign;
+  if (!campaigndata) {
+    res.status(401).json({
+      message: "Invalid campaign"
+    });
+    return;
+  }
+
   let client = {};
   let tx = false;
   try {
@@ -64,7 +81,7 @@ const request_nft = async ({ tz_address, recaptcha_response }, ip, res) => {
     await client.query('BEGIN');
     tx = true;
 
-    let result = await client.query(CHECK_UNIQUENESS_SQL, [tz_address, TOKEN_ID]);
+    let result = await client.query(CHECK_UNIQUENESS_SQL, [tz_address, campaign]);
 
     if (result.rows[0].count > 0) {
       res.status(401).json({
@@ -73,27 +90,29 @@ const request_nft = async ({ tz_address, recaptcha_response }, ip, res) => {
       return;
     }
 
-// Nagel-Draxler specific code for 15 Sep 2022
-/*    result = await client.query(GET_NUMBER_SQL, [TOKEN_ID]);
-    let veri_no = parseInt(result.rows[0].count);
+    await client.query(INSERT_ADDRESS_SQL, [tz_address, campaign, null]);
 
-    if (veri_no >= 70) {
+    result = await client.query(GET_NUMBER_SQL, [campaign]);
+    let number_dropped = parseInt(result.rows[0].count);
+
+    if (number_dropped >= campaigndata.capacity) {
       res.status(401).json({
-	message: "Drop capacity exhausted"
+	      message: "Drop capacity exhausted"
       });
     }
 
-    let human_command = {
-      handler: "human",
+    let drop_command = {
+      handler: campaigndata.peppermint_handler,
       name: "transfer",
       args: {
         amount: 1,
-	token_id: 0,
-	from_address: ORIGINATOR,
-	to_address: tz_address
+	      token_id: campaigndata.token_id,
+	      from_address: ORIGINATOR,
+	      to_address: tz_address
       }
     };
 
+/*## for sequential token drops...
     let evolutionary_command = {
       handler: "evolutionary",
       name: "transfer",
@@ -103,14 +122,60 @@ const request_nft = async ({ tz_address, recaptcha_response }, ip, res) => {
         from_address: ORIGINATOR,
         to_address: tz_address
       }
-    };
+    };*/
 
-    await client.query(INSERT_COMMAND_SQL, [human_command]);
-    await client.query(INSERT_COMMAND_SQL, [evolutionary_command]);
-*/
-// Nagel-Draxler block end
+    await client.query(INSERT_COMMAND_SQL, [drop_command]);
 
-    await client.query(INSERT_ADDRESS_SQL, [tz_address, TOKEN_ID, null]);
+    await client.query('COMMIT');
+    tx = false;
+
+    res.status(200).send("GREEN");
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "An error has occured",
+      err,
+    });
+  } finally {
+    if (tx) {
+        await client.query('ROLLBACK');
+    }
+    if (client.release) {
+        client.release();
+    }
+  }
+};
+
+
+const request_veri = async ({ tz_address, recaptcha_response, token_id }, ip, res) => {
+  let client = {};
+  let tx = false;
+  try {
+    // let recaptcha_success = await validate_recaptcha(recaptcha_response, ip);
+
+    // if ( !recaptcha_success ) {
+    //   console.log('Validation failed');
+    //   res.status(401).json({
+    //     message: "Recaptcha validation failed"
+    //   });
+    //   return;
+    // }
+
+    client = await pool.connect()
+    await client.query('BEGIN');
+    tx = true;
+
+    let result = await client.query(CHECK_UNIQUENESS_SQL, [tz_address, token_id]);
+
+    if (result.rows[0].count > 0) {
+      res.status(401).json({
+        message: "Address already served"
+      });
+      return;
+    }
+
+   await client.query(INSERT_ADDRESS_SQL, [tz_address, token_id, null]);
 
     let command = {
       handler: "veri",
@@ -141,7 +206,7 @@ const request_nft = async ({ tz_address, recaptcha_response }, ip, res) => {
     if (client.release) {
         client.release();
     }
-}
+  }
 };
 
-module.exports = { request_nft };
+module.exports = { request_drop, request_veri };
