@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
+import { GetImageSize } from '../../../utils/general';
 import FileUploader from '../../atoms/FileUploader';
 
 export interface VeriDetailFormProps {
@@ -20,9 +21,17 @@ export interface VeriDetailFormProps {
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const value = useContext(VeriContext);
-  // const handleChange = (fn: any) => {
-  //   console.log(fn);
-  // };
+  const size = 1000;
+
+  const handleFileChange = async (file: File) => {
+    console.log(file);
+    const { width, height } = await GetImageSize(file);
+    if (width > size || height > size) {
+      value.formik.handleError();
+    } else {
+      value.formik.setFieldValue('artwork', file.name);
+    }
+  };
 
   return (
     <Box
@@ -46,12 +55,15 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
             name="artwork"
             aria-hidden="true"
             value={value.formik.values.artwork}
+            onFileChanges={(val: File) => handleFileChange(val)}
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
           />
-          <FormHelperText>
-            Circle shape. PNG or GIF format. 1000x1000 px.
-          </FormHelperText>
+          {!value.formik.values.artwork && (
+            <FormHelperText>
+              Circle shape. PNG or GIF format. 1000x1000 px.
+            </FormHelperText>
+          )}
           {/* <Input
             type="file"
             name="artwork"

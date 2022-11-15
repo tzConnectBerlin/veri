@@ -23,8 +23,12 @@ const FileUploaderContainer = styled(Stack)`
   justify-content: center;
 `;
 
-export const FileUploader: React.FC<InputProps> = ({
-  onChange,
+export interface FileUploaderProps extends InputProps {
+  onFileChanges: (val: File) => Promise<void> | void;
+}
+
+export const FileUploader: React.FC<FileUploaderProps> = ({
+  onFileChanges,
   value,
   ...props
 }) => {
@@ -32,17 +36,17 @@ export const FileUploader: React.FC<InputProps> = ({
   const startAnimation = () => console.log('hover');
   const stopAnimation = () => console.log();
 
-  const handleChange = (e: any) => {
+  const handleChange = async (e: any) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
-      onChange && onChange(e);
+      onFileChanges(e.target.files[0]);
     }
   };
 
   return (
     <>
       <Box height="fit-content" width="100%">
-        {value && file ? (
+        {file ? (
           <Stack direction="row" alignItems="center">
             <Image
               boxSize="30px"

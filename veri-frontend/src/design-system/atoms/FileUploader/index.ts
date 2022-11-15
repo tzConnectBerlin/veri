@@ -1,4 +1,1 @@
-export {
-  FileUploader,
-  FileUploader as default,
-} from '../FileUploader/FileUploader';
+export { FileUploader, FileUploader as default } from './FileUploader';
