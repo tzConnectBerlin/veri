@@ -21,16 +21,9 @@ export interface VeriDetailFormProps {
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const value = useContext(VeriContext);
-  const size = 1000;
 
   const handleFileChange = async (file: File) => {
-    console.log(file);
-    const { width, height } = await GetImageSize(file);
-    if (width > size || height > size) {
-      value.formik.handleError();
-    } else {
-      value.formik.setFieldValue('artwork', file.name);
-    }
+    value.formik.setFieldValue('artwork', file);
   };
 
   return (

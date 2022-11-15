@@ -28,6 +28,7 @@ export interface FileUploaderProps extends InputProps {
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({
+  onChange,
   onFileChanges,
   value,
   ...props
@@ -36,10 +37,11 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const startAnimation = () => console.log('hover');
   const stopAnimation = () => console.log();
 
-  const handleChange = async (e: any) => {
+  const handleChange = (e: any) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
       onFileChanges(e.target.files[0]);
+      onChange && onChange(e);
     }
   };
 
@@ -88,7 +90,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           onDragEnter={startAnimation}
           onDragLeave={stopAnimation}
           onChange={handleChange}
-          value={value}
           {...props}
         />
       </Box>
