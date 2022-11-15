@@ -52,6 +52,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
             onFileChanges={(val?: File) => handleFileChange(val)}
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
+            onError={value.formik.errors.artwork}
           />
           {!value.formik.values.artwork && (
             <FormHelperText>
