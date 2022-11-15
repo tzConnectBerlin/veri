@@ -11,9 +11,8 @@ import {
   Text,
   FormHelperText,
 } from '@chakra-ui/react';
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
-import { GetImageSize } from '../../../utils/general';
 import FileUploader from '../../atoms/FileUploader';
 
 export interface VeriDetailFormProps {
@@ -22,9 +21,12 @@ export interface VeriDetailFormProps {
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const value = useContext(VeriContext);
 
-  const handleFileChange = async (file: File) => {
-    value.formik.setFieldValue('artwork', file);
-  };
+  const handleFileChange = useCallback(
+    async (file?: File) => {
+      value.formik.setFieldValue('artwork', file ?? null);
+    },
+    [value.formik],
+  );
 
   return (
     <Box
@@ -47,8 +49,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
           <FileUploader
             name="artwork"
             aria-hidden="true"
-            value={value.formik.values.artwork}
-            onFileChanges={(val: File) => handleFileChange(val)}
+            onFileChanges={(val?: File) => handleFileChange(val)}
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
           />

@@ -24,7 +24,7 @@ const FileUploaderContainer = styled(Stack)`
 `;
 
 export interface FileUploaderProps extends InputProps {
-  onFileChanges: (val: File) => Promise<void> | void;
+  onFileChanges: (val?: File) => Promise<void> | void;
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({
@@ -33,7 +33,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   value,
   ...props
 }) => {
-  const [file, setFile] = useState<File>(value as any);
+  const [file, setFile] = useState<File | null>(value as any);
   const startAnimation = () => console.log('hover');
   const stopAnimation = () => console.log();
 
@@ -45,11 +45,21 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     }
   };
 
+  const handleDelete = () => {
+    setFile(null);
+    onFileChanges();
+  };
+
   return (
     <>
       <Box height="fit-content" width="100%">
         {file ? (
-          <Stack direction="row" alignItems="center">
+          <Stack
+            direction="row"
+            alignItems="center"
+            position="relative"
+            zIndex={1}
+          >
             <Image
               boxSize="30px"
               borderRadius="full"
@@ -58,7 +68,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
               alt=""
             />
             <Text as="span">{file.name}</Text>
-            <GrFormClose />
+            <Button onClick={handleDelete} variant="ghost">
+              <GrFormClose />
+            </Button>
           </Stack>
         ) : (
           <FileUploaderContainer

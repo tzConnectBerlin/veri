@@ -33,9 +33,10 @@ export const VeriFormPage = (): JSX.Element => {
       .required('This field is required'),
     artwork: Yup.mixed()
       .test('fileSize', 'The file is too large', async value => {
-        const { width, height } = await GetImageSize(value);
-        console.log(width);
-        if (width > size || height > size) return false;
+        if (value) {
+          const { width, height } = await GetImageSize(value);
+          if (width > size || height > size) return false;
+        }
         return true;
       })
       .required('This field is required'),
