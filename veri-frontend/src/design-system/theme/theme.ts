@@ -1,4 +1,8 @@
-import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+import {
+  defineStyleConfig,
+  extendTheme,
+  theme as base,
+} from '@chakra-ui/react';
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
 
 const styles = {
@@ -81,6 +85,10 @@ const theme = extendTheme({
   components: {
     Badge,
     Button,
+  },
+  fonts: {
+    heading: `'Inter-SemiBold', ${base.fonts?.heading}`,
+    body: `'Inter-regular', ${base.fonts?.body}`,
   },
 });
 export default theme;
