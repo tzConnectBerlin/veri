@@ -10,6 +10,7 @@ import {
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
+import { SUPPORTED_FORMATS } from '../../../Global';
 
 const FileUploaderContainer = styled(Stack)`
   position: relative;
@@ -54,6 +55,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       setFile(e.target.files[0]);
       onFileChanges(e.target.files[0]);
       onChange && onChange(e);
+      setIsDragged(false);
     }
   };
 
@@ -91,7 +93,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             alignItems="center"
             height="100%"
             className={`${isDragged ? 'isDragged' : undefined} ${
-              onError ? 'isError' : undefined
+              onError && !isDragged ? 'isError' : undefined
             }`}
           >
             <Text color="gray.500">
@@ -112,7 +114,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           left="0"
           opacity="0"
           aria-hidden="true"
-          accept=".JPG, .JPEC, .PNG, .GIF"
+          accept={SUPPORTED_FORMATS}
           cursor="pointer"
           onDragEnter={startAnimation}
           onDragLeave={stopAnimation}

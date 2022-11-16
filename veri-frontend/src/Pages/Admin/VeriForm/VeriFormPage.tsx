@@ -10,9 +10,9 @@ import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers, useFormik } from 'formik';
 import { motion } from 'framer-motion';
 import { GetImageSize } from '../../../utils/general';
+import { DIMENTION_SIZE, SUPPORTED_FORMATS } from '../../../Global';
 
 export const VeriFormPage = (): JSX.Element => {
-  const size = 1000;
   const EventDetailValues = {
     eventName: '',
     organizer: '',
@@ -35,7 +35,7 @@ export const VeriFormPage = (): JSX.Element => {
       .test('fileSize', 'The file is too large', async value => {
         if (value) {
           const { width, height } = await GetImageSize(value);
-          if (width > size || height > size) return false;
+          if (width > DIMENTION_SIZE || height > DIMENTION_SIZE) return false;
         }
         return true;
       })

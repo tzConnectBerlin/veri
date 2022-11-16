@@ -4,7 +4,6 @@ import {
   useColorModeValue,
   FormControl,
   FormLabel,
-  Input,
   FormErrorMessage,
   Heading,
   Textarea,
@@ -61,14 +60,6 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
               Circle shape. PNG or GIF format. 1000x1000 px.
             </FormHelperText>
           )}
-          {/* <Input
-            type="file"
-            name="artwork"
-            aria-hidden="true"
-            value={value.formik.values.artwork}
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
-          /> */}
           <FormErrorMessage>{value.formik.errors.artwork}</FormErrorMessage>
         </FormControl>
         <Stack>
