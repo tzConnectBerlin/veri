@@ -9,6 +9,8 @@ import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers, useFormik } from 'formik';
 import { motion } from 'framer-motion';
+import { GetImageSize } from '../../../utils/general';
+import { DIMENTION_SIZE, SUPPORTED_FORMATS } from '../../../Global';
 
 export const VeriFormPage = (): JSX.Element => {
   const EventDetailValues = {
@@ -18,7 +20,7 @@ export const VeriFormPage = (): JSX.Element => {
     eventDuration: undefined,
   };
   const VeriDetailValues = {
-    artwork: '',
+    artwork: undefined,
     description: '',
   };
 
@@ -29,7 +31,15 @@ export const VeriFormPage = (): JSX.Element => {
       .trim()
       .email('Should be a valid email')
       .required('This field is required'),
-    artwork: Yup.string().trim().required('This field is required'),
+    artwork: Yup.mixed()
+      .test('fileSize', 'The file is too large', async value => {
+        if (value) {
+          const { width, height } = await GetImageSize(value);
+          if (width > DIMENTION_SIZE || height > DIMENTION_SIZE) return false;
+        }
+        return true;
+      })
+      .required('This field is required'),
     description: Yup.string().trim().required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
     recipients: Yup.array().of(Yup.string()).min(1),

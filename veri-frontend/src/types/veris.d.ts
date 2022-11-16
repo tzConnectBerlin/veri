@@ -19,7 +19,7 @@ export interface VeriFormValues {
   organizer: string;
   organizerEmail: string;
   eventDuration?: 'Single' | 'multiday';
-  artwork: string;
+  artwork?: File;
   description: string;
   recipients: string[];
   distributionMethod?: 'QR-code' | 'Post-event';

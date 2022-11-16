@@ -4,14 +4,13 @@ import {
   useColorModeValue,
   FormControl,
   FormLabel,
-  Input,
   FormErrorMessage,
   Heading,
   Textarea,
   Text,
   FormHelperText,
 } from '@chakra-ui/react';
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
 import FileUploader from '../../atoms/FileUploader';
 
@@ -20,9 +19,13 @@ export interface VeriDetailFormProps {
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const value = useContext(VeriContext);
-  // const handleChange = (fn: any) => {
-  //   console.log(fn);
-  // };
+
+  const handleFileChange = useCallback(
+    async (file?: File) => {
+      value.formik.setFieldValue('artwork', file ?? null);
+    },
+    [value.formik],
+  );
 
   return (
     <Box
@@ -45,21 +48,18 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
           <FileUploader
             name="artwork"
             aria-hidden="true"
-            value={value.formik.values.artwork}
+            onFileChanges={(val?: File) => handleFileChange(val)}
             onChange={value.formik.handleChange}
             onBlur={value.formik.handleBlur}
+            onError={
+              value.formik.touched.artwork && !!value.formik.errors.artwork
+            }
           />
-          <FormHelperText>
-            Circle shape. PNG or GIF format. 1000x1000 px.
-          </FormHelperText>
-          {/* <Input
-            type="file"
-            name="artwork"
-            aria-hidden="true"
-            value={value.formik.values.artwork}
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
-          /> */}
+          {!value.formik.values.artwork && (
+            <FormHelperText>
+              Circle shape. PNG or GIF format. 1000x1000 px.
+            </FormHelperText>
+          )}
           <FormErrorMessage>{value.formik.errors.artwork}</FormErrorMessage>
         </FormControl>
         <Stack>
