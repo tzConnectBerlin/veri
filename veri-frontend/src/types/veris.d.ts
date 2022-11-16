@@ -20,7 +20,7 @@ export interface VeriFormValues {
   organizerEmail: string;
   eventDuration?: 'Single' | 'multiday';
   artwork?: File;
-  description: string;
+  description?: string;
   recipients: string[];
   distributionMethod?: 'QR-code' | 'Post-event';
   status: string;
@@ -39,7 +39,7 @@ export interface AddVeriType {
   event_end_date: string;
   artwork_name: string;
   artwork_description?: string;
-  artwork_file: File;
+  artwork_file: string;
   live_distribution: boolean;
   live_distribution_url: string;
   live_distribution_password: string;

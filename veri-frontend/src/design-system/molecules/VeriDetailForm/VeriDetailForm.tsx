@@ -9,6 +9,7 @@ import {
   Textarea,
   Text,
   FormHelperText,
+  Input,
 } from '@chakra-ui/react';
 import React, { useCallback, useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
@@ -18,13 +19,15 @@ export interface VeriDetailFormProps {
   title?: string;
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
-  const value = useContext(VeriContext);
+  const context = useContext(VeriContext);
 
   const handleFileChange = useCallback(
     async (file?: File) => {
-      value.formik.setFieldValue('artwork', file ?? null);
+      if (typeof file === 'object') {
+        context.formik.setFieldValue('artwork', file ?? null);
+      }
     },
-    [value.formik],
+    [context.formik],
   );
 
   return (
@@ -41,55 +44,57 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
         <FormControl
           isRequired
           isInvalid={
-            value.formik.touched.artwork && !!value.formik.errors.artwork
+            context.formik.touched.artwork && !!context.formik.errors.artwork
           }
         >
           <FormLabel>Artwork</FormLabel>
           <FileUploader
             name="artwork"
             aria-hidden="true"
+            value={context.formik.values.artwork}
             onFileChanges={(val?: File) => handleFileChange(val)}
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
+            onChange={context.formik.handleChange}
+            onBlur={context.formik.handleBlur}
             onError={
-              value.formik.touched.artwork && !!value.formik.errors.artwork
+              context.formik.touched.artwork && !!context.formik.errors.artwork
             }
           />
-          {!value.formik.values.artwork && (
+          {!context.formik.values.artwork && (
             <FormHelperText>
               Circle shape. PNG or GIF format. 1000x1000 px.
             </FormHelperText>
           )}
-          <FormErrorMessage>{value.formik.errors.artwork}</FormErrorMessage>
+          <FormErrorMessage>{context.formik.errors.artwork}</FormErrorMessage>
         </FormControl>
         <Stack>
           <FormLabel>Title</FormLabel>
           <Text display="flex">
             VERI -{' '}
-            {value.formik.values.eventName || (
+            {context.formik.values.eventName || (
               <Text color="gray.200" as="span" ml={1}>
                 Event Name
               </Text>
             )}
           </Text>
         </Stack>
+
         <FormControl
           isRequired
           isInvalid={
-            value.formik.touched.description &&
-            !!value.formik.errors.description
+            context.formik.touched.description &&
+            !!context.formik.errors.description
           }
         >
           <FormLabel>Description</FormLabel>
           <Textarea
             name="description"
-            value={value.formik.values.description}
-            size="sm"
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
-            borderRadius={6}
+            value={context.formik.values.description}
+            onChange={context.formik.handleChange}
+            onBlur={context.formik.handleBlur}
           />
-          <FormErrorMessage>{value.formik.errors.description}</FormErrorMessage>
+          <FormErrorMessage>
+            {context.formik.errors.description}
+          </FormErrorMessage>
         </FormControl>
       </Stack>
     </Box>
