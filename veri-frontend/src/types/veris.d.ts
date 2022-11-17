@@ -10,8 +10,9 @@ export interface EventDetailValues {
 }
 
 export interface VeriDetailValues {
-  artwork: string;
   description: string;
+  artwork?: File;
+  artworkName: string;
 }
 
 export interface VeriFormValues {
@@ -19,7 +20,8 @@ export interface VeriFormValues {
   organizer: string;
   organizerEmail: string;
   eventDuration?: 'Single' | 'multiday';
-  artwork?: File;
+  artworkName: string;
+  artworkFile?: File;
   description?: string;
   recipients: string[];
   distributionMethod?: 'QR-code' | 'Post-event';
@@ -35,11 +37,11 @@ export interface AddVeriType {
   event_description?: string;
   event_contact_email: string;
   event_type: 'Single' | 'multiday';
-  event_start_date: string;
-  event_end_date: string;
+  event_start_date: Date;
+  event_end_date: Date;
   artwork_name: string;
   artwork_description?: string;
-  artwork_file: string;
+  artwork_file: File;
   live_distribution: boolean;
   live_distribution_url: string;
   live_distribution_password: string;

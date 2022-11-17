@@ -23,7 +23,8 @@ export const VeriFormPage = (): JSX.Element => {
     eventDuration: undefined,
   };
   const VeriDetailValues = {
-    artwork: undefined,
+    artworkName: '',
+    artworkFile: undefined,
     description: '',
   };
 
@@ -37,19 +38,7 @@ export const VeriFormPage = (): JSX.Element => {
       .trim()
       .email('Should be a valid email')
       .required('This field is required'),
-    artwork: Yup.mixed()
-      .test('fileSize', 'The file is too large', async value => {
-        if (value) {
-          console.log(value);
-          if (value.size > DIMENTION_SIZE) return false;
-        }
-        // if (value) {
-        //   const { width, height } = await GetImageSize(value);
-        //   if (width > DIMENTION_SIZE || height > DIMENTION_SIZE) return false;
-        // }
-        return true;
-      })
-      .required('This field is required'),
+    artworkName: Yup.string().required('This field is required'),
   });
 
   const handleSubmit = useCallback(
