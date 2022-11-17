@@ -12,3 +12,7 @@ export const GetImageSize = (
     }
   });
 };
+
+export const MakeURL = (str: string) => {
+  return str.toLowerCase().replaceAll(' ', '-');
+};

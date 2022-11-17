@@ -9,7 +9,6 @@ import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers, useFormik } from 'formik';
 import { motion } from 'framer-motion';
-import { GetImageSize } from '../../../utils/general';
 import { DIMENTION_SIZE, SUPPORTED_FORMATS } from '../../../Global';
 import { useCallback } from 'react';
 import { MapVeriToServerValue } from '../../../utils/veri';
@@ -31,7 +30,7 @@ export const VeriFormPage = (): JSX.Element => {
   const validationSchema = Yup.object().shape({
     eventName: Yup.string().trim().required('This field is required'),
     organizer: Yup.string().trim().required('This field is required'),
-    description: Yup.string().required('This field is required'),
+    description: Yup.string().max(250).required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
     recipients: Yup.array().of(Yup.string()).min(1),
     organizerEmail: Yup.string()
@@ -62,6 +61,7 @@ export const VeriFormPage = (): JSX.Element => {
       ...VeriDetailValues,
       recipients: [''],
       distributionMethod: 'QR-code',
+      password: '',
       status: 'Draft',
     },
     validationSchema: validationSchema,

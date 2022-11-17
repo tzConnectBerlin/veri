@@ -1,4 +1,6 @@
+import { VERI_URL } from '../Global';
 import { VeriFormValues } from '../types/veris';
+import { MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
   const formData = new FormData();
@@ -16,8 +18,11 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
     'live_distribution',
     (veri.distributionMethod === 'QR-code' ? true : false).toString(),
   );
-  formData.append('live_distribution_url', '/test');
-  formData.append('live_distribution_password', 'test');
+  formData.append(
+    'live_distribution_url',
+    VERI_URL + '' + MakeURL(veri.eventName),
+  );
+  formData.append('live_distribution_password', veri.password ?? '');
   formData.append('status', veri.status);
   formData.append('recipients', veri.recipients.toString());
 
@@ -33,8 +38,8 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
   //   artwork_description: veri.description,
   //   artwork_file: veri.artworkFile,
   //   live_distribution: veri.distributionMethod === 'QR-code' ? true : false,
-  //   live_distribution_url: '/test',
-  //   live_distribution_password: 'test',
+  //   live_distribution_url: VERI_URL + '' + MakeURL(veri.eventName),
+  //   live_distribution_password: veri.password,
   //   status: veri.status,
   //   recipients: veri.recipients,
   // };

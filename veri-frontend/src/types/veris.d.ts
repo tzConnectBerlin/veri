@@ -25,6 +25,7 @@ export interface VeriFormValues {
   description?: string;
   recipients: string[];
   distributionMethod?: 'QR-code' | 'Post-event';
+  password?: string;
   status: string;
 }
 

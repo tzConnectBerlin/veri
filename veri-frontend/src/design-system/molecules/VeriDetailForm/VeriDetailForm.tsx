@@ -113,6 +113,10 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
             onChange={context.formik.handleChange}
             onBlur={context.formik.handleBlur}
           />
+          <FormHelperText>
+            Description of the event in past tense, typically including event
+            topic, organizers, location, and dates. Around 250 characters.
+          </FormHelperText>
           <FormErrorMessage>
             {context.formik.errors.description}
           </FormErrorMessage>
