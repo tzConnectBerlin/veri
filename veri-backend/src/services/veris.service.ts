@@ -52,6 +52,7 @@ class VeriService {
       .insert({
         ...veriData,
         file_id: createFileEntry.id,
+        thumb_id: createFileEntry.id,
         live_distribution_password: hashedPassword,
         created_by: user.id,
         updated_by: user.id,
@@ -86,6 +87,7 @@ class VeriService {
       .update({
         ...veriData,
         file_id: findVeri.file_id,
+        thumb_id: findVeri.file_id,
         updated_by: user.id,
       })
       .where('id', '=', veriId)
