@@ -80,10 +80,18 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
           <FormLabel>Event Duration</FormLabel>
           <RadioGroup name="eventDuration">
             <Stack>
-              <Radio value="Single" onChange={value.formik.handleChange}>
+              <Radio
+                value="Single"
+                checked={value.formik.values.eventDuration === 'Single'}
+                onChange={value.formik.handleChange}
+              >
                 Single Day
               </Radio>
-              <Radio value="multiday" onChange={value.formik.handleChange}>
+              <Radio
+                value="Multiday"
+                checked={value.formik.values.eventDuration === 'Multiday'}
+                onChange={value.formik.handleChange}
+              >
                 Multi Days
               </Radio>
             </Stack>
@@ -92,7 +100,25 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
             {value.formik.errors.eventDuration}
           </FormErrorMessage>
         </FormControl>
-        {value.formik.values.eventDuration === 'multiday' && (
+        <FormControl
+          isRequired
+          isInvalid={
+            value.formik.touched.eventStartDate &&
+            !!value.formik.errors.eventStartDate
+          }
+        >
+          <Input
+            type="range"
+            name="eventStartDate"
+            value={value.formik.values.eventStartDate}
+            onChange={value.formik.handleChange}
+            onBlur={value.formik.handleBlur}
+          />
+          <FormErrorMessage>
+            {value.formik.errors.eventStartDate}
+          </FormErrorMessage>
+        </FormControl>
+        {value.formik.values.eventDuration === 'Multiday' && (
           <Heading>Hello</Heading>
         )}
       </Stack>

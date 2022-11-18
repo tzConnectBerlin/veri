@@ -71,10 +71,10 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
             onFileChanges={handleFileChange}
             onChange={context.formik.handleChange}
             onBlur={context.formik.handleBlur}
-            onError={
+            isInvalid={
               context.formik.touched.artworkName &&
-              (!!context.formik.errors.artworkName ||
-                !!context.formik.errors.artworFile)
+              (Boolean(context.formik.errors.artworkName) ||
+                Boolean(context.formik.errors.artworkFile))
             }
           />
           {!context.formik.values.artworkName && (

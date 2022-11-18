@@ -3,23 +3,24 @@ import { VeriContext } from '../../../contexts/veri';
 import {
   VeriFormValues,
   VeriFormikType,
-  VeriStatus,
+  EventDetailValues,
 } from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers, useFormik } from 'formik';
 import { motion } from 'framer-motion';
-import { DIMENTION_SIZE, SUPPORTED_FORMATS } from '../../../Global';
 import { useCallback } from 'react';
 import { MapVeriToServerValue } from '../../../utils/veri';
 import { addVeri } from '../../../api/services/veriService';
 
 export const VeriFormPage = (): JSX.Element => {
-  const EventDetailValues = {
+  const EventDetailValues: EventDetailValues = {
     eventName: '',
     organizer: '',
     organizerEmail: '',
-    eventDuration: undefined,
+    eventDuration: 'Single',
+    eventStartDate: '',
+    eventEndDate: '',
   };
   const VeriDetailValues = {
     artworkName: '',
