@@ -3,56 +3,58 @@ import { VeriContext } from '../../../contexts/veri';
 import {
   VeriFormValues,
   VeriFormikType,
-  VeriStatus,
+  EventDetailValues,
 } from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers, useFormik } from 'formik';
 import { motion } from 'framer-motion';
-import { GetImageSize } from '../../../utils/general';
-import { DIMENTION_SIZE, SUPPORTED_FORMATS } from '../../../Global';
+import { useCallback } from 'react';
+import { MapVeriToServerValue } from '../../../utils/veri';
+import { addVeri } from '../../../api/services/veriService';
 
 export const VeriFormPage = (): JSX.Element => {
-  const EventDetailValues = {
+  const EventDetailValues: EventDetailValues = {
     eventName: '',
     organizer: '',
     organizerEmail: '',
-    eventDuration: undefined,
+    eventDuration: 'Single',
+    eventStartDate: '',
+    eventEndDate: '',
   };
   const VeriDetailValues = {
-    artwork: undefined,
+    artworkName: '',
+    artworkFile: undefined,
     description: '',
   };
 
   const validationSchema = Yup.object().shape({
     eventName: Yup.string().trim().required('This field is required'),
     organizer: Yup.string().trim().required('This field is required'),
+    description: Yup.string().max(250).required('This field is required'),
+    distributionMethod: Yup.string().trim().required('This field is required'),
+    recipients: Yup.array().of(Yup.string()).min(1),
     organizerEmail: Yup.string()
       .trim()
       .email('Should be a valid email')
       .required('This field is required'),
-    artwork: Yup.mixed()
-      .test('fileSize', 'The file is too large', async value => {
-        if (value) {
-          const { width, height } = await GetImageSize(value);
-          if (width > DIMENTION_SIZE || height > DIMENTION_SIZE) return false;
-        }
-        return true;
-      })
-      .required('This field is required'),
-    description: Yup.string().trim().required('This field is required'),
-    distributionMethod: Yup.string().trim().required('This field is required'),
-    recipients: Yup.array().of(Yup.string()).min(1),
+    artworkName: Yup.string().required('This field is required'),
   });
 
-  const handleSubmit = (
-    values: VeriFormValues,
-    actions: FormikHelpers<VeriFormValues>,
-  ) => {
-    console.log('hi');
-    console.log(values);
-    actions.resetForm();
-  };
+  const handleSubmit = useCallback(
+    (values: VeriFormValues, actions: FormikHelpers<VeriFormValues>) => {
+      try {
+        const body = MapVeriToServerValue(values);
+        addVeri(body)
+          .then(res => console.log(res))
+          .catch(e => console.error(e));
+        actions.resetForm();
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [],
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -60,6 +62,7 @@ export const VeriFormPage = (): JSX.Element => {
       ...VeriDetailValues,
       recipients: [''],
       distributionMethod: 'QR-code',
+      password: '',
       status: 'Draft',
     },
     validationSchema: validationSchema,

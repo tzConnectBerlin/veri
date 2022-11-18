@@ -8,11 +8,10 @@ export const getVeris = () => {
 };
 
 export const addVeri = (body: any) => {
-  return axios.post(
-    `${BASE_URL}/veris`,
-    { body },
-    {
-      withCredentials: true,
+  return axios.post(`${BASE_URL}/veris`, body, {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-  );
+  });
 };

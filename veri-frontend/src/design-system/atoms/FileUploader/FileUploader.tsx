@@ -41,7 +41,7 @@ export interface FileUploaderProps extends InputProps {
 export const FileUploader: React.FC<FileUploaderProps> = ({
   onChange,
   onFileChanges,
-  onError,
+  isInvalid,
   value,
   ...props
 }) => {
@@ -93,7 +93,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             alignItems="center"
             height="100%"
             className={`${isDragged ? 'isDragged' : undefined} ${
-              onError && !isDragged ? 'isError' : undefined
+              isInvalid && !isDragged ? 'isError' : undefined
             }`}
           >
             <Text color="gray.500">

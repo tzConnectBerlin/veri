@@ -1,5 +1,5 @@
 import { Button, Stack, Box } from '@chakra-ui/react';
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import { VeriContext } from '../../../contexts/veri';
 import { IoMdSave, IoMdCloudUpload, IoMdSend } from 'react-icons/io';
 import { DistributionMethodForm } from '../../molecules/DistributionMethodForm';
@@ -9,10 +9,14 @@ import { VeriDetailForm } from '../../molecules/VeriDetailForm';
 
 export const AddVeri = () => {
   const context = useContext(VeriContext);
-  const handleSubmit = (status: string, e: any) => {
-    context.formik.values.status = status;
-    context.formik.handleSubmit(e);
-  };
+
+  const handleDifferentSubmit = useCallback(
+    (status: string) => {
+      context.formik.setFieldValue('status', status);
+      context.formik.handleSubmit();
+    },
+    [context.formik],
+  );
 
   return (
     <form>
@@ -28,26 +32,35 @@ export const AddVeri = () => {
         <Box>
           <Stack spacing={4} width={80} mx="auto">
             <Button
-              type="submit"
               colorScheme="primary"
+              isDisabled={
+                context.formik.isSubmitting ||
+                !(context.formik.isValid && context.formik.dirty)
+              }
               leftIcon={<IoMdSave />}
-              onClick={e => handleSubmit('Draft', e)}
+              onClick={() => handleDifferentSubmit('Draft')}
             >
               Save Draft
             </Button>
             <Button
-              type="submit"
               variant="secondary"
+              isDisabled={
+                context.formik.isSubmitting ||
+                !(context.formik.isValid && context.formik.dirty)
+              }
               leftIcon={<IoMdCloudUpload />}
-              onClick={e => handleSubmit('Created', e)}
+              onClick={() => handleDifferentSubmit('Created')}
             >
               Create VERI
             </Button>
             <Button
-              type="submit"
               variant="secondary"
+              isDisabled={
+                context.formik.isSubmitting ||
+                !(context.formik.isValid && context.formik.dirty)
+              }
               leftIcon={<IoMdSend />}
-              onClick={e => handleSubmit('Minting', e)}
+              onClick={() => handleDifferentSubmit('Minting')}
             >
               Create & Mint VERIs
             </Button>
