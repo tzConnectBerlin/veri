@@ -1,7 +1,7 @@
 import { Badge } from '@chakra-ui/react';
 import { row } from '../design-system/atoms/DataTable/DataTable';
 import { BASE_URL, VERI_URL } from '../Global';
-import { VeriFormValues, VeriType } from '../types/veris';
+import { VeriFormValues } from '../types/veris';
 import { getDisplayTimeRange, MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
@@ -53,17 +53,31 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
   // };
 };
 
-export const MapVerisToDataTable = (veris: VeriType[]): row[] => {
+const _arrayBufferToBase64 = (buffer: any) => {
+  let binary = '';
+  const bytes = [].slice.call(new Uint8Array(buffer));
+  console.log(bytes);
+  bytes.forEach(b => (binary += String.fromCharCode(b)));
+  return window.btoa(binary);
+};
+
+export const MapVerisToDataTable = (veris: any): row[] => {
   console.log(veris);
 
-  const newVeris = veris.map(veri => {
+  const newVeris = veris.map((veri: any) => {
+    // const blob = new Blob([BASE_URL + '/' + veri.file.filename], {
+    //   type: veri.file.mimetype,
+    // });
+    // const imageUrl = URL.createObjectURL(blob);
+    const base64Flag = `data:${veri.file.mimetype};base64,`;
+    const base64ImgUrl = _arrayBufferToBase64(veri.file.filename);
     return {
       cols: [
         {
           field: 'img',
           value: (
             <img
-              src={`${BASE_URL}/${veri.artwork_name}`}
+              src={base64Flag + base64ImgUrl}
               alt={veri.artwork_description}
             />
           ),
