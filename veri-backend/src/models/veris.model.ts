@@ -15,6 +15,7 @@ export class Veris extends Model implements Veri {
   live_distribution_url: string;
   live_distribution_password: string;
   file_id: number;
+  thumb_id: number;
   created_by: number;
   updated_by: number;
   status!: string;
