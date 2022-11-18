@@ -108,7 +108,7 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
           }
         >
           <Input
-            type="range"
+            type="datetime-local"
             name="eventStartDate"
             value={value.formik.values.eventStartDate}
             onChange={value.formik.handleChange}

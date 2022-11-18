@@ -5,12 +5,18 @@ import { MakeURL } from './general';
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
   const formData = new FormData();
 
+  const startDate = new Date(veri.eventStartDate).toISOString();
+  const endDate =
+    veri.eventDuration === 'Single'
+      ? startDate
+      : new Date(veri.eventStartDate).toISOString();
+
   formData.append('event_name', veri.eventName);
   formData.append('event_description', veri.description ?? '');
   formData.append('event_contact_email', veri.organizerEmail);
   formData.append('event_type', veri.eventDuration?.toString() ?? '');
-  formData.append('event_start_date', new Date().toISOString());
-  formData.append('event_end_date', new Date().toISOString());
+  formData.append('event_start_date', startDate);
+  formData.append('event_end_date', endDate);
   formData.append('artwork_name', veri.artworkFile?.name ?? '');
   formData.append('artwork_description', veri.description ?? '');
   formData.append('artwork_file', veri.artworkFile ?? '');

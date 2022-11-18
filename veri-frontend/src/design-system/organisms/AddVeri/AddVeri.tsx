@@ -27,12 +27,16 @@ export const AddVeri = () => {
         {context.formik.values.distributionMethod === 'Post-event' && (
           <RecipientsForm title="Recipients" />
         )}
-        {/* <>{JSON.stringify(context.formik.values)}</> */}
+        <>{JSON.stringify(context.formik.values)}</>
 
         <Box>
           <Stack spacing={4} width={80} mx="auto">
             <Button
               colorScheme="primary"
+              isDisabled={
+                context.formik.isSubmitting ||
+                !(context.formik.isValid && context.formik.dirty)
+              }
               leftIcon={<IoMdSave />}
               onClick={() => handleDifferentSubmit('Draft')}
             >
@@ -40,6 +44,10 @@ export const AddVeri = () => {
             </Button>
             <Button
               variant="secondary"
+              isDisabled={
+                context.formik.isSubmitting ||
+                !(context.formik.isValid && context.formik.dirty)
+              }
               leftIcon={<IoMdCloudUpload />}
               onClick={() => handleDifferentSubmit('Created')}
             >
@@ -47,6 +55,10 @@ export const AddVeri = () => {
             </Button>
             <Button
               variant="secondary"
+              isDisabled={
+                context.formik.isSubmitting ||
+                !(context.formik.isValid && context.formik.dirty)
+              }
               leftIcon={<IoMdSend />}
               onClick={() => handleDifferentSubmit('Minting')}
             >

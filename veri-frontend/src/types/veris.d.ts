@@ -7,26 +7,17 @@ export interface EventDetailValues {
   organizer: string;
   organizerEmail: string;
   eventDuration: 'Single' | 'Multiday';
-  eventStartDate?: string;
-  eventEndDate?: string;
+  eventStartDate: string;
+  eventEndDate: string;
 }
 
 export interface VeriDetailValues {
-  description: string;
-  artwork?: File;
+  description?: string;
+  artworkFile?: File;
   artworkName: string;
 }
 
-export interface VeriFormValues {
-  eventName: string;
-  organizer: string;
-  organizerEmail: string;
-  eventDuration: 'Single' | 'Multiday';
-  eventStartDate?: string;
-  eventEndDate?: string;
-  artworkName: string;
-  artworkFile?: File;
-  description?: string;
+export interface VeriFormValues extends EventDetailValues, VeriDetailValues {
   recipients: string[];
   distributionMethod?: 'QR-code' | 'Post-event';
   password?: string;
