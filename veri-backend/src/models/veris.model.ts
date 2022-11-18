@@ -20,6 +20,7 @@ export class Veris extends Model implements Veri {
   updated_by: number;
   status!: string;
   recipients: string[];
+  file?: object;
 
   static tableName = 'veris'; // database table name
   static idColumn = 'id'; // id column name
