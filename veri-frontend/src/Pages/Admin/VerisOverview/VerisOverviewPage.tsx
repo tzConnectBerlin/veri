@@ -1,100 +1,35 @@
-import { Badge, Button, Circle, Heading, HStack } from '@chakra-ui/react';
+import { Button, Heading, HStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getVeris } from '../../../api/services/veriService';
-import {
-  DataTable,
-  DataTableProps,
-} from '../../../design-system/atoms/DataTable';
+import { DataTable } from '../../../design-system/atoms/DataTable';
+import { row } from '../../../design-system/atoms/DataTable/DataTable';
 import { Wrapper } from '../../../design-system/atoms/Wrapper';
+import { MapVerisToDataTable } from '../../../utils/veri';
 
-const SamleData: DataTableProps = {
-  header: [
-    { field: 'img', value: 'Image' },
-    { field: 'event_name', value: 'Event Name' },
-    { field: 'organizer', value: 'Organizer' },
-    {
-      field: 'mint_date',
-      value: 'Mint Date',
-    },
-    { field: 'status', value: 'Status', sortable: true },
-  ],
-  rows: [
-    {
-      cols: [
-        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
-        { field: 'event_name', value: 'Event1' },
-        { field: 'organizer', value: 'Organizer1' },
-        {
-          field: 'mint_date',
-          value: '21 Nov 2022',
-        },
-        {
-          field: 'status',
-          value: <Badge variant="draft">Draft</Badge>,
-          sortable: true,
-        },
-      ],
-    },
-    {
-      cols: [
-        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
-        { field: 'event_name', value: 'Event1' },
-        { field: 'organizer', value: 'Organizer1' },
-        {
-          field: 'mint_date',
-          value: '21 Nov 2022',
-        },
-        {
-          field: 'status',
-          value: <Badge variant="created">Created</Badge>,
-          sortable: true,
-        },
-      ],
-    },
-    {
-      cols: [
-        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
-        { field: 'event_name', value: 'Event1' },
-        { field: 'organizer', value: 'Organizer1' },
-        {
-          field: 'mint_date',
-          value: '21 Nov 2022',
-        },
-        {
-          field: 'status',
-          value: <Badge variant="minting">Minting</Badge>,
-          sortable: true,
-        },
-      ],
-    },
-    {
-      cols: [
-        { field: 'img', value: <Circle size="40px" bg="primary.50" /> },
-        { field: 'event_name', value: 'Event1' },
-        { field: 'organizer', value: 'Organizer1' },
-        {
-          field: 'mint_date',
-          value: '21 Nov 2022',
-        },
-        {
-          field: 'status',
-          value: <Badge variant="minted">Minted</Badge>,
-          sortable: true,
-        },
-      ],
-    },
-  ],
-};
+const header = [
+  { field: 'img', value: 'Image' },
+  { field: 'event_name', value: 'Event Name' },
+  { field: 'organizer', value: 'Organizer' },
+  {
+    field: 'mint_date',
+    value: 'Mint Date',
+  },
+  { field: 'status', value: 'Status', sortable: true },
+];
 
 export const VerisOverviewPage = (): JSX.Element => {
+  const [veriList, setVeriList] = useState<row[]>();
   const navigate = useNavigate();
   React.useEffect(() => {
     getVeris()
-      .then(res => console.log(res.data))
+      .then(res => {
+        setVeriList(() => MapVerisToDataTable(res.data.data));
+      })
       .catch(err => console.log(err));
   }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -108,7 +43,9 @@ export const VerisOverviewPage = (): JSX.Element => {
         </Button>
       </HStack>
       <Wrapper>
-        <DataTable {...SamleData} />
+        {veriList && veriList.length > 0 && (
+          <DataTable header={header} rows={veriList} />
+        )}
       </Wrapper>
     </motion.div>
   );

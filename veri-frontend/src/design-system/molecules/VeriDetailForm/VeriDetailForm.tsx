@@ -9,9 +9,8 @@ import {
   Textarea,
   Text,
   FormHelperText,
-  Input,
 } from '@chakra-ui/react';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { VeriContext } from '../../../contexts/veri';
 import { DIMENTION_SIZE } from '../../../Global';
 import { GetImageSize } from '../../../utils/general';
@@ -24,14 +23,6 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const context = useContext(VeriContext);
   const [fileIsLarge, setFileIsLarge] = useState(false);
 
-  // const handleFileChange = useCallback(
-  //   async (file?: File) => {
-  //     if (typeof file === 'object') {
-  //       context.formik.setFieldValue('artwork', file ?? null);
-  //     }
-  //   },
-  //   [context.formik],
-  // );
   const handleFileChange = async (file: any) => {
     if (file) {
       context.formik.setFieldValue('artworkName', file.name);

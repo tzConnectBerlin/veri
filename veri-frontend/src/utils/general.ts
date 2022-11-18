@@ -16,3 +16,30 @@ export const GetImageSize = (
 export const MakeURL = (str: string) => {
   return str.toLowerCase().replaceAll(' ', '-');
 };
+
+export const getDisplayTimeRange = (startDate: Date, endDate: Date): string => {
+  const locales = 'en-GB';
+  const fullOption: any = { year: 'numeric', month: 'short', day: 'numeric' };
+  const noYearOption: any = { month: 'short', day: 'numeric' };
+  const noMonthOption: any = { day: 'numeric' };
+
+  if (startDate.getFullYear() === endDate.getFullYear()) {
+    if (startDate.getMonth() === endDate.getMonth()) {
+      if (startDate.getDay() === endDate.getDay()) {
+        return startDate.toLocaleDateString(locales, fullOption);
+      }
+      return `${startDate.toLocaleDateString(
+        locales,
+        noMonthOption,
+      )} - ${endDate.toLocaleDateString(locales, fullOption)}`;
+    }
+    return `${startDate.toLocaleDateString(
+      locales,
+      noYearOption,
+    )} - ${endDate.toLocaleDateString(locales, fullOption)}`;
+  }
+  return `${startDate.toLocaleDateString(
+    locales,
+    fullOption,
+  )} - ${endDate.toLocaleDateString(locales, fullOption)}`;
+};

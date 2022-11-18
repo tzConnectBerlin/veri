@@ -1,6 +1,8 @@
-import { VERI_URL } from '../Global';
-import { VeriFormValues } from '../types/veris';
-import { MakeURL } from './general';
+import { Badge } from '@chakra-ui/react';
+import { row } from '../design-system/atoms/DataTable/DataTable';
+import { BASE_URL, VERI_URL } from '../Global';
+import { VeriFormValues, VeriType } from '../types/veris';
+import { getDisplayTimeRange, MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
   const formData = new FormData();
@@ -49,4 +51,53 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
   //   status: veri.status,
   //   recipients: veri.recipients,
   // };
+};
+
+export const MapVerisToDataTable = (veris: VeriType[]): row[] => {
+  console.log(veris);
+
+  const newVeris = veris.map(veri => {
+    return {
+      cols: [
+        {
+          field: 'img',
+          value: (
+            <img
+              src={`${BASE_URL}/${veri.artwork_name}`}
+              alt={veri.artwork_description}
+            />
+          ),
+        },
+        { field: 'event_name', value: veri.event_name },
+        { field: 'organizer', value: veri.event_contact_email },
+        {
+          field: 'mint_date',
+          value: getDisplayTimeRange(
+            new Date(veri.event_start_date),
+            new Date(veri.event_end_date),
+          ),
+        },
+        {
+          field: 'status',
+          value: (
+            <Badge variant={veri.status.toLowerCase()}>{veri.status}</Badge>
+          ),
+          sortable: true,
+        },
+      ],
+    };
+  });
+  return newVeris;
+};
+
+export const GetDistributionMethodString = (
+  isLive: boolean,
+): 'QR-code' | 'Post-event' => {
+  return isLive ? 'QR-code' : 'Post-event';
+};
+
+export const GetDistributionMethodBoolean = (
+  isLive: 'QR-code' | 'Post-event',
+): boolean => {
+  return isLive === 'QR-code' ? true : false;
 };

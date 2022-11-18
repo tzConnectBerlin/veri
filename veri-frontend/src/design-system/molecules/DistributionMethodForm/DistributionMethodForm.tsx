@@ -11,7 +11,6 @@ import {
   Text,
   Input,
 } from '@chakra-ui/react';
-import { useFormik } from 'formik';
 import React, { useContext } from 'react';
 import { VeriContext } from '../../../contexts/veri';
 import { VERI_URL } from '../../../Global';

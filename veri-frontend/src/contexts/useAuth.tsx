@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as authService from '../api/services/authService';
 import * as userService from '../api/services/userService';
 import { User, Login, SignUp, AuthContextType } from '../types';
@@ -24,11 +24,11 @@ export function AuthProvider({
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   useEffect(() => {
     if (error) setError(null);
-  }, [location.pathname]);
+  }, [error]);
 
   useEffect(() => {
     (async () => {
@@ -92,7 +92,7 @@ export function AuthProvider({
       signUp,
       logout,
     }),
-    [user, loading, error],
+    [user, loading, error, signUp],
   );
 
   return (

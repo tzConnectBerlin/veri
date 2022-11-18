@@ -28,7 +28,7 @@ export interface VeriFormikType {
   formik: FormikProps<VeriFormValues>;
 }
 
-export interface AddVeriType {
+export interface VeriType {
   event_name: string;
   event_description?: string;
   event_contact_email: string;
@@ -43,4 +43,6 @@ export interface AddVeriType {
   live_distribution_password: string;
   status: string;
   recipients: string[];
+  updated_at?: string;
+  updated_by?: number;
 }

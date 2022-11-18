@@ -21,7 +21,7 @@ interface column {
   sortable?: boolean;
 }
 
-interface row {
+export interface row {
   cols: column[];
   action?: () => void;
 }
