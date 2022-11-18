@@ -43,7 +43,7 @@ jobs:
       with:
         node-version: "18"
         cache: npm
-        cache-dependency-path: veri-backend/package-lock.json
+        cache-dependency-path: "**/package-lock.json"
     - name: Test frontend individual
       working-directory: veri-frontend
       run: npm install && npm run test
