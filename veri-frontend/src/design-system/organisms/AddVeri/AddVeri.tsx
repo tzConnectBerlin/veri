@@ -27,7 +27,7 @@ export const AddVeri = () => {
         {context.formik.values.distributionMethod === 'Post-event' && (
           <RecipientsForm title="Recipients" />
         )}
-        <>{JSON.stringify(context.formik.values)}</>
+        {/* <>{JSON.stringify(context.formik.values)}</> */}
 
         <Box>
           <Stack spacing={4} width={80} mx="auto">
