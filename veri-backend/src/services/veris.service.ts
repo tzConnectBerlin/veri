@@ -7,19 +7,24 @@ import { Veris } from '../models/veris.model';
 import { isEmpty } from '../utils/util';
 import { CreateFileDto } from '@/dtos/files.dto';
 import { User } from '@/interfaces/users.interface';
-import { SECRET_KEY } from '@config';
-import { hash, compare } from 'bcryptjs';
+import { hash } from 'bcryptjs';
+import { print } from '@swc/core';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
     const veris: Veri[] = await Veris.query().select().from('veris');
+    const result: Veri[] = [];
+    for (const veri of veris) {
+      const findFile: File = await Files.query().findById(veri.file_id);
+      veri.file = findFile;
+      result.push(veri);
+    }
     return veris;
   }
 
   public async findVeriById(veriId: number): Promise<Veri> {
     const findVeri: Veri = await Veris.query().findById(veriId);
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
-
     return findVeri;
   }
 
