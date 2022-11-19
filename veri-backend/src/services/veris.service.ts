@@ -8,7 +8,6 @@ import { isEmpty } from '../utils/util';
 import { CreateFileDto } from '@/dtos/files.dto';
 import { User } from '@/interfaces/users.interface';
 import { hash } from 'bcryptjs';
-import { print } from '@swc/core';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {

@@ -10,12 +10,12 @@ const fileMiddleware = async (
   next: NextFunction
 ) => {
   const upload = multer({
-    dest: 'uploads/',
+    storage: storage,
     limits: {
       fields: 13,
       fieldNameSize: 50,
       fieldSize: 20000,
-      fileSize: 64000,
+      fileSize: 6400000,
     },
     fileFilter: (_req, file, cb) => {
       isValid(file, cb);
@@ -23,6 +23,7 @@ const fileMiddleware = async (
   }).single('artwork_file');
   upload(req, res, (error) => {
     if (error instanceof multer.MulterError) {
+      console.log(error);
       next(new HttpException(500, 'File upload error'));
     } else if (error) {
       next(new HttpException(400, 'Please check file type and try again'));
@@ -30,6 +31,19 @@ const fileMiddleware = async (
     next();
   });
 };
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)
+    );
+  },
+});
 
 const isValid = (file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const filetypes = /jpeg|jpg|png|gif/;
