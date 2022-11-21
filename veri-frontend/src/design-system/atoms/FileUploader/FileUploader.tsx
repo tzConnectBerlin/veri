@@ -45,6 +45,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   value,
   ...props
 }) => {
+  console.log(value);
   const [file, setFile] = useState<File | null>(value as any);
   const [isDragged, setIsDragged] = useState(false);
   const startAnimation = () => setIsDragged(true);

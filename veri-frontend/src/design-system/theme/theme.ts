@@ -60,6 +60,11 @@ const Badge = defineStyleConfig({
   },
 });
 const Button = defineStyleConfig({
+  baseStyle: {
+    _focus: {
+      boxShadow: 'none',
+    },
+  },
   variants: {
     icon: {
       bg: 'transparent',

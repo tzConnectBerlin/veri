@@ -14,12 +14,10 @@ import * as Yup from 'yup';
 import { Login } from '../../types';
 import useAuth from '../../contexts/useAuth';
 import { useState } from 'react';
-import { useToast } from '@chakra-ui/react';
 
 export const LoginPage = () => {
   const { login } = useAuth();
   const [isLoading, setisLoading] = useState(false);
-  const toast = useToast();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()

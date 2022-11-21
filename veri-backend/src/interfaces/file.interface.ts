@@ -8,4 +8,5 @@ export interface File {
   filename: string;
   path: string;
   size: number;
+  data?: string;
 }

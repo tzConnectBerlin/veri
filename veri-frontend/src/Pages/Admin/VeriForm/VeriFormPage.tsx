@@ -1,4 +1,4 @@
-import { Container, Heading, Stack } from '@chakra-ui/react';
+import { Container, Heading, Stack, useToast } from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
 import {
   VeriFormValues,
@@ -14,6 +14,7 @@ import { MapVeriToServerValue } from '../../../utils/veri';
 import { addVeri } from '../../../api/services/veriService';
 
 export const VeriFormPage = (): JSX.Element => {
+  const toast = useToast();
   const EventDetailValues: EventDetailValues = {
     eventName: '',
     organizer: '',
@@ -46,14 +47,39 @@ export const VeriFormPage = (): JSX.Element => {
       try {
         const body = MapVeriToServerValue(values);
         addVeri(body)
-          .then(res => console.log(res))
-          .catch(e => console.error(e));
+          .then(res => {
+            toast({
+              title: `Veri ${values.status}`,
+              description: 'View on the list',
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+            });
+            console.log(res);
+          })
+          .catch(e => {
+            toast({
+              title: 'Something went wrong.',
+              description: 'Try again later.',
+              status: 'error',
+              duration: 9000,
+              isClosable: true,
+            });
+            console.error(e);
+          });
         actions.resetForm();
       } catch (err) {
         console.error(err);
+        toast({
+          title: 'Something went wrong.',
+          description: 'Try again later.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
       }
     },
-    [],
+    [toast],
   );
 
   const formik = useFormik({
@@ -61,7 +87,7 @@ export const VeriFormPage = (): JSX.Element => {
       ...EventDetailValues,
       ...VeriDetailValues,
       recipients: [''],
-      distributionMethod: 'QR-code',
+      distributionMethod: 'Post-event',
       password: '',
       status: 'Draft',
     },
