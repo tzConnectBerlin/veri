@@ -67,6 +67,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
               (Boolean(context.formik.errors.artworkName) ||
                 Boolean(context.formik.errors.artworkFile))
             }
+            value={context.formik.values.artworkName}
           />
           {!context.formik.values.artworkName && (
             <FormHelperText>

@@ -43,7 +43,10 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
           }
         >
           <FormLabel>Distribution Method</FormLabel>
-          <RadioGroup name="distributionMethod">
+          <RadioGroup
+            name="distributionMethod"
+            value={value.formik.values.distributionMethod}
+          >
             <Stack>
               <Radio value="QR-code" onChange={value.formik.handleChange}>
                 Wallet QR code scanner
