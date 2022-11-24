@@ -31,10 +31,10 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
       boxShadow={'lg'}
       p={8}
     >
-      <Heading fontSize={'xl'} mb={4}>
+      <Heading fontSize={'xl'} mb={10}>
         {title}
       </Heading>
-      <Stack spacing={6}>
+      <Stack spacing={10}>
         <FormControl
           isRequired
           isInvalid={

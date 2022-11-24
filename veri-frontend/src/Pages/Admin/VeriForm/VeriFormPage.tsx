@@ -66,6 +66,7 @@ export const VeriFormPage = (): JSX.Element => {
               duration: 9000,
               isClosable: true,
             });
+            navigate('/admin');
             console.log(res);
           })
           .catch(e => {
@@ -90,17 +91,33 @@ export const VeriFormPage = (): JSX.Element => {
         });
       }
     },
-    [toast],
+    [navigate, toast],
   );
 
   const handleDelete = useCallback(() => {
     deleteVeriById(Number(id))
       .then(res => {
         console.log(res);
+        toast({
+          title: `Veri`,
+          description: 'Successfully Deleted',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
         navigate('/admin');
       })
-      .catch(err => console.warn(err));
-  }, [id, navigate]);
+      .catch(err => {
+        console.warn(err);
+        toast({
+          title: 'Something went wrong.',
+          description: 'Try again later.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      });
+  }, [id, navigate, toast]);
 
   const InitialValues: VeriFormValues = useMemo(() => {
     const EventDetailValues: EventDetailValues = {
@@ -154,7 +171,9 @@ export const VeriFormPage = (): JSX.Element => {
     >
       <Container maxW="2xl">
         <Stack justifyContent="space-between">
-          <Heading mb={10}>Create New VERI</Heading>
+          <Heading mb={10}>
+            {type === 'Add' ? 'Create New VERI' : veri.eventName + ' Veri'}
+          </Heading>
           <VeriContext.Provider value={veriDefaultValue}>
             <AddVeri />
           </VeriContext.Provider>

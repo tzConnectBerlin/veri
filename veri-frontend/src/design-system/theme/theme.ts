@@ -1,7 +1,9 @@
 import {
+  ComponentStyleConfig,
   defineStyleConfig,
   extendTheme,
   theme as base,
+  withDefaultColorScheme,
 } from '@chakra-ui/react';
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
 
@@ -12,7 +14,7 @@ const styles = {
     },
     body: {
       bg: mode('#FFF', '#000')(props),
-      color: '#000',
+      color: 'gray.700',
     },
   }),
 };
@@ -81,19 +83,70 @@ const Button = defineStyleConfig({
       borderWidth: 1,
       borderColor: 'primary.100',
     },
+    link: {
+      fontWeight: 'normal',
+    },
   },
 });
 
-const theme = extendTheme({
-  styles,
-  colors,
-  components: {
-    Badge,
-    Button,
-  },
-  fonts: {
-    heading: `'Inter-SemiBold', ${base.fonts?.heading}`,
-    body: `'Inter-regular', ${base.fonts?.body}`,
+const Input = defineStyleConfig({
+  baseStyle: {
+    _readOnly: {
+      borderColor: 'red !important',
+      boxShadow: 'none !important',
+      padding: 0,
+      height: 'auto',
+    },
   },
 });
+
+const FormControl = defineStyleConfig({
+  baseStyle: {
+    _readOnly: {
+      input: {
+        backgroundColor: 'red',
+      },
+    },
+  },
+});
+
+const FormLabel = defineStyleConfig({
+  baseStyle: {
+    fontSize: '12px',
+    fontWeight: 'bold',
+    lineHeight: 1.33,
+    letterSpacing: '0.6px',
+    color: 'gray.600',
+    textTransform: 'uppercase',
+    span: {
+      color: 'gray.600',
+      marginLeft: '1px',
+      marginBottom: '-2px',
+    },
+    _readOnly: {
+      span: {
+        display: 'none',
+      },
+    },
+  },
+});
+
+const theme = extendTheme(
+  {
+    styles,
+    colors,
+    components: {
+      Badge,
+      Button,
+      Input,
+      FormLabel,
+      FormControl,
+    },
+    fonts: {
+      heading: `'Inter-SemiBold', ${base.fonts?.heading}`,
+      body: `'Inter-regular', ${base.fonts?.body}`,
+    },
+  },
+  withDefaultColorScheme({ colorScheme: 'primary' }),
+);
 export default theme;

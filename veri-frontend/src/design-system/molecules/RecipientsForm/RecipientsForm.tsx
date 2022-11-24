@@ -28,7 +28,7 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
       boxShadow={'lg'}
       p={8}
     >
-      <Heading fontSize={'xl'} mb={4}>
+      <Heading fontSize={'xl'} mb={10}>
         {title}
       </Heading>
       <FormikProvider value={value.formik}>
@@ -57,7 +57,7 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
                           <InputRightElement width="3rem">
                             <Button
                               size="md"
-                              variant="ghost"
+                              variant="icon"
                               onClick={() => arrayHelper.remove(index)}
                             >
                               <MdDelete />
@@ -69,8 +69,8 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
                   <Button
                     variant="link"
                     type="button"
-                    colorScheme="primary"
                     onClick={() => arrayHelper.push('')}
+                    alignSelf="flex-start"
                   >
                     + Add anouther recipients
                   </Button>

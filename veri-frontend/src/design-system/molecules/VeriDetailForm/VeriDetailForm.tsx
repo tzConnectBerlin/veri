@@ -47,10 +47,10 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
       boxShadow={'lg'}
       p={8}
     >
-      <Heading fontSize={'xl'} mb={4}>
+      <Heading fontSize={'xl'} mb={10}>
         {title}
       </Heading>
-      <Stack spacing={4}>
+      <Stack spacing={10}>
         <FormControl
           isRequired
           isInvalid={

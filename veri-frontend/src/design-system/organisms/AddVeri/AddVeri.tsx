@@ -73,7 +73,7 @@ export const AddVeri = () => {
                 <Button
                   variant="secondary"
                   leftIcon={<MdDelete />}
-                  onClick={() => context.onDelete}
+                  onClick={context.onDelete}
                 >
                   Delete VERI
                 </Button>
