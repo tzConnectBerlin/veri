@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface column {
   field: string;
@@ -23,7 +24,7 @@ interface column {
 
 export interface row {
   cols: column[];
-  action?: () => void;
+  actionLink?: string;
 }
 
 export interface DataTableProps {
@@ -37,6 +38,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   header,
   rows,
 }) => {
+  const navigate = useNavigate();
   return (
     <Box>
       <TableContainer>
@@ -69,7 +71,11 @@ export const DataTable: React.FC<DataTableProps> = ({
           </Thead>
           <Tbody>
             {rows.map((row, i) => (
-              <Tr key={i} onClick={row.action}>
+              <Tr
+                key={i}
+                onClick={() => navigate(row.actionLink || '/')}
+                cursor={row.actionLink ? 'pointer' : 'inherit'}
+              >
                 {row.cols.map(col => (
                   <Td
                     key={col.field}

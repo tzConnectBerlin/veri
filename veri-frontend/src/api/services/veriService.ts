@@ -7,6 +7,18 @@ export const getVeris = () => {
   });
 };
 
+export const getVeriById = (id: number) => {
+  return axios.get(`${BASE_URL}/veris/${id}`, {
+    withCredentials: true,
+  });
+};
+
+export const deleteVeriById = (id: number) => {
+  return axios.delete(`${BASE_URL}/veris/${id}`, {
+    withCredentials: true,
+  });
+};
+
 export const addVeri = (body: any) => {
   return axios.post(`${BASE_URL}/veris`, body, {
     withCredentials: true,

@@ -9,25 +9,36 @@ import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { FormikHelpers, useFormik } from 'formik';
 import { motion } from 'framer-motion';
-import { useCallback } from 'react';
-import { MapVeriToServerValue } from '../../../utils/veri';
-import { addVeri } from '../../../api/services/veriService';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  MapServerValueToVeri,
+  MapVeriToServerValue,
+} from '../../../utils/veri';
+import {
+  addVeri,
+  deleteVeriById,
+  getVeriById,
+} from '../../../api/services/veriService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { VeriFormStatus } from '../../../types';
 
 export const VeriFormPage = (): JSX.Element => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [veri, setVeri] = useState<VeriFormValues>({} as VeriFormValues);
+  const [type, setType] = useState<VeriFormStatus>('Add');
   const toast = useToast();
-  const EventDetailValues: EventDetailValues = {
-    eventName: '',
-    organizer: '',
-    organizerEmail: '',
-    eventDuration: 'Single',
-    eventStartDate: '',
-    eventEndDate: '',
-  };
-  const VeriDetailValues = {
-    artworkName: '',
-    artworkFile: undefined,
-    description: '',
-  };
+
+  useEffect(() => {
+    if (id) {
+      getVeriById(Number(id))
+        .then(res => {
+          setVeri(() => MapServerValueToVeri(res.data.data));
+          setType('Edit');
+        })
+        .catch(err => console.log(err));
+    }
+  }, [id]);
 
   const validationSchema = Yup.object().shape({
     eventName: Yup.string().trim().required('This field is required'),
@@ -82,21 +93,57 @@ export const VeriFormPage = (): JSX.Element => {
     [toast],
   );
 
-  const formik = useFormik({
-    initialValues: {
+  const handleDelete = useCallback(() => {
+    deleteVeriById(Number(id))
+      .then(res => {
+        console.log(res);
+        navigate('/admin');
+      })
+      .catch(err => console.warn(err));
+  }, [id, navigate]);
+
+  const InitialValues: VeriFormValues = useMemo(() => {
+    const EventDetailValues: EventDetailValues = {
+      eventName: '',
+      organizer: '',
+      organizerEmail: '',
+      eventDuration: 'Single',
+      eventStartDate: '',
+      eventEndDate: '',
+    };
+    const VeriDetailValues = {
+      artworkName: '',
+      artworkFile: undefined,
+      description: '',
+    };
+    return {
       ...EventDetailValues,
       ...VeriDetailValues,
       recipients: [''],
       distributionMethod: 'Post-event',
       password: '',
       status: 'Draft',
-    },
+    };
+  }, []);
+
+  const getInitialData: VeriFormValues = useMemo(() => {
+    if (type !== 'Add' && veri) {
+      return veri;
+    }
+    return InitialValues;
+  }, [type, veri, InitialValues]);
+
+  const formik = useFormik({
+    initialValues: getInitialData,
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
 
   const veriDefaultValue: VeriFormikType = {
     formik: formik,
+    formType: type,
+    onDelete: handleDelete,
   };
 
   return (

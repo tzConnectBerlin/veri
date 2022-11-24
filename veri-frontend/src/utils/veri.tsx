@@ -1,7 +1,8 @@
 import { Badge, Image } from '@chakra-ui/react';
+import moment from 'moment';
 import { row } from '../design-system/atoms/DataTable/DataTable';
 import { BASE_URL, VERI_URL } from '../Global';
-import { VeriFormValues } from '../types/veris';
+import { VeriFormValues, VeriType } from '../types/veris';
 import { getDisplayTimeRange, MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
@@ -26,6 +27,27 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
     live_distribution_password: veri.password,
     status: veri.status,
     recipients: veri.recipients.toString(),
+  };
+};
+
+export const MapServerValueToVeri = (veri: VeriType): VeriFormValues => {
+  return {
+    eventName: veri.event_name,
+    organizer: veri.event_contact_email,
+    organizerEmail: veri.event_contact_email,
+    eventDuration: veri.event_type,
+    eventStartDate: moment(new Date(veri.event_start_date)).format(
+      'yyyy-MM-DD, hh:mm',
+    ),
+    eventEndDate: moment(new Date(veri.event_end_date)).format(
+      'yyyy-MM-DD, hh:mm',
+    ),
+    artworkName: veri.artwork_name,
+    description: veri.artwork_description,
+    distributionMethod: GetDistributionMethodString(veri.live_distribution),
+    password: veri.live_distribution_password,
+    status: veri.status,
+    recipients: veri.recipients,
   };
 };
 
@@ -61,6 +83,7 @@ export const MapVerisToDataTable = (veris: any): row[] => {
           sortable: true,
         },
       ],
+      actionLink: `/veri/${veri.id}`,
     };
   });
   return newVeris;

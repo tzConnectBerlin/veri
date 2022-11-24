@@ -10,7 +10,7 @@ import {
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
-import { SUPPORTED_FORMATS } from '../../../Global';
+import { BASE_URL, SUPPORTED_FORMATS } from '../../../Global';
 
 const FileUploaderContainer = styled(Stack)`
   position: relative;
@@ -68,7 +68,26 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   return (
     <>
       <Box height="fit-content" width="100%">
-        {file ? (
+        {value ? (
+          <Stack
+            direction="row"
+            alignItems="center"
+            position="relative"
+            zIndex={1}
+          >
+            <Image
+              boxSize="30px"
+              borderRadius="full"
+              objectFit="cover"
+              src={BASE_URL + '/' + value}
+              alt=""
+            />
+            <Text as="span">{value}</Text>
+            <Button onClick={handleDelete} variant="icon">
+              <GrFormClose />
+            </Button>
+          </Stack>
+        ) : file ? (
           <Stack
             direction="row"
             alignItems="center"

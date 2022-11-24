@@ -34,7 +34,7 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
       <FormikProvider value={value.formik}>
         <Stack spacing={4}>
           <FormControl isRequired>
-            <FormLabel>Reipients Address</FormLabel>
+            <FormLabel>Recipients Address</FormLabel>
 
             <FieldArray
               name="recipients"
