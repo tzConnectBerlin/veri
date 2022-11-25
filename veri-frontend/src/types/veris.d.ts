@@ -1,6 +1,5 @@
 import { FormikProps } from 'formik';
 
-export const VeriStatus = ['Draft', 'Created', 'Minting', 'Minted'];
 export type VeriFormStatus = 'Add' | 'Edit' | 'View';
 
 export interface EventDetailValues {

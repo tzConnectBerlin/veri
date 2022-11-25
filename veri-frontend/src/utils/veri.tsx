@@ -56,7 +56,7 @@ export const MapVerisToDataTable = (veris: any): row[] => {
     return {
       cols: [
         {
-          field: 'img',
+          field: 'artwork_file',
           value: (
             <Image
               borderRadius="full"

@@ -1,5 +1,4 @@
 import {
-  ComponentStyleConfig,
   defineStyleConfig,
   extendTheme,
   theme as base,
