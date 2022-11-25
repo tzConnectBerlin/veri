@@ -131,6 +131,7 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
               <Input
                 type="datetime-local"
                 name="eventEndDate"
+                min={value.formik.values.eventStartDate}
                 value={value.formik.values.eventEndDate}
                 onChange={value.formik.handleChange}
                 onBlur={value.formik.handleBlur}

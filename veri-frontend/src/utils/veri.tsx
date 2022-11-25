@@ -37,10 +37,10 @@ export const MapServerValueToVeri = (veri: VeriType): VeriFormValues => {
     organizerEmail: veri.event_contact_email,
     eventDuration: veri.event_type,
     eventStartDate: moment(new Date(veri.event_start_date)).format(
-      'yyyy-MM-DD, hh:mm',
+      'YYYY-MM-DDTkk:mm',
     ),
     eventEndDate: moment(new Date(veri.event_end_date)).format(
-      'yyyy-MM-DD, hh:mm',
+      'YYYY-MM-DDTkk:mm',
     ),
     artworkName: veri.artwork_name,
     description: veri.artwork_description,

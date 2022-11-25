@@ -47,6 +47,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 }) => {
   console.log(value);
   const [file, setFile] = useState<File | null>(value as any);
+  const [isUploaded, setIsUploaded] = useState(false);
   const [isDragged, setIsDragged] = useState(false);
   const startAnimation = () => setIsDragged(true);
   const stopAnimation = () => setIsDragged(false);
@@ -55,6 +56,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     if (e.target.files) {
       setFile(e.target.files[0]);
       onFileChanges(e.target.files[0]);
+      setIsUploaded(true);
       onChange && onChange(e);
       setIsDragged(false);
     }
@@ -62,13 +64,14 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
   const handleDelete = () => {
     setFile(null);
+    setIsUploaded(false);
     onFileChanges();
   };
 
   return (
     <>
       <Box height="fit-content" width="100%">
-        {value ? (
+        {value && !isUploaded ? (
           <Stack
             direction="row"
             alignItems="center"
@@ -87,7 +90,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
               <GrFormClose />
             </Button>
           </Stack>
-        ) : file ? (
+        ) : file && isUploaded ? (
           <Stack
             direction="row"
             alignItems="center"
