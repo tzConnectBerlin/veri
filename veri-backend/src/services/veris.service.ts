@@ -24,6 +24,11 @@ class VeriService {
   public async findVeriById(veriId: number): Promise<Veri> {
     const findVeri: Veri = await Veris.query().findById(veriId);
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
+
+    const findFile: File = await Files.query().findById(findVeri.file_id);
+    if (!findFile) throw new HttpException(409, "Veri doesn't exist");
+    findVeri.file = findFile;
+
     return findVeri;
   }
 
@@ -113,12 +118,12 @@ class VeriService {
       .first();
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
+    await Veris.query().delete().where('id', '=', veriId).into('veris');
+
     await Files.query()
       .delete()
       .where('id', '=', findVeri.file_id)
       .into('files');
-
-    await Veris.query().delete().where('id', '=', veriId).into('veris');
     return findVeri;
   }
 }
