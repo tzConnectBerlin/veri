@@ -42,7 +42,7 @@ export const MapServerValueToVeri = (veri: VeriType): VeriFormValues => {
     eventEndDate: moment(new Date(veri.event_end_date)).format(
       'YYYY-MM-DDTkk:mm',
     ),
-    artworkName: veri.artwork_name,
+    artworkName: veri.file.filename,
     description: veri.artwork_description,
     distributionMethod: GetDistributionMethodString(veri.live_distribution),
     password: veri.live_distribution_password,
