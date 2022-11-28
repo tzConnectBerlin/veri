@@ -23,6 +23,7 @@ import {
 } from '../../../utils/veri';
 import {
   addVeri,
+  updateVeri,
   deleteVeriById,
   getVeriById,
 } from '../../../api/services/veriService';
@@ -61,32 +62,55 @@ export const VeriFormPage = (): JSX.Element => {
   });
 
   const handleSubmit = useCallback(
-    (values: VeriFormValues, actions: FormikHelpers<VeriFormValues>) => {
+    (values: VeriFormValues) => {
       try {
         const body = MapVeriToServerValue(values);
-        addVeri(body)
-          .then(res => {
-            toast({
-              title: `Veri ${values.status}`,
-              description: 'View on the list',
-              status: 'success',
-              duration: 9000,
-              isClosable: true,
+        if (id && veri) {
+          updateVeri(body, Number(id))
+            .then(res => {
+              toast({
+                title: `Veri Updated`,
+                description: 'View on the list',
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+              });
+              navigate('/admin');
+              console.log(res);
+            })
+            .catch(e => {
+              toast({
+                title: 'Something went wrong.',
+                description: 'Try again later.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              });
+              console.error(e);
             });
-            navigate('/admin');
-            console.log(res);
-          })
-          .catch(e => {
-            toast({
-              title: 'Something went wrong.',
-              description: 'Try again later.',
-              status: 'error',
-              duration: 9000,
-              isClosable: true,
+        } else {
+          addVeri(body)
+            .then(res => {
+              toast({
+                title: `Veri ${values.status}`,
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+              });
+              setType('View');
+              console.log(res);
+            })
+            .catch(e => {
+              toast({
+                title: 'Something went wrong.',
+                description: 'Try again later.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              });
+              console.error(e);
             });
-            console.error(e);
-          });
-        actions.resetForm();
+        }
       } catch (err) {
         console.error(err);
         toast({
@@ -98,7 +122,7 @@ export const VeriFormPage = (): JSX.Element => {
         });
       }
     },
-    [navigate, toast],
+    [navigate, toast, id, veri],
   );
 
   const handleDelete = useCallback(() => {

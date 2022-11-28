@@ -31,7 +31,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
 
   useEffect(() => {
     setEditMode(context.formType);
-  }, [context]);
+  }, [context.formType]);
 
   const handleEdit = () => {
     context.formik.handleSubmit();

@@ -112,6 +112,15 @@ const Textarea = defineStyleConfig({
     },
   },
 });
+const Radio = defineStyleConfig({
+  baseStyle: {
+    control: {
+      _readOnly: {
+        display: 'none',
+      },
+    },
+  },
+});
 
 const FormLabel = defineStyleConfig({
   baseStyle: {
@@ -144,6 +153,7 @@ const theme = extendTheme(
       Input,
       Textarea,
       FormLabel,
+      Radio,
     },
     fonts: {
       heading: `'Inter-SemiBold', ${base.fonts?.heading}`,
