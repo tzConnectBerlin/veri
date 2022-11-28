@@ -47,4 +47,8 @@ export interface VeriType {
   recipients: string[];
   updated_at?: string;
   updated_by?: number;
+  file: {
+    filename: string;
+    mimetype: string;
+  };
 }
