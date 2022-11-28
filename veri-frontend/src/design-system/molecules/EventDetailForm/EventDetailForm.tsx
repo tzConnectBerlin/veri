@@ -9,139 +9,216 @@ import {
   Radio,
   RadioGroup,
   Heading,
+  HStack,
+  Button,
+  Text,
 } from '@chakra-ui/react';
-import React, { useContext } from 'react';
+import moment from 'moment';
+import React, { useContext, useEffect, useState } from 'react';
+import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
+import { VeriFormStatus } from '../../../types';
+import { getDisplayTimeRange } from '../../../utils/general';
 
 export interface EventDetailFormProps {
   title?: string;
 }
 export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
-  const value = useContext(VeriContext);
+  const context = useContext(VeriContext);
+  const [editMode, setEditMode] = useState<VeriFormStatus>();
   const BoxBg = useColorModeValue('white', 'gray.700');
+
+  useEffect(() => {
+    setEditMode(context.formType);
+  }, [context]);
+
+  const handleEdit = () => {
+    context.formik.handleSubmit();
+    setEditMode('View');
+  };
+
   return (
     <Box rounded={'lg'} bg={BoxBg} boxShadow={'lg'} p={8}>
-      <Heading fontSize={'xl'} mb={10}>
-        {title}
-      </Heading>
+      <HStack justifyContent="space-between" mb={10}>
+        <Heading fontSize={'xl'}>{title}</Heading>
+        {editMode === 'View' && (
+          <Button
+            size="xs"
+            border="none"
+            variant="secondary"
+            leftIcon={<MdEdit />}
+            onClick={() => setEditMode('Edit')}
+          >
+            Edit
+          </Button>
+        )}
+        {editMode === 'Edit' && (
+          <Button
+            size="xs"
+            border="none"
+            variant="secondary"
+            leftIcon={<MdSave />}
+            onClick={handleEdit}
+          >
+            Save
+          </Button>
+        )}
+      </HStack>
       <Stack spacing={10}>
         <FormControl
+          isReadOnly={editMode === 'View' ? true : false}
           isRequired
           isInvalid={
-            value.formik.touched.eventName && !!value.formik.errors.eventName
+            context.formik.touched.eventName &&
+            !!context.formik.errors.eventName
           }
         >
           <FormLabel>Event Name</FormLabel>
           <Input
             type="text"
             name="eventName"
-            value={value.formik.values.eventName}
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
+            value={context.formik.values.eventName}
+            onChange={context.formik.handleChange}
+            onBlur={context.formik.handleBlur}
           />
-          <FormErrorMessage>{value.formik.errors.eventName}</FormErrorMessage>
+          <FormErrorMessage>{context.formik.errors.eventName}</FormErrorMessage>
         </FormControl>
         <FormControl
+          isReadOnly={editMode === 'View' ? true : false}
           isRequired
           isInvalid={
-            value.formik.touched.organizer && !!value.formik.errors.organizer
+            context.formik.touched.organizer &&
+            !!context.formik.errors.organizer
           }
         >
           <FormLabel>Organizer</FormLabel>
           <Input
             type="text"
             name="organizer"
-            value={value.formik.values.organizer}
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
+            value={context.formik.values.organizer}
+            onChange={context.formik.handleChange}
+            onBlur={context.formik.handleBlur}
           />
-          <FormErrorMessage>{value.formik.errors.organizer}</FormErrorMessage>
+          <FormErrorMessage>{context.formik.errors.organizer}</FormErrorMessage>
         </FormControl>
         <FormControl
+          isReadOnly={editMode === 'View' ? true : false}
           isRequired
           isInvalid={
-            value.formik.touched.organizerEmail &&
-            !!value.formik.errors.organizerEmail
+            context.formik.touched.organizerEmail &&
+            !!context.formik.errors.organizerEmail
           }
         >
           <FormLabel>Organizer Email</FormLabel>
           <Input
             type="organizerEmail"
             name="organizerEmail"
-            value={value.formik.values.organizerEmail}
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
+            value={context.formik.values.organizerEmail}
+            onChange={context.formik.handleChange}
+            onBlur={context.formik.handleBlur}
           />
           <FormErrorMessage>
-            {value.formik.errors.organizerEmail}
+            {context.formik.errors.organizerEmail}
           </FormErrorMessage>
         </FormControl>
-
-        <FormControl>
-          <FormLabel>Event Duration</FormLabel>
-          <RadioGroup
-            name="eventDuration"
-            value={value.formik.values.eventDuration}
-          >
-            <Stack>
-              <Radio value="Single" onChange={value.formik.handleChange}>
-                Single Day
-              </Radio>
-              <Radio value="Multiday" onChange={value.formik.handleChange}>
-                Multi Days
-              </Radio>
-            </Stack>
-          </RadioGroup>
-          <FormErrorMessage>
-            {value.formik.errors.eventDuration}
-          </FormErrorMessage>
-        </FormControl>
-        <Stack gap={8} direction="row">
-          <FormControl
-            isRequired
-            isInvalid={
-              value.formik.touched.eventStartDate &&
-              !!value.formik.errors.eventStartDate
-            }
-          >
-            <FormLabel>
-              {value.formik.values.eventDuration === 'Multiday' && 'Start '}Date
-            </FormLabel>
-            <Input
-              type="datetime-local"
-              name="eventStartDate"
-              value={value.formik.values.eventStartDate}
-              onChange={value.formik.handleChange}
-              onBlur={value.formik.handleBlur}
-            />
-            <FormErrorMessage>
-              {value.formik.errors.eventStartDate}
-            </FormErrorMessage>
-          </FormControl>
-          {value.formik.values.eventDuration === 'Multiday' && (
-            <FormControl
-              isRequired
-              isInvalid={
-                value.formik.touched.eventEndDate &&
-                !!value.formik.errors.eventEndDate
-              }
-            >
-              <FormLabel>End Date</FormLabel>
-
-              <Input
-                type="datetime-local"
-                name="eventEndDate"
-                min={value.formik.values.eventStartDate}
-                value={value.formik.values.eventEndDate}
-                onChange={value.formik.handleChange}
-                onBlur={value.formik.handleBlur}
-              />
+        {editMode !== 'View' ? (
+          <>
+            <FormControl>
+              <FormLabel>Event Duration</FormLabel>
+              <RadioGroup
+                name="eventDuration"
+                value={context.formik.values.eventDuration}
+              >
+                <Stack>
+                  <Radio value="Single" onChange={context.formik.handleChange}>
+                    Single Day
+                  </Radio>
+                  <Radio
+                    value="Multiday"
+                    onChange={context.formik.handleChange}
+                  >
+                    Multi Days
+                  </Radio>
+                </Stack>
+              </RadioGroup>
               <FormErrorMessage>
-                {value.formik.errors.eventEndDate}
+                {context.formik.errors.eventDuration}
               </FormErrorMessage>
             </FormControl>
-          )}
-        </Stack>
+            <Stack gap={8} direction="row">
+              <FormControl
+                isRequired
+                isInvalid={
+                  context.formik.touched.eventStartDate &&
+                  !!context.formik.errors.eventStartDate
+                }
+              >
+                <FormLabel>
+                  {context.formik.values.eventDuration === 'Multiday' &&
+                    'Start '}
+                  Date
+                </FormLabel>
+                <Input
+                  type="datetime-local"
+                  name="eventStartDate"
+                  value={context.formik.values.eventStartDate}
+                  onChange={context.formik.handleChange}
+                  onBlur={context.formik.handleBlur}
+                />
+                <FormErrorMessage>
+                  {context.formik.errors.eventStartDate}
+                </FormErrorMessage>
+              </FormControl>
+              {context.formik.values.eventDuration === 'Multiday' && (
+                <FormControl
+                  isRequired
+                  isInvalid={
+                    context.formik.touched.eventEndDate &&
+                    !!context.formik.errors.eventEndDate
+                  }
+                >
+                  <FormLabel>End Date</FormLabel>
+
+                  <Input
+                    type="datetime-local"
+                    name="eventEndDate"
+                    min={context.formik.values.eventStartDate}
+                    value={context.formik.values.eventEndDate}
+                    onChange={context.formik.handleChange}
+                    onBlur={context.formik.handleBlur}
+                  />
+                  <FormErrorMessage>
+                    {context.formik.errors.eventEndDate}
+                  </FormErrorMessage>
+                </FormControl>
+              )}
+            </Stack>
+          </>
+        ) : (
+          <>
+            <FormControl>
+              <FormLabel>Event Duration</FormLabel>
+              <Text>
+                {context.formik.values.eventDuration === 'Single'
+                  ? 'Single-Day'
+                  : 'Multi-Day'}
+              </Text>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Date(s)</FormLabel>
+              <Text>
+                {context.formik.values.eventDuration === 'Single'
+                  ? moment(
+                      new Date(context.formik.values.eventStartDate),
+                    ).format('lll')
+                  : getDisplayTimeRange(
+                      new Date(context.formik.values.eventStartDate),
+                      new Date(context.formik.values.eventEndDate),
+                    )}
+              </Text>
+            </FormControl>
+          </>
+        )}
       </Stack>
     </Box>
   );

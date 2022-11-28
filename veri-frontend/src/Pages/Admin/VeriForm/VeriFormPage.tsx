@@ -1,4 +1,11 @@
-import { Container, Heading, Stack, useToast } from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Container,
+  Heading,
+  Stack,
+  useToast,
+} from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
 import {
   VeriFormValues,
@@ -25,7 +32,7 @@ import { VeriFormStatus } from '../../../types';
 export const VeriFormPage = (): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [veri, setVeri] = useState<VeriFormValues>({} as VeriFormValues);
+  const [veri, setVeri] = useState<VeriFormValues>();
   const [type, setType] = useState<VeriFormStatus>('Add');
   const toast = useToast();
 
@@ -33,8 +40,8 @@ export const VeriFormPage = (): JSX.Element => {
     if (id) {
       getVeriById(Number(id))
         .then(res => {
+          setType('View');
           setVeri(() => MapServerValueToVeri(res.data.data));
-          setType('Edit');
         })
         .catch(err => console.log(err));
     }
@@ -157,11 +164,14 @@ export const VeriFormPage = (): JSX.Element => {
     enableReinitialize: true,
   });
 
-  const veriDefaultValue: VeriFormikType = {
-    formik: formik,
-    formType: type,
-    onDelete: handleDelete,
-  };
+  const veriDefaultValue: VeriFormikType = useMemo(
+    () => ({
+      formik: formik,
+      formType: type ?? 'Add',
+      onDelete: handleDelete,
+    }),
+    [formik, handleDelete, type],
+  );
 
   return (
     <motion.div
@@ -171,9 +181,14 @@ export const VeriFormPage = (): JSX.Element => {
     >
       <Container maxW="2xl">
         <Stack justifyContent="space-between">
-          <Heading mb={10}>
-            {type === 'Add' ? 'Create New VERI' : veri.eventName + ' Veri'}
-          </Heading>
+          <Box mb={10}>
+            <Heading>
+              {type === 'Add' ? 'Create New VERI' : veri?.eventName + ' Veri'}
+            </Heading>
+            {veri && type !== 'Add' && (
+              <Badge variant={veri.status.toLowerCase()}>{veri.status}</Badge>
+            )}
+          </Box>
           <VeriContext.Provider value={veriDefaultValue}>
             <AddVeri />
           </VeriContext.Provider>
