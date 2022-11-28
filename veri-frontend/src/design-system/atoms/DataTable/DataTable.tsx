@@ -11,10 +11,11 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { IoMdArrowDropdown } from 'react-icons/io';
-import React from 'react';
+import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-interface column {
+export interface column {
   field: string;
   isNum?: boolean;
   value: string | number | React.ReactNode;
@@ -23,20 +24,30 @@ interface column {
 
 export interface row {
   cols: column[];
-  action?: () => void;
+  actionLink?: string;
 }
 
 export interface DataTableProps {
   title?: string;
   header: column[];
   rows: row[];
+  handleSort?: (accessor: string, sortOrder: string) => void;
 }
 
 export const DataTable: React.FC<DataTableProps> = ({
   title,
   header,
   rows,
+  handleSort,
 }) => {
+  const navigate = useNavigate();
+  const [order, setOrder] = useState('asc');
+
+  const handleSortingChange = (accessor: string) => {
+    const sortOrder = order === 'asc' ? 'desc' : 'asc';
+    setOrder(sortOrder);
+    handleSort && handleSort(accessor, order);
+  };
   return (
     <Box>
       <TableContainer>
@@ -51,13 +62,22 @@ export const DataTable: React.FC<DataTableProps> = ({
               {header.map(h => (
                 <Th key={h.field} isNumeric={h.isNum}>
                   {h.sortable ? (
-                    <Flex alignItems="center">
+                    <Flex
+                      alignItems="center"
+                      onClick={() => handleSortingChange(h.field)}
+                    >
                       {h.value}
                       <IconButton
                         size="xs"
                         variant="ghost"
                         aria-label="sort"
-                        icon={<IoMdArrowDropdown />}
+                        icon={
+                          order === 'asc' ? (
+                            <IoMdArrowDropdown />
+                          ) : (
+                            <IoMdArrowDropup />
+                          )
+                        }
                       />
                     </Flex>
                   ) : (
@@ -69,7 +89,11 @@ export const DataTable: React.FC<DataTableProps> = ({
           </Thead>
           <Tbody>
             {rows.map((row, i) => (
-              <Tr key={i} onClick={row.action}>
+              <Tr
+                key={i}
+                onClick={() => navigate(row.actionLink || '/')}
+                cursor={row.actionLink ? 'pointer' : 'inherit'}
+              >
                 {row.cols.map(col => (
                   <Td
                     key={col.field}

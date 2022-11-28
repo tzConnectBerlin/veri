@@ -10,7 +10,7 @@ import {
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { GrFormClose } from 'react-icons/gr';
-import { SUPPORTED_FORMATS } from '../../../Global';
+import { BASE_URL, SUPPORTED_FORMATS } from '../../../Global';
 
 const FileUploaderContainer = styled(Stack)`
   position: relative;
@@ -47,6 +47,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 }) => {
   console.log(value);
   const [file, setFile] = useState<File | null>(value as any);
+  const [isUploaded, setIsUploaded] = useState(false);
   const [isDragged, setIsDragged] = useState(false);
   const startAnimation = () => setIsDragged(true);
   const stopAnimation = () => setIsDragged(false);
@@ -55,6 +56,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     if (e.target.files) {
       setFile(e.target.files[0]);
       onFileChanges(e.target.files[0]);
+      setIsUploaded(true);
       onChange && onChange(e);
       setIsDragged(false);
     }
@@ -62,13 +64,33 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
   const handleDelete = () => {
     setFile(null);
+    setIsUploaded(false);
     onFileChanges();
   };
 
   return (
     <>
       <Box height="fit-content" width="100%">
-        {file ? (
+        {value && !isUploaded ? (
+          <Stack
+            direction="row"
+            alignItems="center"
+            position="relative"
+            zIndex={1}
+          >
+            <Image
+              boxSize="30px"
+              borderRadius="full"
+              objectFit="cover"
+              src={BASE_URL + '/' + value}
+              alt=""
+            />
+            <Text as="span">{value}</Text>
+            <Button onClick={handleDelete} variant="icon">
+              <GrFormClose />
+            </Button>
+          </Stack>
+        ) : file && isUploaded ? (
           <Stack
             direction="row"
             alignItems="center"

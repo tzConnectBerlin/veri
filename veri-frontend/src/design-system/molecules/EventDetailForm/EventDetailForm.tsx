@@ -21,10 +21,10 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
   const BoxBg = useColorModeValue('white', 'gray.700');
   return (
     <Box rounded={'lg'} bg={BoxBg} boxShadow={'lg'} p={8}>
-      <Heading fontSize={'xl'} mb={4}>
+      <Heading fontSize={'xl'} mb={10}>
         {title}
       </Heading>
-      <Stack spacing={4}>
+      <Stack spacing={10}>
         <FormControl
           isRequired
           isInvalid={
@@ -76,6 +76,7 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
             {value.formik.errors.organizerEmail}
           </FormErrorMessage>
         </FormControl>
+
         <FormControl>
           <FormLabel>Event Duration</FormLabel>
           <RadioGroup
@@ -95,24 +96,52 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
             {value.formik.errors.eventDuration}
           </FormErrorMessage>
         </FormControl>
-        <FormControl
-          isRequired
-          isInvalid={
-            value.formik.touched.eventStartDate &&
-            !!value.formik.errors.eventStartDate
-          }
-        >
-          <Input
-            type="datetime-local"
-            name="eventStartDate"
-            value={value.formik.values.eventStartDate}
-            onChange={value.formik.handleChange}
-            onBlur={value.formik.handleBlur}
-          />
-          <FormErrorMessage>
-            {value.formik.errors.eventStartDate}
-          </FormErrorMessage>
-        </FormControl>
+        <Stack gap={8} direction="row">
+          <FormControl
+            isRequired
+            isInvalid={
+              value.formik.touched.eventStartDate &&
+              !!value.formik.errors.eventStartDate
+            }
+          >
+            <FormLabel>
+              {value.formik.values.eventDuration === 'Multiday' && 'Start '}Date
+            </FormLabel>
+            <Input
+              type="datetime-local"
+              name="eventStartDate"
+              value={value.formik.values.eventStartDate}
+              onChange={value.formik.handleChange}
+              onBlur={value.formik.handleBlur}
+            />
+            <FormErrorMessage>
+              {value.formik.errors.eventStartDate}
+            </FormErrorMessage>
+          </FormControl>
+          {value.formik.values.eventDuration === 'Multiday' && (
+            <FormControl
+              isRequired
+              isInvalid={
+                value.formik.touched.eventEndDate &&
+                !!value.formik.errors.eventEndDate
+              }
+            >
+              <FormLabel>End Date</FormLabel>
+
+              <Input
+                type="datetime-local"
+                name="eventEndDate"
+                min={value.formik.values.eventStartDate}
+                value={value.formik.values.eventEndDate}
+                onChange={value.formik.handleChange}
+                onBlur={value.formik.handleBlur}
+              />
+              <FormErrorMessage>
+                {value.formik.errors.eventEndDate}
+              </FormErrorMessage>
+            </FormControl>
+          )}
+        </Stack>
       </Stack>
     </Box>
   );

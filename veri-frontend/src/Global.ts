@@ -4,3 +4,4 @@ export const BASE_URL =
 export const SUPPORTED_FORMATS = '.JPG, .JPEC, .PNG, .GIF';
 export const DIMENTION_SIZE = 1000;
 export const VERI_URL = 'https://admin.formallyverified.xyz/';
+export const VERI_STATUS = ['Draft', 'Created', 'Minting', 'Minted'];

@@ -1,11 +1,12 @@
 import { Button, Stack, Box } from '@chakra-ui/react';
 import { useContext, useCallback } from 'react';
 import { VeriContext } from '../../../contexts/veri';
-import { IoMdSave, IoMdCloudUpload, IoMdSend } from 'react-icons/io';
+import { IoMdSave, IoMdCloudUpload, IoMdSend, IoMdEye } from 'react-icons/io';
 import { DistributionMethodForm } from '../../molecules/DistributionMethodForm';
 import { EventDetailForm } from '../../molecules/EventDetailForm';
 import { RecipientsForm } from '../../molecules/RecipientsForm';
 import { VeriDetailForm } from '../../molecules/VeriDetailForm';
+import { MdDelete } from 'react-icons/md';
 
 export const AddVeri = () => {
   const context = useContext(VeriContext);
@@ -31,39 +32,56 @@ export const AddVeri = () => {
 
         <Box>
           <Stack spacing={4} width={80} mx="auto">
-            <Button
-              colorScheme="primary"
-              isDisabled={
-                context.formik.isSubmitting ||
-                !(context.formik.isValid && context.formik.dirty)
-              }
-              leftIcon={<IoMdSave />}
-              onClick={() => handleDifferentSubmit('Draft')}
-            >
-              Save Draft
-            </Button>
-            <Button
-              variant="secondary"
-              isDisabled={
-                context.formik.isSubmitting ||
-                !(context.formik.isValid && context.formik.dirty)
-              }
-              leftIcon={<IoMdCloudUpload />}
-              onClick={() => handleDifferentSubmit('Created')}
-            >
-              Create VERI
-            </Button>
-            <Button
-              variant="secondary"
-              isDisabled={
-                context.formik.isSubmitting ||
-                !(context.formik.isValid && context.formik.dirty)
-              }
-              leftIcon={<IoMdSend />}
-              onClick={() => handleDifferentSubmit('Minting')}
-            >
-              Create & Mint VERIs
-            </Button>
+            {context.formType === 'Add' && (
+              <>
+                <Button
+                  colorScheme="primary"
+                  leftIcon={<IoMdSave />}
+                  onClick={() => handleDifferentSubmit('Draft')}
+                >
+                  Save Draft
+                </Button>
+                <Button
+                  variant="secondary"
+                  isDisabled={
+                    context.formik.isSubmitting ||
+                    !(context.formik.isValid && context.formik.dirty)
+                  }
+                  leftIcon={<IoMdCloudUpload />}
+                  onClick={() => handleDifferentSubmit('Created')}
+                >
+                  Create VERI
+                </Button>
+                <Button
+                  variant="secondary"
+                  isDisabled={
+                    context.formik.isSubmitting ||
+                    !(context.formik.isValid && context.formik.dirty)
+                  }
+                  leftIcon={<IoMdSend />}
+                  onClick={() => handleDifferentSubmit('Minting')}
+                >
+                  Create & Mint VERIs
+                </Button>
+              </>
+            )}
+            {context.formType === 'Edit' && (
+              <>
+                <Button colorScheme="primary" leftIcon={<IoMdSend />}>
+                  Mint VERIs
+                </Button>
+                <Button
+                  variant="secondary"
+                  leftIcon={<MdDelete />}
+                  onClick={context.onDelete}
+                >
+                  Delete VERI
+                </Button>
+                <Button variant="secondary" leftIcon={<IoMdEye />}>
+                  View on Block Explorer
+                </Button>
+              </>
+            )}
           </Stack>
         </Box>
       </Stack>

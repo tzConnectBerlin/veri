@@ -10,7 +10,7 @@ import {
   Text,
   FormHelperText,
 } from '@chakra-ui/react';
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { VeriContext } from '../../../contexts/veri';
 import { DIMENTION_SIZE } from '../../../Global';
 import { GetImageSize } from '../../../utils/general';
@@ -23,19 +23,22 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const context = useContext(VeriContext);
   const [fileIsLarge, setFileIsLarge] = useState(false);
 
-  const handleFileChange = async (file: any) => {
-    if (file) {
-      context.formik.setFieldValue('artworkName', file.name);
-      context.formik.setFieldValue('artworkFile', file);
-      const { width, height } = await GetImageSize(file);
-      if (width > DIMENTION_SIZE || height > DIMENTION_SIZE)
-        setFileIsLarge(true);
-    } else {
-      setFileIsLarge(false);
-      context.formik.setFieldValue('artworkName', '');
-      context.formik.setFieldValue('artworkFile', undefined);
-    }
-  };
+  const handleFileChange = useCallback(
+    async (file: any) => {
+      if (file) {
+        context.formik.setFieldValue('artworkName', file.name);
+        context.formik.setFieldValue('artworkFile', file);
+        const { width, height } = await GetImageSize(file);
+        if (width > DIMENTION_SIZE || height > DIMENTION_SIZE)
+          setFileIsLarge(true);
+      } else {
+        setFileIsLarge(false);
+        context.formik.setFieldValue('artworkName', '');
+        context.formik.setFieldValue('artworkFile', undefined);
+      }
+    },
+    [context.formik],
+  );
 
   return (
     <Box
@@ -44,10 +47,10 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
       boxShadow={'lg'}
       p={8}
     >
-      <Heading fontSize={'xl'} mb={4}>
+      <Heading fontSize={'xl'} mb={10}>
         {title}
       </Heading>
-      <Stack spacing={4}>
+      <Stack spacing={10}>
         <FormControl
           isRequired
           isInvalid={
