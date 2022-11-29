@@ -62,10 +62,7 @@ export const DataTable: React.FC<DataTableProps> = ({
               {header.map(h => (
                 <Th key={h.field} isNumeric={h.isNum}>
                   {h.sortable ? (
-                    <Flex
-                      alignItems="center"
-                      onClick={() => handleSortingChange(h.field)}
-                    >
+                    <Flex alignItems="center">
                       {h.value}
                       <IconButton
                         size="xs"
@@ -78,6 +75,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                             <IoMdArrowDropup />
                           )
                         }
+                        onClick={() => handleSortingChange(h.field)}
                       />
                     </Flex>
                   ) : (
