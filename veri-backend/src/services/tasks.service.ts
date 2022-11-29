@@ -2,26 +2,35 @@ import { File } from '../interfaces/file.interface';
 import { Files } from '../models/files.model';
 import { CreateVeriDto } from '../dtos/veris.dto';
 import { HttpException } from '../exceptions/HttpException';
-import { Veri } from '../interfaces/veris.interface';
-import { Veris } from '../models/veris.model';
+import { Task } from '../interfaces/tasks.interface';
+import { Tasks } from '../models/veris.model';
 import { isEmpty } from '../utils/util';
 import { CreateFileDto } from '@/dtos/files.dto';
 import { User } from '@/interfaces/users.interface';
 import { hash } from 'bcryptjs';
 
-class VeriService {
-  public async create(): Promise<Veri[]> {
-    const veris: Veri[] = await Veris.query().select().from('veris');
+class pepperminteryService {
+  public async create(taskData: Task): Promise<Task> {
+    const findTask: Task = await Tasks.query()
+      .select()
+      .from('tasks')
+      .where('event_name', '=', taskData.event_name)
+      .first();
+    if (findVeri)
+      throw new HttpException(
+        409,
+        `Veri for this event ${veriData.event_name} already exists`
+      );
     const result: Veri[] = [];
     for (const veri of veris) {
       const findFile: File = await Files.query().findById(veri.file_id);
       veri.file = findFile;
       result.push(veri);
     }
-    return veris;
+    return veri;
   }
 
-  public async mint(veriId: number): Promise<Veri> {
+  public async mint(veriId: number): Promise<Task> {
     const findVeri: Veri = await Veris.query().findById(veriId);
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
@@ -37,37 +46,6 @@ class VeriService {
     file: CreateFileDto,
     user: User
   ): Promise<Veri> {
-    if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
-
-    const findVeri: Veri = await Veris.query()
-      .select()
-      .from('veris')
-      .where('event_name', '=', veriData.event_name)
-      .first();
-    if (findVeri)
-      throw new HttpException(
-        409,
-        `Veri for this event ${veriData.event_name} already exists`
-      );
-
-    const createFileEntry: File = await Files.query()
-      .insert({ ...file })
-      .into('files');
-
-    if (!createFileEntry) throw new HttpException(500, `Internal server error`);
-
-    const hashedPassword = await hash(veriData.live_distribution_password, 10);
-    const createVeriData: Veri = await Veris.query()
-      .insert({
-        ...veriData,
-        file_id: createFileEntry.id,
-        thumb_id: createFileEntry.id,
-        live_distribution_password: hashedPassword,
-        created_by: user.id,
-        updated_by: user.id,
-      })
-      .into('veris');
-
     return createVeriData;
   }
 
@@ -128,4 +106,4 @@ class VeriService {
   }
 }
 
-export default VeriService;
+export default pepperminteryService;

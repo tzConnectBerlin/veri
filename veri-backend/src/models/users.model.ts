@@ -10,4 +10,4 @@ export class Users extends Model implements User {
   static idColumn = 'id'; // id column name
 }
 
-export type VerisShape = ModelObject<Users>;
+export type UsersShape = ModelObject<Users>;
