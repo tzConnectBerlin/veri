@@ -21,8 +21,8 @@ const eventTheme = extendTheme({
   styles,
   config,
   fonts: {
-    heading: `'Inter-SemiBold', ${base.fonts?.heading}`,
-    body: `'Inter-regular', ${base.fonts?.body}`,
+    heading: `'ocr-b', ${base.fonts?.heading}`,
+    body: `'ocr-b', ${base.fonts?.body}`,
   },
 });
 export default eventTheme;
