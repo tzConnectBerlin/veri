@@ -45,6 +45,7 @@ export const Router = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/admin" element={<VerisOverview />} />
           <Route path="/veri" element={<VeriForm />} />
+          <Route path="/veri/:id" element={<VeriForm />} />
           <Route path="/profile" element={<User />} />
           <Route path="/settings" element={<Settings />} />
         </Route>

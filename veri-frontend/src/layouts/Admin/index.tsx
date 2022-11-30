@@ -1,7 +1,6 @@
 import { Box, useColorModeValue, ChakraProvider } from '@chakra-ui/react';
-import { FiSettings, FiUsers } from 'react-icons/fi';
 import { MdViewList } from 'react-icons/md';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import useAuth from '../../contexts/useAuth';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
@@ -9,14 +8,11 @@ import theme from '../../design-system/theme/theme';
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: 'All VERIs', icon: <MdViewList />, path: '/' },
-  { name: 'User', icon: <FiUsers />, path: '/user' },
-  { name: 'Settings', icon: <FiSettings />, path: '/settings' },
 ];
 
 export const DashboardLayout = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const logo = 'VERI Admin';
-  const navigate = useNavigate();
 
   const onLogout = async () => {
     try {
@@ -33,7 +29,7 @@ export const DashboardLayout = () => {
           logo={logo}
           onLogout={onLogout}
           display={{ base: 'none', md: 'block' }}
-          userName="test"
+          userName={user.email}
         />
         <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
           <Outlet />

@@ -7,18 +7,27 @@ import { Veris } from '../models/veris.model';
 import { isEmpty } from '../utils/util';
 import { CreateFileDto } from '@/dtos/files.dto';
 import { User } from '@/interfaces/users.interface';
-import { SECRET_KEY } from '@config';
-import { hash, compare } from 'bcryptjs';
+import { hash } from 'bcryptjs';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
     const veris: Veri[] = await Veris.query().select().from('veris');
+    const result: Veri[] = [];
+    for (const veri of veris) {
+      const findFile: File = await Files.query().findById(veri.file_id);
+      veri.file = findFile;
+      result.push(veri);
+    }
     return veris;
   }
 
   public async findVeriById(veriId: number): Promise<Veri> {
     const findVeri: Veri = await Veris.query().findById(veriId);
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
+
+    const findFile: File = await Files.query().findById(findVeri.file_id);
+    if (!findFile) throw new HttpException(409, "Veri doesn't exist");
+    findVeri.file = findFile;
 
     return findVeri;
   }
@@ -52,6 +61,7 @@ class VeriService {
       .insert({
         ...veriData,
         file_id: createFileEntry.id,
+        thumb_id: createFileEntry.id,
         live_distribution_password: hashedPassword,
         created_by: user.id,
         updated_by: user.id,
@@ -86,6 +96,7 @@ class VeriService {
       .update({
         ...veriData,
         file_id: findVeri.file_id,
+        thumb_id: findVeri.file_id,
         updated_by: user.id,
       })
       .where('id', '=', veriId)
@@ -107,12 +118,12 @@ class VeriService {
       .first();
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
+    await Veris.query().delete().where('id', '=', veriId).into('veris');
+
     await Files.query()
       .delete()
       .where('id', '=', findVeri.file_id)
       .into('files');
-
-    await Veris.query().delete().where('id', '=', veriId).into('veris');
     return findVeri;
   }
 }

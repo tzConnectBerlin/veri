@@ -6,3 +6,33 @@ export const getVeris = () => {
     withCredentials: true,
   });
 };
+
+export const getVeriById = (id: number) => {
+  return axios.get(`${BASE_URL}/veris/${id}`, {
+    withCredentials: true,
+  });
+};
+
+export const addVeri = (body: any) => {
+  return axios.post(`${BASE_URL}/veris`, body, {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const updateVeri = (body: any, id: number) => {
+  return axios.put(`${BASE_URL}/veris/${id}`, body, {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const deleteVeriById = (id: number) => {
+  return axios.delete(`${BASE_URL}/veris/${id}`, {
+    withCredentials: true,
+  });
+};

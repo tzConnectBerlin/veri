@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import stream from 'stream';
 
 export interface Veri {
   id: number;
@@ -16,6 +17,7 @@ export interface Veri {
   file_id: number;
   status: string;
   recipients?: string[];
+  file?: object;
 }
 
 export interface RequestWithFile extends Request {
