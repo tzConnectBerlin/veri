@@ -10,7 +10,7 @@ export class Tasks extends Model implements Task {
   filename: string;
   recipient_ids: number[];
 
-  static tableName = 'peppermintery'; // database table name
+  static tableName = 'tasks'; // database table name
   static idColumn = 'id'; // id column name
 }
 

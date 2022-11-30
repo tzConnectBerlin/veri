@@ -40,7 +40,7 @@ const authMiddleware = async (
       if (req.path == '/currentuser') {
         next();
       } else {
-        next(new HttpException(404, 'Authentication token missing'));
+        next(new HttpException(401, 'Wrong authentication token'));
       }
     }
   } catch (error) {
