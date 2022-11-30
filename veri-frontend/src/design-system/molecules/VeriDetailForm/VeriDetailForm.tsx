@@ -9,10 +9,15 @@ import {
   Textarea,
   Text,
   FormHelperText,
+  HStack,
+  Button,
+  Image,
 } from '@chakra-ui/react';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
-import { DIMENTION_SIZE } from '../../../Global';
+import { BASE_URL, DIMENTION_SIZE } from '../../../Global';
+import { VeriFormStatus } from '../../../types';
 import { GetImageSize } from '../../../utils/general';
 import FileUploader from '../../atoms/FileUploader';
 
@@ -21,7 +26,17 @@ export interface VeriDetailFormProps {
 }
 export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
   const context = useContext(VeriContext);
+  const [editMode, setEditMode] = useState<VeriFormStatus>();
   const [fileIsLarge, setFileIsLarge] = useState(false);
+
+  useEffect(() => {
+    setEditMode(context.formType);
+  }, [context.formType]);
+
+  const handleEdit = () => {
+    context.formik.handleSubmit();
+    setEditMode('View');
+  };
 
   const handleFileChange = useCallback(
     async (file: any) => {
@@ -47,11 +62,34 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
       boxShadow={'lg'}
       p={8}
     >
-      <Heading fontSize={'xl'} mb={10}>
-        {title}
-      </Heading>
+      <HStack justifyContent="space-between" mb={10}>
+        <Heading fontSize={'xl'}>{title}</Heading>
+        {editMode === 'View' && (
+          <Button
+            size="xs"
+            border="none"
+            variant="secondary"
+            leftIcon={<MdEdit />}
+            onClick={() => setEditMode('Edit')}
+          >
+            Edit
+          </Button>
+        )}
+        {editMode === 'Edit' && (
+          <Button
+            size="xs"
+            border="none"
+            variant="secondary"
+            leftIcon={<MdSave />}
+            onClick={handleEdit}
+          >
+            Save
+          </Button>
+        )}
+      </HStack>
       <Stack spacing={10}>
         <FormControl
+          isReadOnly={editMode === 'View' ? true : false}
           isRequired
           isInvalid={
             context.formik.touched.artworkName &&
@@ -59,19 +97,31 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
           }
         >
           <FormLabel>Artwork</FormLabel>
-          <FileUploader
-            name="artworkName"
-            aria-hidden="true"
-            onFileChanges={handleFileChange}
-            onChange={context.formik.handleChange}
-            onBlur={context.formik.handleBlur}
-            isInvalid={
-              context.formik.touched.artworkName &&
-              (Boolean(context.formik.errors.artworkName) ||
-                Boolean(context.formik.errors.artworkFile))
-            }
-            value={context.formik.values.artworkName}
-          />
+          {editMode === 'View' ? (
+            <Image
+              boxSize="120px"
+              borderRadius="full"
+              objectFit="cover"
+              src={BASE_URL + '/' + context.formik.values.artworkName}
+              alt=""
+              mx="auto"
+            />
+          ) : (
+            <FileUploader
+              name="artworkName"
+              aria-hidden="true"
+              onFileChanges={handleFileChange}
+              onChange={context.formik.handleChange}
+              onBlur={context.formik.handleBlur}
+              isInvalid={
+                context.formik.touched.artworkName &&
+                (Boolean(context.formik.errors.artworkName) ||
+                  Boolean(context.formik.errors.artworkFile))
+              }
+              value={context.formik.values.artworkName}
+            />
+          )}
+
           {!context.formik.values.artworkName && (
             <FormHelperText>
               Circle shape. PNG or GIF format. 1000x1000 px.
@@ -95,6 +145,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
         </Stack>
 
         <FormControl
+          isReadOnly={editMode === 'View' ? true : false}
           isRequired
           isInvalid={
             context.formik.touched.description &&
@@ -108,10 +159,12 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
             onChange={context.formik.handleChange}
             onBlur={context.formik.handleBlur}
           />
-          <FormHelperText>
-            Description of the event in past tense, typically including event
-            topic, organizers, location, and dates. Around 250 characters.
-          </FormHelperText>
+          {editMode !== 'View' && (
+            <FormHelperText>
+              Description of the event in past tense, typically including event
+              topic, organizers, location, and dates. Around 250 characters.
+            </FormHelperText>
+          )}
           <FormErrorMessage>
             {context.formik.errors.description}
           </FormErrorMessage>
