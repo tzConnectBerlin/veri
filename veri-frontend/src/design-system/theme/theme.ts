@@ -37,7 +37,8 @@ const colors = {
 const Badge = defineStyleConfig({
   baseStyle: {
     textTransform: 'normal',
-    fontWeight: 'normal',
+    fontWeight: '500',
+    fontsize: '14px',
     padding: '4px 8px',
     borderRadius: '6px',
   },
@@ -90,20 +91,32 @@ const Button = defineStyleConfig({
 
 const Input = defineStyleConfig({
   baseStyle: {
-    _readOnly: {
-      borderColor: 'red !important',
-      boxShadow: 'none !important',
-      padding: 0,
-      height: 'auto',
+    field: {
+      _readOnly: {
+        border: 'none',
+        padding: 0,
+        height: 'auto',
+      },
     },
   },
 });
 
-const FormControl = defineStyleConfig({
+const Textarea = defineStyleConfig({
   baseStyle: {
     _readOnly: {
-      input: {
-        backgroundColor: 'red',
+      border: 'none',
+      padding: 0,
+      height: 'auto',
+      minHeight: 'unset',
+      resize: 'none',
+    },
+  },
+});
+const Radio = defineStyleConfig({
+  baseStyle: {
+    control: {
+      _readOnly: {
+        display: 'none',
       },
     },
   },
@@ -138,8 +151,9 @@ const theme = extendTheme(
       Badge,
       Button,
       Input,
+      Textarea,
       FormLabel,
-      FormControl,
+      Radio,
     },
     fonts: {
       heading: `'Inter-SemiBold', ${base.fonts?.heading}`,

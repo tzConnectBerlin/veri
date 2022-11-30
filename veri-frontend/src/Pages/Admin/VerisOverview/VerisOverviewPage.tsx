@@ -78,12 +78,16 @@ export const VerisOverviewPage = (): JSX.Element => {
         </Button>
       </HStack>
       <Wrapper>
-        {dataTable && dataTable.length > 0 && (
+        {dataTable && dataTable.length > 0 ? (
           <DataTable
             header={header}
             rows={dataTable}
             handleSort={handleVeriSort}
           />
+        ) : (
+          <Heading textAlign="center" color="gray.600" size="md" p={8}>
+            There is no VERIs
+          </Heading>
         )}
       </Wrapper>
     </motion.div>

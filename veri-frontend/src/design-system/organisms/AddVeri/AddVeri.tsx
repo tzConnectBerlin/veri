@@ -65,7 +65,7 @@ export const AddVeri = () => {
                 </Button>
               </>
             )}
-            {context.formType === 'Edit' && (
+            {context.formType === 'View' && (
               <>
                 <Button colorScheme="primary" leftIcon={<IoMdSend />}>
                   Mint VERIs
