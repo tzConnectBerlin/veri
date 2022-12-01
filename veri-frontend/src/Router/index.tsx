@@ -32,7 +32,7 @@ const AuthRoutes = () => {
 
 const EventRoutes = () => {
   const { user } = useAuth();
-  if (!user) return <Navigate to="/booth" />;
+  if (!user) return <Navigate to="/login" />;
   return <EventLayout />;
 };
 
