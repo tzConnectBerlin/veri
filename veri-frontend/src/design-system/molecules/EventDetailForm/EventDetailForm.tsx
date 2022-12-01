@@ -26,7 +26,8 @@ export interface EventDetailFormProps {
 export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
   const context = useContext(VeriContext);
   const [editMode, setEditMode] = useState<VeriFormStatus>();
-  const BoxBg = useColorModeValue('white', 'gray.700');
+  const BoxBg = useColorModeValue('white', 'none');
+  const BoxBorder = useColorModeValue('none', 'gray.500');
 
   useEffect(() => {
     setEditMode(context.formType);
@@ -38,7 +39,13 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
   };
 
   return (
-    <Box rounded={'lg'} bg={BoxBg} boxShadow={'lg'} p={8}>
+    <Box
+      rounded={'lg'}
+      bg={BoxBg}
+      borderColor={BoxBorder}
+      boxShadow={'lg'}
+      p={8}
+    >
       <HStack justifyContent="space-between" mb={10}>
         <Heading fontSize={'xl'}>{title}</Heading>
         {editMode === 'View' && (

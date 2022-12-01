@@ -2,6 +2,7 @@ import {
   defineStyleConfig,
   extendTheme,
   theme as base,
+  ThemeConfig,
   withDefaultColorScheme,
 } from '@chakra-ui/react';
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
@@ -13,9 +14,14 @@ const styles = {
     },
     body: {
       bg: mode('#FFF', '#000')(props),
-      color: 'gray.700',
+      color: mode('gray.700', '#FFF')(props),
     },
   }),
+};
+
+const config: ThemeConfig = {
+  initialColorMode: 'light',
+  useSystemColorMode: false,
 };
 
 const colors = {
@@ -143,9 +149,10 @@ const FormLabel = defineStyleConfig({
   },
 });
 
-const theme = extendTheme(
+const adminTheme = extendTheme(
   {
     styles,
+    config,
     colors,
     components: {
       Badge,
@@ -162,4 +169,4 @@ const theme = extendTheme(
   },
   withDefaultColorScheme({ colorScheme: 'primary' }),
 );
-export default theme;
+export default adminTheme;

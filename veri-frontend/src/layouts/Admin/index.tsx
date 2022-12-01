@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import useAuth from '../../contexts/useAuth';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
-import theme from '../../design-system/theme/theme';
+import adminTheme from '../../design-system/theme/adminTheme';
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: 'All VERIs', icon: <MdViewList />, path: '/' },
@@ -22,7 +22,7 @@ export const DashboardLayout = () => {
     }
   };
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={adminTheme}>
       <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
         <Sidebar
           links={adminRoutes}

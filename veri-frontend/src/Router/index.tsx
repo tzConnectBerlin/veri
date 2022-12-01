@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
 import { DashboardLayout } from '../layouts/Admin';
+import { EventLayout } from '../layouts/Event';
 import {
   Landing,
   NotFound,
@@ -12,9 +13,9 @@ import {
   VeriForm,
   User,
   Settings,
+  VeriScanner,
 } from '../Pages';
 import { AnimatePresence } from 'framer-motion';
-import { EventLayout } from '../layouts/Event';
 
 const PrivateRoutes = () => {
   const { user } = useAuth();
@@ -55,7 +56,7 @@ export const Router = () => {
           <Route path="/settings" element={<Settings />} />
         </Route>
         <Route element={<EventRoutes />}>
-          <Route path="/event/:eventName" />
+          <Route path="/event/:eventName" element={<VeriScanner />} />
         </Route>
       </Routes>
     </AnimatePresence>
