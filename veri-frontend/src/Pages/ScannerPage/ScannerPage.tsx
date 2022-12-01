@@ -1,13 +1,17 @@
-import React, { useCallback } from 'react';
-import Scanner from '../../design-system/atoms/Scanner';
+import React, { useCallback, useState } from 'react';
+import { ScannerContainer } from '../../design-system/molecules/ScannerContainer';
 
 export const ScannerPage = () => {
-  const handleScan = useCallback((val: string) => {
-    console.log(val);
+  const [hasError, setHasError] = useState(false);
+  const [tzAddress, setTzAddress] = useState('');
+  const handleScan = useCallback((scanData: string) => {
+    if (scanData) {
+      setTzAddress(scanData);
+    }
   }, []);
 
   const handleError = useCallback((err: any) => {
-    console.info(err);
+    setHasError(true);
   }, []);
-  return <Scanner handleScan={handleScan} handleError={handleError} />;
+  return <ScannerContainer handleScan={handleScan} handleError={handleError} />;
 };
