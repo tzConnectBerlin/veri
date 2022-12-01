@@ -72,6 +72,10 @@ const Button = defineStyleConfig({
     _focus: {
       boxShadow: 'none',
     },
+    fonts: {
+      heading: `'Inter-SemiBold', ${base.fonts?.heading}`,
+      body: `'Inter-regular', ${base.fonts?.body}`,
+    },
   },
   variants: {
     icon: {

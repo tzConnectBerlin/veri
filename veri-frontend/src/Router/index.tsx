@@ -14,6 +14,7 @@ import {
   User,
   Settings,
   VeriScanner,
+  Booth,
 } from '../Pages';
 import { AnimatePresence } from 'framer-motion';
 
@@ -31,7 +32,7 @@ const AuthRoutes = () => {
 
 const EventRoutes = () => {
   const { user } = useAuth();
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/booth" />;
   return <EventLayout />;
 };
 
@@ -55,6 +56,7 @@ export const Router = () => {
           <Route path="/profile" element={<User />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
+        <Route path="/booth" element={<Booth />} />
         <Route element={<EventRoutes />}>
           <Route path="/event/:eventName" element={<VeriScanner />} />
         </Route>

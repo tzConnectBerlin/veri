@@ -11,3 +11,4 @@ export { VerisOverviewPage as VerisOverview } from './Admin/VerisOverview/VerisO
 export { SettingsPage as Settings } from './Admin/Settings/SettingsPage';
 
 export { ScannerPage as VeriScanner } from './ScannerPage/ScannerPage';
+export { BoothPage as Booth } from './Booth/BoothPage';
