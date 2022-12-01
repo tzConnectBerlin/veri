@@ -12,6 +12,7 @@ import {
   VeriForm,
   User,
   Settings,
+  Booth,
 } from '../Pages';
 import { AnimatePresence } from 'framer-motion';
 
@@ -33,6 +34,7 @@ export const Router = () => {
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Landing />} />
+        <Route path="/booth" element={<Booth />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
