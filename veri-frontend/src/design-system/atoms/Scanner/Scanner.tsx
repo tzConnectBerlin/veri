@@ -47,20 +47,12 @@ const ViewContainer = styled.div`
 
 export interface ScannerProps {
   handleScan: (data: string) => void | Promise<void>;
-  handleError: (err: any) => void;
 }
 
-export const Scanner: React.FC<ScannerProps> = ({
-  handleScan,
-  handleError,
-}) => {
-  const onScan = (result?: any, error?: any) => {
+export const Scanner: React.FC<ScannerProps> = ({ handleScan }) => {
+  const onScan = (result?: any) => {
     if (result) {
       handleScan(result?.text);
-    }
-
-    if (error) {
-      handleError(error);
     }
   };
 

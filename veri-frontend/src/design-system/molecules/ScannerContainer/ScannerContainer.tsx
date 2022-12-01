@@ -1,5 +1,6 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import { Scanner } from '../../atoms/Scanner';
 
 const ScanContainer = styled(Box)`
@@ -25,18 +26,39 @@ const ScanContainer = styled(Box)`
   }
 `;
 
+export interface messageType {
+  type?: 'Error' | 'Success' | 'Processing';
+  msg?: string;
+}
+
 export interface ScannerContainerProps {
   handleScan: (data: string) => void | Promise<void>;
-  handleError: (err: any) => void;
+  resultMsg?: messageType;
 }
 
 export const ScannerContainer: React.FC<ScannerContainerProps> = ({
   handleScan,
-  handleError,
+  resultMsg,
 }) => {
+  const [message, setMessage] = useState<messageType>();
+
+  useEffect(() => {
+    setMessage(resultMsg);
+  }, [resultMsg]);
+
   return (
-    <ScanContainer>
-      <Scanner handleScan={handleScan} handleError={handleError} />
+    <ScanContainer className={resultMsg?.type}>
+      {message ? (
+        <Box>
+          <Heading>
+            {message?.type}
+            {message?.type === 'Processing' ? '...' : '!'}
+          </Heading>
+          <Text>{message.msg}</Text>
+        </Box>
+      ) : (
+        <Scanner handleScan={handleScan} />
+      )}
     </ScanContainer>
   );
 };
