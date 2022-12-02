@@ -1,4 +1,4 @@
-import { HStack, Link, Text } from '@chakra-ui/react';
+import { Link, Stack, Text, useMediaQuery } from '@chakra-ui/react';
 import React, { Fragment } from 'react';
 
 export interface FooterProps {
@@ -9,8 +9,14 @@ export interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ links }) => {
+  const [isMobile] = useMediaQuery('(max-width: 800px)');
+
   return (
-    <HStack justifyContent="space-between" py={6}>
+    <Stack
+      direction={isMobile ? 'column' : 'row'}
+      justifyContent="space-between"
+      py={6}
+    >
       {links.map((link, index) => (
         <Fragment key={index}>
           {index === 0 ? (
@@ -27,6 +33,6 @@ export const Footer: React.FC<FooterProps> = ({ links }) => {
           )}
         </Fragment>
       ))}
-    </HStack>
+    </Stack>
   );
 };

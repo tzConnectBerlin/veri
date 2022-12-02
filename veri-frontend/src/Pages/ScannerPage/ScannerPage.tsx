@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ScannerContainer } from '../../design-system/molecules/ScannerContainer';
+import Scanner from '../../design-system/atoms/Scanner';
 import { messageType } from '../../design-system/molecules/ScannerContainer/ScannerContainer';
 
 export const ScannerPage = () => {
@@ -23,9 +23,9 @@ export const ScannerPage = () => {
 
   const refreshPage = () => {
     setTimeout(() => {
-      setMessage({});
+      setMessage(undefined);
     }, 3000);
   };
 
-  return <ScannerContainer handleScan={handleScan} resultMsg={message} />;
+  return <Scanner handleScan={handleScan} resultMsg={message} />;
 };

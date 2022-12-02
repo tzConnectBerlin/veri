@@ -1,5 +1,30 @@
+import { Box, Heading, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useEffect, useRef, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
+
+const ScanContainer = styled(Box)`
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  max-width: 648px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+
+  &.Error {
+    background-color: #cc2800;
+  }
+  &.Processing {
+    background-color: #c5cc00;
+  }
+  &.Success {
+    background-color: #00cc1b;
+  }
+`;
 
 const QRScanner = styled(QrReader)`
   &,
@@ -11,7 +36,7 @@ const QRScanner = styled(QrReader)`
 `;
 
 const ViewContainer = styled.div`
-  border: 80px solid rgba(0, 0, 0, 0.3);
+  border: 3em solid rgba(0, 0, 0, 0.3);
   &,
   &:before {
     top: 0px;
@@ -45,23 +70,51 @@ const ViewContainer = styled.div`
   }
 `;
 
+export interface messageType {
+  type?: 'Error' | 'Success' | 'Processing';
+  msg?: string;
+}
 export interface ScannerProps {
   handleScan: (data: string) => void | Promise<void>;
+  resultMsg?: messageType;
 }
 
-export const Scanner: React.FC<ScannerProps> = ({ handleScan }) => {
-  const onScan = (result?: any) => {
-    if (result) {
-      handleScan(result?.text);
+export const Scanner: React.FC<ScannerProps> = ({ handleScan, resultMsg }) => {
+  const lastResult = useRef();
+  const [message, setMessage] = useState<messageType>();
+
+  useEffect(() => {
+    setMessage(resultMsg);
+  }, [resultMsg]);
+
+  const onReadResult = (result: any) => {
+    if (!result) return;
+    if (lastResult.current === result.text) {
+      return;
     }
+    lastResult.current = result.text;
+    handleScan(result.text);
   };
 
   return (
-    <QRScanner
-      constraints={{ facingMode: 'user' }}
-      scanDelay={100}
-      onResult={onScan}
-      ViewFinder={() => <ViewContainer />}
-    />
+    <ScanContainer className={resultMsg?.type}>
+      {message ? (
+        <Box>
+          <Heading>
+            {message?.type}
+            {message?.type === 'Processing' ? '...' : '!'}
+          </Heading>
+          <Text>{message.msg}</Text>
+        </Box>
+      ) : (
+        <QRScanner
+          constraints={{ facingMode: 'user' }}
+          scanDelay={100}
+          onResult={onReadResult}
+          ViewFinder={() => <ViewContainer />}
+          videoStyle={{ objectFit: 'cover' }}
+        />
+      )}
+    </ScanContainer>
   );
 };
