@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Scanner from '../../design-system/atoms/Scanner';
-import { messageType } from '../../design-system/molecules/ScannerContainer/ScannerContainer';
+import { messageType } from '../../design-system/atoms/Scanner/Scanner';
 
 export const ScannerPage = () => {
   const [tzAddress, setTzAddress] = useState('');
