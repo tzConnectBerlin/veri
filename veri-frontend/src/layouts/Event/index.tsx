@@ -1,5 +1,11 @@
-import { ChakraProvider, Stack, Container } from '@chakra-ui/react';
+import {
+  ChakraProvider,
+  Stack,
+  Container,
+  useColorMode,
+} from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer, FooterProps } from '../../design-system/organisms/Footer';
 import { Header, HeaderProps } from '../../design-system/organisms/Header';
@@ -34,6 +40,14 @@ const FooterData: FooterProps = {
 };
 
 export const EventLayout = () => {
+  const { toggleColorMode, colorMode } = useColorMode();
+
+  useEffect(() => {
+    if (colorMode === 'light') {
+      toggleColorMode();
+    }
+  }, [colorMode, toggleColorMode]);
+
   return (
     <ChakraProvider theme={eventTheme}>
       <Container>
