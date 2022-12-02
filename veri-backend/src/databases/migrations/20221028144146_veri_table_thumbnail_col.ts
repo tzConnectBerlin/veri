@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.table('veris', (table) => {
+    table.dropForeign('thumb_id');
     table.dropColumn('thumb_id');
   });
 }

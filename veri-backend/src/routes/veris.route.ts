@@ -2,12 +2,15 @@ import { Router } from 'express';
 import VerisController from '@/controllers/veris.controller';
 import { CreateVeriDto } from '../dtos/veris.dto';
 import { Routes } from '@/interfaces/routes.interface';
-import validationMiddleware from '@/middlewares/validation.middleware';
-import fileMiddleware from '@/middlewares/file.middleware';
-import authMiddleware from '@/middlewares/auth.middleware';
-import transformMiddleware from '@/middlewares/transform.middleware';
-import imageMiddleware from '@/middlewares/image.middleware';
-import taskMiddleware from '@/middlewares/task.middleware';
+import {
+  authMiddleware,
+  duplicateMiddleware,
+  fileMiddleware,
+  imageMiddleware,
+  taskMiddleware,
+  transformMiddleware,
+  validationMiddleware,
+} from '@/middlewares';
 
 class VerisRoute implements Routes {
   public path = '/veris';
@@ -32,8 +35,8 @@ class VerisRoute implements Routes {
     this.router.post(
       `${this.path}`,
       authMiddleware,
+      duplicateMiddleware,
       fileMiddleware,
-      taskMiddleware,
       imageMiddleware,
       transformMiddleware('body', 'recipients'),
       validationMiddleware(CreateVeriDto, 'body'),
