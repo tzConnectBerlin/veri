@@ -1,10 +1,10 @@
-FROM node:16-alpine as builder
+FROM node:18-alpine as builder
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 COPY . .
 
@@ -16,10 +16,6 @@ ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
 RUN npm run build
 
 FROM nginx:alpine
-
-#!/bin/sh
-
-COPY .nginx/nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*

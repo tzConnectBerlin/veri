@@ -7,9 +7,6 @@ COPY package*.json ./
 
 RUN npm install
 
-EXPOSE 5000
-ENV PORT 5000
-
 # Standalone-test build stage
 FROM node:lts-alpine as test-build-stage
 WORKDIR /app
@@ -36,5 +33,8 @@ COPY --from=common-build-stage --chown=nodejs:nodejs /app/node_modules ./node_mo
 COPY --chown=nodejs:nodejs . .
 
 USER nodejs
+
+EXPOSE 5000
+ENV PORT 5000
 
 CMD npm run migrate && npm start
