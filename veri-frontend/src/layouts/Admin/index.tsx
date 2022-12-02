@@ -1,10 +1,16 @@
-import { Box, useColorModeValue, ChakraProvider } from '@chakra-ui/react';
+import {
+  Box,
+  useColorModeValue,
+  ChakraProvider,
+  useColorMode,
+} from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { MdViewList } from 'react-icons/md';
 import { Outlet } from 'react-router-dom';
 import useAuth from '../../contexts/useAuth';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
-import theme from '../../design-system/theme/theme';
+import adminTheme from '../../design-system/theme/adminTheme';
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: 'All VERIs', icon: <MdViewList />, path: '/' },
@@ -12,6 +18,7 @@ const adminRoutes: SidebarLinkProps[] = [
 
 export const DashboardLayout = () => {
   const { logout, user } = useAuth();
+  const { toggleColorMode, colorMode } = useColorMode();
   const logo = 'VERI Admin';
 
   const onLogout = async () => {
@@ -21,8 +28,14 @@ export const DashboardLayout = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (colorMode === 'dark') {
+      toggleColorMode();
+    }
+  }, [colorMode, toggleColorMode]);
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={adminTheme}>
       <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
         <Sidebar
           links={adminRoutes}

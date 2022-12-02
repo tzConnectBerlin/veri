@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
 import { DashboardLayout } from '../layouts/Admin';
+import { EventLayout } from '../layouts/Event';
 import {
   Landing,
   NotFound,
@@ -12,6 +13,7 @@ import {
   VeriForm,
   User,
   Settings,
+  VeriScanner,
   Booth,
 } from '../Pages';
 import { AnimatePresence } from 'framer-motion';
@@ -28,13 +30,18 @@ const AuthRoutes = () => {
   return <Login />;
 };
 
+const EventRoutes = () => {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" />;
+  return <EventLayout />;
+};
+
 export const Router = () => {
   const location = useLocation();
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Landing />} />
-        <Route path="/booth" element={<Booth />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -48,6 +55,10 @@ export const Router = () => {
           <Route path="/veri/:id" element={<VeriForm />} />
           <Route path="/profile" element={<User />} />
           <Route path="/settings" element={<Settings />} />
+        </Route>
+        <Route path="/booth" element={<Booth />} />
+        <Route element={<EventRoutes />}>
+          <Route path="/event/:eventName" element={<VeriScanner />} />
         </Route>
       </Routes>
     </AnimatePresence>

@@ -19,8 +19,8 @@ export const Wrapper: React.FC<WrapperProps> = ({
       shadow="base"
       borderWidth="1px"
       alignSelf={{ base: 'center', lg: 'flex-start' }}
-      borderColor={useColorModeValue(borderColor, 'gray.500')}
-      backgroundColor={useColorModeValue(bgColor, 'gray.500')}
+      borderColor={useColorModeValue(borderColor, 'none')}
+      backgroundColor={useColorModeValue(bgColor, 'blackAlpha.50')}
       borderRadius={'xl'}
     >
       {children}
