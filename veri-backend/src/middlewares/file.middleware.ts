@@ -10,7 +10,6 @@ const fileMiddleware = async (
   next: NextFunction
 ) => {
   const upload = multer({
-    storage: storage,
     limits: {
       fields: 13,
       fieldNameSize: 50,
@@ -23,7 +22,6 @@ const fileMiddleware = async (
   }).single('artwork_file');
   upload(req, res, (error) => {
     if (error instanceof multer.MulterError) {
-      console.log(error);
       next(new HttpException(500, 'File upload error'));
     } else if (error) {
       next(new HttpException(400, 'Please check file type and try again'));

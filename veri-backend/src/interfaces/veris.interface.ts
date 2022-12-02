@@ -1,5 +1,4 @@
 import { Request } from 'express';
-import stream from 'stream';
 
 export interface Veri {
   id: number;
