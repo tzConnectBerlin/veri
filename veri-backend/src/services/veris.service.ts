@@ -25,7 +25,8 @@ class VeriService {
 
   public async createVeri(
     veriData: CreateVeriDto,
-    file: CreateFileDto,
+    artwork: CreateFileDto,
+    thumbnail: CreateFileDto,
     user: User
   ): Promise<Veri> {
     if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
@@ -41,17 +42,25 @@ class VeriService {
         `Veri for this event ${veriData.event_name} already exists`
       );
 
-    const createFileEntry: File = await Files.query()
-      .insert({ ...file })
+    const createArtworkEntry: File = await Files.query()
+      .insert({ ...artwork })
       .into('files');
 
-    if (!createFileEntry) throw new HttpException(500, `Internal server error`);
+    const createThumbnailEntry: File = await Files.query()
+      .insert({ ...thumbnail })
+      .into('files');
+
+    if (!createArtworkEntry)
+      throw new HttpException(500, `Internal server error`);
+    if (!createThumbnailEntry)
+      throw new HttpException(500, `Internal server error`);
 
     const hashedPassword = await hash(veriData.live_distribution_password, 10);
     const createVeriData: Veri = await Veris.query()
       .insert({
         ...veriData,
-        file_id: createFileEntry.id,
+        file_id: createArtworkEntry.id,
+        thumbnail_id: createThumbnailEntry.id,
         live_distribution_password: hashedPassword,
         created_by: user.id,
         updated_by: user.id,

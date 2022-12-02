@@ -14,10 +14,12 @@ export interface Veri {
   live_distribution_password?: string;
   live_distribution_url?: string;
   file_id: number;
+  thumbnail_id: number;
   status: string;
   recipients?: string[];
 }
 
 export interface RequestWithFile extends Request {
   file: Express.Multer.File;
+  thumbnail?: Express.Multer.File;
 }
