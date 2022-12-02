@@ -11,7 +11,7 @@ import {
   ResetPassword,
   VerisOverview,
   VeriForm,
-  User,
+  Recipients,
   Settings,
   VeriScanner,
   Booth,
@@ -50,11 +50,13 @@ export const Router = () => {
         </Route>
         <Route path="*" element={<NotFound />} />
         <Route element={<PrivateRoutes />}>
-          <Route path="/admin" element={<VerisOverview />} />
-          <Route path="/veri" element={<VeriForm />} />
-          <Route path="/veri/:id" element={<VeriForm />} />
-          <Route path="/profile" element={<User />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/admin">
+            <Route index element={<VerisOverview />} />
+            <Route path="veri" element={<VeriForm />} />
+            <Route path="veri/:id" element={<VeriForm />} />
+            <Route path="recipients" element={<Recipients />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
         </Route>
         <Route path="/booth" element={<Booth />} />
         <Route element={<EventRoutes />}>

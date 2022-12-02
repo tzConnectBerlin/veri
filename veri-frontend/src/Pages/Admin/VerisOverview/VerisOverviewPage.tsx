@@ -6,7 +6,7 @@ import { getVeris } from '../../../api/services/veriService';
 import { DataTable } from '../../../design-system/atoms/DataTable';
 import { row } from '../../../design-system/atoms/DataTable/DataTable';
 import { Wrapper } from '../../../design-system/atoms/Wrapper';
-import { VERI_STATUS } from '../../../Global';
+import { ADMIN_URL, VERI_STATUS } from '../../../Global';
 import { MapVerisToDataTable } from '../../../utils/veri';
 
 const header = [
@@ -73,7 +73,10 @@ export const VerisOverviewPage = (): JSX.Element => {
     >
       <HStack justifyContent="space-between" mb={10}>
         <Heading>All VERIs</Heading>
-        <Button colorScheme="primary" onClick={() => navigate('/veri')}>
+        <Button
+          colorScheme="primary"
+          onClick={() => navigate(ADMIN_URL + '/veri')}
+        >
           Create New Veri
         </Button>
       </HStack>

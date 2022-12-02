@@ -30,7 +30,9 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({
         py={2}
         backgroundColor={isActive ? activeBg : undefined}
       >
-        <Box color={isActive ? activeIcon : textColor}>{icon}</Box>
+        <Box color={isActive ? activeIcon : textColor} fontSize="1.5rem">
+          {icon}
+        </Box>
         <Text me="auto" color={isActive ? activeColor : textColor}>
           {name}
         </Text>
