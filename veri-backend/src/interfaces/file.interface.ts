@@ -9,4 +9,5 @@ export interface File {
   path: string;
   size: number;
   data?: string;
+  buffer?: Buffer;
 }
