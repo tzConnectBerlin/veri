@@ -1,6 +1,6 @@
 import { HttpException } from '@/exceptions/HttpException';
 
-const transformMiddleware = (
+const recipientMiddleware = (
   value: string | 'body' | 'query' | 'params' = 'body',
   field: string
 ) => {
@@ -16,4 +16,4 @@ const transformMiddleware = (
   };
 };
 
-export default transformMiddleware;
+export default recipientMiddleware;
