@@ -1,5 +1,7 @@
 import { Badge, Button, Circle, Heading, HStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import React from 'react';
+import { getRecipients } from '../../../api/services/recipientsService';
 import Address from '../../../design-system/atoms/Address';
 import DataTable, {
   DataTableProps,
@@ -97,6 +99,13 @@ const SamleData: DataTableProps = {
   ],
 };
 const RecipientsPage = (): JSX.Element => {
+  React.useEffect(() => {
+    getRecipients()
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => console.log(err));
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}
