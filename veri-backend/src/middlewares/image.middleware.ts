@@ -1,16 +1,14 @@
-import { CustomRequest } from '@/interfaces/veris.interface';
+import { CustomRequest } from '@/interfaces/request.interface';
 import { Response, NextFunction } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 
-import {
-  createRoundedCorners,
-  createThumbnailImage,
-} from '@/utils/imageTransform';
+import { createRoundedCorners, createThumbnailImage } from '@/utils/image';
+import path from 'path';
 
 const imageMiddleware = async (
-  req: RequestWithFiles,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -23,21 +21,24 @@ const imageMiddleware = async (
     req.thumbnail.buffer = thumbnail;
 
     const fullFilename = uuidv4();
+    req.file.filename = 'original_' + uuidv4();
     req.file.destination = 'uploads/';
-    req.file.path = req.file.destination + fullFilename;
+    req.file.path =
+      req.file.destination + fullFilename + path.extname(req.file.originalname);
 
     const thumbFilename = uuidv4();
-    req.thumbnail.fieldname = 'thumb_' + uuidv4();
+    req.thumbnail.filename = 'thumb_' + uuidv4();
     req.thumbnail.destination = 'uploads/';
-    req.thumbnail.path = req.thumbnail.destination + thumbFilename;
+    req.thumbnail.path =
+      req.thumbnail.destination +
+      thumbFilename +
+      path.extname(req.file.originalname);
 
     fs.writeFileSync(req.file.path, req.file.buffer);
     fs.writeFileSync(req.thumbnail.path, req.thumbnail.buffer);
 
-    delete req.file.buffer;
-    delete req.thumbnail.buffer;
-
-    req.files = JSON.parse(JSON.stringify([req.file, req.thumbnail]));
+    req.files = JSON.parse(JSON.stringify(req.file));
+    req.thumbnail = JSON.parse(JSON.stringify(req.thumbnail));
 
     next();
   } catch (error) {

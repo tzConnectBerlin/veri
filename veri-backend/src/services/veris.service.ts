@@ -1,13 +1,11 @@
 import { File } from '../interfaces/file.interface';
 import { Files } from '../models/files.model';
-import { CreateVeriDto } from '../dtos/veris.dto';
 import { HttpException } from '../exceptions/HttpException';
 import { Veri } from '../interfaces/veris.interface';
 import { Recipient } from '../interfaces/recipients.interface';
 import { Veris } from '../models/veris.model';
 import { Recipients } from '../models/recipients.model';
 import { isEmpty } from '../utils/util';
-import { CreateFileDto } from '@/dtos/files.dto';
 import { User } from '@/interfaces/users.interface';
 import { hash } from 'bcryptjs';
 import { createImageAsset, createTokenDetails } from '@/utils/token';
@@ -37,11 +35,21 @@ class VeriService {
   }
 
   public async createVeri(
-    veriData: CreateVeriDto,
-    file: CreateFileDto,
+    veriData: Veri,
+    file: File,
+    thumbnail: File,
     user: User
   ): Promise<Veri> {
-    if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
+    if (isEmpty(veriData))
+      throw new HttpException(400, 'Please enter Veri details.');
+
+    const hashedPassword = await hash(veriData.live_distribution_password, 10);
+    const recipients = veriData.recipients;
+    const buffer = file.buffer;
+
+    delete veriData.recipients;
+    delete file.buffer;
+    delete thumbnail.buffer;
 
     const findVeri: Veri = await Veris.query()
       .select()
@@ -53,6 +61,7 @@ class VeriService {
     //     409,
     //     `Veri for this event ${veriData.event_name} already exists`
     //   );
+    // console.log(file);
 
     const createFileEntry: File = await Files.query()
       .insert({ ...file })
@@ -60,15 +69,18 @@ class VeriService {
 
     if (!createFileEntry) throw new HttpException(500, `Internal server error`);
 
-    const hashedPassword = await hash(veriData.live_distribution_password, 10);
-    const recipients = veriData.recipients;
+    const createThumbEntry: File = await Files.query()
+      .insert({ ...thumbnail })
+      .into('files');
 
-    delete veriData.recipients;
+    if (!createThumbEntry)
+      throw new HttpException(500, `Internal server error`);
+
     const createVeriData: Veri = await Veris.query()
       .insert({
         ...veriData,
         file_id: createFileEntry.id,
-        thumb_id: createFileEntry.id,
+        thumb_id: createThumbEntry.id,
         live_distribution_password: hashedPassword,
         created_by: user.id,
         updated_by: user.id,
@@ -81,7 +93,7 @@ class VeriService {
       `http://localhost:5005/tokens/${createVeriData.id}`,
       {
         token_details: createTokenDetails(veriData),
-        image_asset: createImageAsset(file),
+        image_asset: createImageAsset(file, buffer),
         recipients,
       },
       {
@@ -95,11 +107,10 @@ class VeriService {
       for (const address of recipients) {
         const createRecipientData: Recipient = await Recipients.query()
           .insert({
-            task_id: createVeriData.id,
             token_id: createVeriData.id,
             address: address,
             amount: 1,
-            state: 'pneding',
+            state: 'pending',
           })
           .into('recipients');
 

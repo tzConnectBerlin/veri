@@ -1,11 +1,11 @@
 import multer from 'multer';
-import { RequestWithFile } from '@/interfaces/veris.interface';
+import { CustomRequest } from '@/interfaces/request.interface';
 import { Response, NextFunction } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import path from 'path';
 
 const fileMiddleware = async (
-  req: RequestWithFile,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -29,19 +29,6 @@ const fileMiddleware = async (
     next();
   });
 };
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)
-    );
-  },
-});
 
 const isValid = (file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const filetypes = /jpeg|jpg|png|gif/;

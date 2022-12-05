@@ -6,6 +6,7 @@ import validationMiddleware from '@/middlewares/validation.middleware';
 import fileMiddleware from '@/middlewares/file.middleware';
 import authMiddleware from '@/middlewares/auth.middleware';
 import recipientMiddleware from '@/middlewares/recipient.middleware';
+import imageMiddleware from '@/middlewares/image.middleware';
 
 class VerisRoute implements Routes {
   public path = '/veris';
@@ -31,6 +32,7 @@ class VerisRoute implements Routes {
       `${this.path}`,
       authMiddleware,
       fileMiddleware,
+      imageMiddleware,
       recipientMiddleware('body', 'recipients'),
       validationMiddleware(CreateVeriDto, 'body'),
       this.verisController.createVeri

@@ -1,5 +1,3 @@
-import { Request } from 'express';
-
 export interface Veri {
   id: number;
   event_name: string;
@@ -17,8 +15,4 @@ export interface Veri {
   status: string;
   recipients?: string[];
   file?: object;
-}
-
-export interface RequestWithFile extends Request {
-  file: Express.Multer.File;
 }

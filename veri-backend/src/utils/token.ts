@@ -1,9 +1,6 @@
-import { CreateFileDto } from '@/dtos/files.dto';
-import { CreateVeriDto } from '@/dtos/veris.dto';
 import { Veri } from '@/interfaces/veris.interface';
-import { print } from '@swc/core';
 
-export function createTokenDetails(veri: CreateVeriDto) {
+export function createTokenDetails(veri: Veri) {
   return {
     name: veri.event_name,
     symbol: 'v',
@@ -12,10 +9,10 @@ export function createTokenDetails(veri: CreateVeriDto) {
   };
 }
 
-export function createImageAsset(file: any) {
+export function createImageAsset(file: any, buffer: Buffer) {
   return {
     filename: file.originalname,
-    b64_data: file.buffer.toString('base64'),
+    b64_data: buffer.toString('base64'),
     mime_type: file.mimetype,
   };
 }

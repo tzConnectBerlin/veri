@@ -1,9 +1,7 @@
-import { CreateFileDto } from '@/dtos/files.dto';
-import { CreateUserDto } from '@/dtos/users.dto';
 import { File } from '@/interfaces/file.interface';
-import { RequestWithUser, User } from '@/interfaces/users.interface';
+import { User } from '@/interfaces/users.interface';
+import { CustomRequest } from '@/interfaces/request.interface';
 import { NextFunction, Request, Response } from 'express';
-import { CreateVeriDto } from '../dtos/veris.dto';
 import { Veri } from '../interfaces/veris.interface';
 import veriService from '../services/veris.service';
 
@@ -40,17 +38,19 @@ class VeriController {
   };
 
   public createVeri = async (
-    req: RequestWithUser,
+    req: CustomRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
-      const veriData: CreateVeriDto = req.body;
-      const file: CreateFileDto = req.file;
+      const veriData: Veri = req.body;
+      const file: File = req.file;
+      const thumbnail: File = req.thumbnail;
       const user: User = req.user;
       const createVeriData: Veri = await this.veriService.createVeri(
         veriData,
         file,
+        thumbnail,
         user
       );
 
@@ -61,7 +61,7 @@ class VeriController {
   };
 
   public updateVeri = async (
-    req: RequestWithUser,
+    req: CustomRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> => {

@@ -4,7 +4,6 @@ import onUpdateTrigger from '../functions/update_timestamp';
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('recipients', (table) => {
     table.bigIncrements('id').unsigned().primary();
-    table.integer('task_id', 10).notNullable();
     table
       .integer('token_id', 10)
       .references('id')
