@@ -24,7 +24,7 @@ const header = [
   },
 ];
 
-export const VerisOverviewPage = (): JSX.Element => {
+const VerisOverviewPage = (): JSX.Element => {
   const [dataTable, setDataTable] = useState<row[]>();
   const [veriList, setVeriList] = useState<any[]>();
   const navigate = useNavigate();
@@ -96,3 +96,5 @@ export const VerisOverviewPage = (): JSX.Element => {
     </motion.div>
   );
 };
+
+export default VerisOverviewPage;

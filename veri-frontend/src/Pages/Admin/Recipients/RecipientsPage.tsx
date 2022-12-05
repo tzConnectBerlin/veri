@@ -96,7 +96,7 @@ const SamleData: DataTableProps = {
     },
   ],
 };
-export const RecipientsPage = (): JSX.Element => {
+const RecipientsPage = (): JSX.Element => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -121,3 +121,4 @@ export const RecipientsPage = (): JSX.Element => {
     </motion.div>
   );
 };
+export default RecipientsPage;

@@ -38,21 +38,19 @@ export const Address: React.FC<AddressProps> = ({
   }, [addr, trimSize]);
 
   return (
-    <HStack
-      px={2}
-      py={1}
-      width="fit-content"
-      backgroundColor={useColorModeValue(bgColor, 'blackAlpha.50')}
-      borderRadius={'md'}
-      cursor="pointer"
-      fontSize="14px"
-    >
-      <CopyToClipboard text={addr} onCopy={handleCopy}>
-        <>
-          <Text>{trimText}</Text>
-          <MdOutlineFileCopy />
-        </>
-      </CopyToClipboard>
-    </HStack>
+    <CopyToClipboard text={addr} onCopy={handleCopy}>
+      <HStack
+        px={2}
+        py={1}
+        width="fit-content"
+        backgroundColor={useColorModeValue(bgColor, 'blackAlpha.50')}
+        borderRadius={'md'}
+        cursor="pointer"
+        fontSize="14px"
+      >
+        <Text>{trimText}</Text>
+        <MdOutlineFileCopy />
+      </HStack>
+    </CopyToClipboard>
   );
 };

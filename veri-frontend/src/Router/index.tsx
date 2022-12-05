@@ -9,14 +9,21 @@ import {
   Register,
   ForgotPassword,
   ResetPassword,
-  VerisOverview,
   VeriForm,
-  Recipients,
   Settings,
   VeriScanner,
   Booth,
 } from '../Pages';
+
+const RecipientsPage = React.lazy(
+  () => import('../Pages/Admin/Recipients/RecipientsPage'),
+);
+const VerisOverviewPage = React.lazy(
+  () => import('../Pages/Admin/VerisOverview/VerisOverviewPage'),
+);
+
 import { AnimatePresence } from 'framer-motion';
+import React, { Suspense } from 'react';
 
 const PrivateRoutes = () => {
   const { user } = useAuth();
@@ -49,14 +56,26 @@ export const Router = () => {
           <Route path="/reset" element={<ResetPassword />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-        <Route element={<PrivateRoutes />}>
-          <Route path="/admin">
-            <Route index element={<VerisOverview />} />
-            <Route path="veri" element={<VeriForm />} />
-            <Route path="veri/:id" element={<VeriForm />} />
-            <Route path="recipients" element={<Recipients />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
+        <Route path="/admin" element={<PrivateRoutes />}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<>...</>}>
+                <VerisOverviewPage />
+              </Suspense>
+            }
+          />
+          <Route path="veri" element={<VeriForm />} />
+          <Route path="veri/:id" element={<VeriForm />} />
+          <Route
+            path="recipients"
+            element={
+              <Suspense fallback={<>...</>}>
+                <RecipientsPage />
+              </Suspense>
+            }
+          />
+          <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="/booth" element={<Booth />} />
         <Route element={<EventRoutes />}>
