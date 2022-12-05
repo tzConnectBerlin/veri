@@ -103,6 +103,8 @@ class VeriService {
       }
     );
 
+    if (!createTask) throw new HttpException(500, `Internal server error`);
+
     if (recipients) {
       for (const address of recipients) {
         const createRecipientData: Recipient = await Recipients.query()

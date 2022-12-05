@@ -365,7 +365,7 @@ definitions:
         description: Recipient list
         items:
           type: string
-        example: ["str1", "str2", "str3"]
+        example: ["tz1LJtXoZoTiSHSTcpPPAs5rBZCftngyLe4x"]
 
 schemes:
  - https

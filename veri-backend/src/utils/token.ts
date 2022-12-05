@@ -3,7 +3,8 @@ import { Veri } from '@/interfaces/veris.interface';
 export function createTokenDetails(veri: Veri) {
   return {
     name: veri.event_name,
-    symbol: 'v',
+    description: veri.event_description,
+    tags: ['veri'],
     creators: veri.event_contact_email,
     date: veri.event_start_date,
   };
