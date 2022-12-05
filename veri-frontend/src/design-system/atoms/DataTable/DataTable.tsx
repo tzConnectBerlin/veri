@@ -91,7 +91,7 @@ export const DataTable: React.FC<DataTableProps> = ({
             {rows.map((row, i) => (
               <Tr
                 key={i}
-                onClick={() => navigate(row.actionLink || '/')}
+                onClick={() => row.actionLink && navigate(row.actionLink)}
                 cursor={row.actionLink ? 'pointer' : 'inherit'}
               >
                 {row.cols.map(col => (

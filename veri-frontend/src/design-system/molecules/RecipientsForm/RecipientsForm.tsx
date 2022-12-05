@@ -12,7 +12,7 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { FieldArray, FormikProvider } from 'formik';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { MdDelete, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormStatus } from '../../../types';

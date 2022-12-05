@@ -14,7 +14,7 @@ import {
 } from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
-import { FormikHelpers, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
