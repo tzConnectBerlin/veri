@@ -1,6 +1,7 @@
 import App from './app';
 import AuthRoute from './routes/auth.route';
 import IndexRoute from './routes/index.route';
+import RecipientsRoute from './routes/recipient.route';
 import UsersRoute from './routes/users.route';
 import VerisRoute from './routes/veris.route';
 import validateEnv from './utils/validateEnv';
@@ -12,6 +13,7 @@ const app = new App([
   new UsersRoute(),
   new AuthRoute(),
   new VerisRoute(),
+  new RecipientsRoute(),
 ]);
 
 app.listen();

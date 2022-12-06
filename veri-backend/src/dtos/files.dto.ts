@@ -24,4 +24,7 @@ export class CreateFileDto {
 
   @IsString()
   public size: number;
+
+  @IsString()
+  public buffer: Buffer;
 }
