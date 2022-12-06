@@ -13,6 +13,7 @@ import {
   Settings,
   VeriScanner,
   Booth,
+  SendVeris,
 } from '../Pages';
 
 const RecipientsPage = React.lazy(
@@ -75,6 +76,8 @@ export const Router = () => {
               </Suspense>
             }
           />
+          <Route path="send" element={<SendVeris />} />
+          <Route path="send/:veri_id" element={<SendVeris />} />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="/booth" element={<Booth />} />

@@ -19,19 +19,23 @@ import { VeriFormStatus } from '../../../types';
 
 export interface RecipientsFormProps {
   title?: string;
+  recipients: string[];
 }
-export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
-  const context = useContext(VeriContext);
-  const [editMode, setEditMode] = useState<VeriFormStatus>();
+export const RecipientsForm: React.FC<RecipientsFormProps> = ({
+  title,
+  recipients,
+}) => {
+  // const context = useContext(VeriContext);
+  // const [editMode, setEditMode] = useState<VeriFormStatus>();
 
-  useEffect(() => {
-    setEditMode(context.formType);
-  }, [context.formType]);
+  // useEffect(() => {
+  //   setEditMode(context.formType);
+  // }, [context.formType]);
 
-  const handleEdit = () => {
-    context.formik.handleSubmit();
-    setEditMode('View');
-  };
+  // const handleEdit = () => {
+  //   context.formik.handleSubmit();
+  //   setEditMode('View');
+  // };
 
   return (
     <Box
@@ -42,7 +46,7 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
     >
       <HStack justifyContent="space-between" mb={10}>
         <Heading fontSize={'xl'}>{title}</Heading>
-        {editMode === 'Edit' && (
+        {/* {editMode === 'Edit' && (
           <Button
             size="xs"
             border="none"
@@ -52,64 +56,51 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({ title }) => {
           >
             Save
           </Button>
-        )}
+        )} */}
       </HStack>
-      <FormikProvider value={context.formik}>
-        <Stack spacing={4}>
-          <FormControl>
-            <FormLabel>Recipients Address</FormLabel>
+      <Stack spacing={4}>
+        <FormControl>
+          <FormLabel>Recipients Address</FormLabel>
 
-            <FieldArray
-              name="recipients"
-              render={(arrayHelper: any) => (
-                <Stack spacing={4}>
-                  {context.formik.values.recipients &&
-                    context.formik.values.recipients.length > 0 &&
-                    context.formik.values.recipients.map(
-                      (addr: string, index: number) => (
-                        <InputGroup size="md" key={index}>
-                          <Input
-                            pr="3rem"
-                            name={`recipients.${index}`}
-                            type="text"
-                            placeholder="Type here"
-                            value={addr}
-                            onChange={context.formik.handleChange}
-                            onBlur={context.formik.handleBlur}
-                          />
-                          <InputRightElement width="3rem">
-                            <Button
-                              size="md"
-                              variant="icon"
-                              onClick={() => {
-                                if (context.formType === 'View')
-                                  setEditMode('Edit');
-                                arrayHelper.remove(index);
-                              }}
-                            >
-                              <MdDelete />
-                            </Button>
-                          </InputRightElement>
-                        </InputGroup>
-                      ),
-                    )}
-                  <Button
-                    variant="link"
-                    type="button"
-                    onClick={() => {
-                      if (context.formType === 'View') setEditMode('Edit');
-                      arrayHelper.push('');
-                    }}
-                    alignSelf="flex-start"
-                  >
-                    + Add anouther recipients
-                  </Button>
-                </Stack>
-              )}
-            />
-          </FormControl>
-        </Stack>
-      </FormikProvider>
+          <FieldArray
+            name="recipients"
+            render={(arrayHelper: any) => (
+              <Stack spacing={4}>
+                {recipients &&
+                  recipients.length > 0 &&
+                  recipients.map((addr: string, index: number) => (
+                    <InputGroup size="md" key={index}>
+                      <Input
+                        pr="3rem"
+                        name={`recipients.${index}`}
+                        type="text"
+                        placeholder="Type here"
+                        value={addr}
+                      />
+                      <InputRightElement width="3rem">
+                        <Button
+                          size="md"
+                          variant="icon"
+                          onClick={arrayHelper.remove(index)}
+                        >
+                          <MdDelete />
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  ))}
+                <Button
+                  variant="link"
+                  type="button"
+                  onClick={arrayHelper.push('')}
+                  alignSelf="flex-start"
+                >
+                  + Add anouther recipients
+                </Button>
+              </Stack>
+            )}
+          />
+        </FormControl>
+      </Stack>
     </Box>
   );
 };

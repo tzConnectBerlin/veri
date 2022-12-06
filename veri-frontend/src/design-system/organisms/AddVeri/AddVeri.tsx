@@ -25,9 +25,6 @@ export const AddVeri = () => {
         <EventDetailForm title="EVENT DETAILS" />
         <VeriDetailForm title="VERI DETAILS" />
         <DistributionMethodForm title="Distribution Method" />
-        {context.formik.values.distributionMethod === 'Post-event' && (
-          <RecipientsForm title="Recipients" />
-        )}
         {/* <>{JSON.stringify(context.formik.values)}</> */}
 
         <Box>
@@ -35,14 +32,7 @@ export const AddVeri = () => {
             {context.formType === 'Add' && (
               <>
                 <Button
-                  colorScheme="primary"
-                  leftIcon={<IoMdSave />}
-                  onClick={() => handleDifferentSubmit('Draft')}
-                >
-                  Save Draft
-                </Button>
-                <Button
-                  variant="secondary"
+                  variant="primary"
                   isDisabled={
                     context.formik.isSubmitting ||
                     !(context.formik.isValid && context.formik.dirty)
@@ -53,22 +43,22 @@ export const AddVeri = () => {
                   Create VERI
                 </Button>
                 <Button
-                  variant="secondary"
+                  colorScheme="secondary"
                   isDisabled={
                     context.formik.isSubmitting ||
                     !(context.formik.isValid && context.formik.dirty)
                   }
-                  leftIcon={<IoMdSend />}
-                  onClick={() => handleDifferentSubmit('Minting')}
+                  leftIcon={<IoMdSave />}
+                  onClick={() => handleDifferentSubmit('Draft')}
                 >
-                  Create & Mint VERIs
+                  Save Draft
                 </Button>
               </>
             )}
             {context.formType === 'View' && (
               <>
                 <Button colorScheme="primary" leftIcon={<IoMdSend />}>
-                  Mint VERIs
+                  Send VERIs
                 </Button>
                 <Button
                   variant="secondary"
