@@ -5,4 +5,5 @@ export interface Recipient {
   address: string;
   amount: number;
   state: string;
+  created_by?: number;
 }

@@ -17,4 +17,5 @@ export const {
   LOG_FORMAT,
   LOG_DIR,
   ORIGIN,
+  PEPPERMINTERY_URL,
 } = process.env;

@@ -1,6 +1,7 @@
-import { Veri } from '@/interfaces/veris.interface';
+import { CreateFileDto } from '@/dtos/files.dto';
+import { CreateVeriDto } from '@/dtos/veris.dto';
 
-export function createTokenDetails(veri: Veri) {
+export function createTokenDetails(veri: CreateVeriDto) {
   return {
     name: veri.event_name,
     description: veri.event_description,
@@ -10,7 +11,7 @@ export function createTokenDetails(veri: Veri) {
   };
 }
 
-export function createImageAsset(file: any, buffer: Buffer) {
+export function createImageAsset(file: CreateFileDto, buffer: Buffer) {
   return {
     filename: file.originalname,
     b64_data: buffer.toString('base64'),
