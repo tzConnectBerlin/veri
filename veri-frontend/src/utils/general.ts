@@ -1,3 +1,5 @@
+import { trimSizeMap, TrimSizeType } from '../types/general';
+
 export const GetImageSize = (
   file: File,
 ): Promise<{ width: number; height: number }> => {
@@ -42,4 +44,13 @@ export const getDisplayTimeRange = (startDate: Date, endDate: Date): string => {
     locales,
     fullOption,
   )} - ${endDate.toLocaleDateString(locales, fullOption)}`;
+};
+
+export const trimString = (
+  str: string,
+  trimSize: TrimSizeType = 'small',
+): string => {
+  return `${str.substring(0, trimSizeMap[trimSize])}...${str.substring(
+    str.length - trimSizeMap[trimSize],
+  )}`;
 };
