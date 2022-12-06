@@ -56,6 +56,7 @@ class VeriService {
       .from('veris')
       .where('event_name', '=', veriData.event_name)
       .first();
+
     if (findVeri)
       throw new HttpException(
         409,
