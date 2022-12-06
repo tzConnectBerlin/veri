@@ -10,6 +10,9 @@ import { User } from '@/interfaces/users.interface';
 import { hash } from 'bcryptjs';
 import { createImageAsset, createTokenDetails } from '@/utils/token';
 import axios from 'axios';
+import { CreateVeriDto } from '@/dtos/veris.dto';
+import { CreateFileDto } from '@/dtos/files.dto';
+import { PEPPERMINTERY_URL } from '../config';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
@@ -35,16 +38,16 @@ class VeriService {
   }
 
   public async createVeri(
-    veriData: Veri,
-    file: File,
-    thumbnail: File,
+    veriData: CreateVeriDto,
+    file: CreateFileDto,
+    thumbnail: CreateFileDto,
     user: User
   ): Promise<Veri> {
     if (isEmpty(veriData))
       throw new HttpException(400, 'Please enter Veri details.');
 
     const hashedPassword = await hash(veriData.live_distribution_password, 10);
-    const recipients = veriData.recipients;
+    let recipients = veriData.recipients;
     const buffer = file.buffer;
 
     delete veriData.recipients;
@@ -56,7 +59,6 @@ class VeriService {
       .from('veris')
       .where('event_name', '=', veriData.event_name)
       .first();
-
     if (findVeri)
       throw new HttpException(
         409,
@@ -91,7 +93,7 @@ class VeriService {
     if (!createVeriData) throw new HttpException(500, `Internal server error`);
 
     const createTask = await axios.put(
-      `http://localhost:5005/tokens/${createVeriData.id}`,
+      `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
       {
         token_details: createTokenDetails(veriData),
         image_asset: createImageAsset(file, buffer),
@@ -107,6 +109,7 @@ class VeriService {
     if (!createTask) throw new HttpException(500, `Internal server error`);
 
     if (recipients) {
+      recipients = [...new Set(recipients)];
       for (const address of recipients) {
         const createRecipientData: Recipient = await Recipients.query()
           .insert({
@@ -114,6 +117,7 @@ class VeriService {
             address: address,
             amount: 1,
             state: 'pending',
+            created_by: user.id,
           })
           .into('recipients');
 

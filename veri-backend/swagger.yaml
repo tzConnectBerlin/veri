@@ -258,6 +258,18 @@ paths:
         500:
           description: 'Server Error'
 
+# [GET] recipients
+  /recipients:
+    get:
+      tags:
+      - recipients
+      summary: Find All recipients
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
