@@ -8,6 +8,7 @@ export class Recipients extends Model implements Recipient {
   address: string;
   amount: number;
   state: string;
+  created_by: number;
 
   static tableName = 'recipients'; // database table name
   static idColumn = 'id'; // id column name
