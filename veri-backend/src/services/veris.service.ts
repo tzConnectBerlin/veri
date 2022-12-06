@@ -64,6 +64,7 @@ class VeriService {
         409,
         `Veri for this event ${veriData.event_name} already exists`
       );
+    console.log(file);
 
     const createFileEntry: File = await Files.query()
       .insert({ ...file })
@@ -106,6 +107,7 @@ class VeriService {
     );
 
     if (!createTask) throw new HttpException(500, `Internal server error`);
+
     if (recipients) {
       recipients = [...new Set(recipients)];
       for (const address of recipients) {
