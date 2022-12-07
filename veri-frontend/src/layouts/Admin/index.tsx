@@ -31,11 +31,11 @@ export const DashboardLayout = () => {
     }
   };
 
-  useEffect(() => {
-    if (colorMode === 'dark') {
-      toggleColorMode();
-    }
-  }, [colorMode, toggleColorMode]);
+  // useEffect(() => {
+  //   if (colorMode === 'dark') {
+  //     toggleColorMode();
+  //   }
+  // }, [colorMode, toggleColorMode]);
   return (
     <ChakraProvider theme={adminTheme}>
       <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>

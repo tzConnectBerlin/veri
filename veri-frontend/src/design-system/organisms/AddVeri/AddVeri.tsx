@@ -32,7 +32,7 @@ export const AddVeri = () => {
             {context.formType === 'Add' && (
               <>
                 <Button
-                  variant="primary"
+                  colorScheme="primary"
                   isDisabled={
                     context.formik.isSubmitting ||
                     !(context.formik.isValid && context.formik.dirty)
@@ -43,7 +43,7 @@ export const AddVeri = () => {
                   Create VERI
                 </Button>
                 <Button
-                  colorScheme="secondary"
+                  variant="secondary"
                   isDisabled={
                     context.formik.isSubmitting ||
                     !(context.formik.isValid && context.formik.dirty)

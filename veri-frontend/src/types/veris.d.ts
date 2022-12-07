@@ -30,7 +30,14 @@ export interface VeriFormikType {
   onDelete: () => void;
 }
 
+export interface VeriDropDown {
+  id: number;
+  artWork: string;
+  title: string;
+}
+
 export interface VeriType {
+  id: number;
   event_name: string;
   event_description?: string;
   event_contact_email: string;

@@ -10,21 +10,24 @@ import {
   InputRightElement,
   Button,
   HStack,
+  Select,
+  FormErrorMessage,
 } from '@chakra-ui/react';
-import { FieldArray, FormikProvider } from 'formik';
-import React, { useContext, useEffect, useState } from 'react';
-import { MdDelete, MdSave } from 'react-icons/md';
-import { VeriContext } from '../../../contexts/veri';
-import { VeriFormStatus } from '../../../types';
+import { FieldArray, useFormikContext } from 'formik';
+import React, { ChangeEvent } from 'react';
+import { MdDelete } from 'react-icons/md';
+import { RecipientsVeri, VeriDropDown } from '../../../types';
 
 export interface RecipientsFormProps {
-  title?: string;
-  recipients: string[];
+  veris: VeriDropDown[];
+  onVeriChange: (e: ChangeEvent<HTMLSelectElement>, setFieldValue: any) => void;
 }
 export const RecipientsForm: React.FC<RecipientsFormProps> = ({
-  title,
-  recipients,
+  veris,
+  onVeriChange,
 }) => {
+  const formik = useFormikContext<RecipientsVeri>();
+
   // const context = useContext(VeriContext);
   // const [editMode, setEditMode] = useState<VeriFormStatus>();
 
@@ -44,54 +47,71 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({
       boxShadow={'lg'}
       p={8}
     >
-      <HStack justifyContent="space-between" mb={10}>
-        <Heading fontSize={'xl'}>{title}</Heading>
-        {/* {editMode === 'Edit' && (
-          <Button
-            size="xs"
-            border="none"
-            variant="secondary"
-            leftIcon={<MdSave />}
-            onClick={handleEdit}
+      <Stack spacing={10}>
+        <FormControl
+          isRequired
+          isInvalid={
+            formik.touched.selectedVeri && !!formik.errors.selectedVeri
+          }
+        >
+          <FormLabel>VERI</FormLabel>
+          <Select
+            name="selectedVeri"
+            placeholder="Select an option"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              onVeriChange(e, formik.setFieldValue);
+              formik.handleChange;
+              console.log(formik);
+            }}
           >
-            Save
-          </Button>
-        )} */}
-      </HStack>
-      <Stack spacing={4}>
-        <FormControl>
+            {veris.map(veri => (
+              <option value={veri.id} key={veri.id}>
+                {veri.title}
+              </option>
+            ))}
+          </Select>
+          <FormErrorMessage>{formik.errors.selectedVeri}</FormErrorMessage>
+        </FormControl>
+        <FormControl
+          isRequired
+          isInvalid={formik.touched.recipients && !!formik.errors.recipients}
+        >
           <FormLabel>Recipients Address</FormLabel>
 
           <FieldArray
             name="recipients"
             render={(arrayHelper: any) => (
               <Stack spacing={4}>
-                {recipients &&
-                  recipients.length > 0 &&
-                  recipients.map((addr: string, index: number) => (
-                    <InputGroup size="md" key={index}>
-                      <Input
-                        pr="3rem"
-                        name={`recipients.${index}`}
-                        type="text"
-                        placeholder="Type here"
-                        value={addr}
-                      />
-                      <InputRightElement width="3rem">
-                        <Button
-                          size="md"
-                          variant="icon"
-                          onClick={arrayHelper.remove(index)}
-                        >
-                          <MdDelete />
-                        </Button>
-                      </InputRightElement>
-                    </InputGroup>
-                  ))}
+                {formik.values.recipients &&
+                  formik.values.recipients.length > 0 &&
+                  formik.values.recipients.map(
+                    (addr: string, index: number) => (
+                      <InputGroup size="md" key={index}>
+                        <Input
+                          pr="3rem"
+                          name={`recipients.${index}`}
+                          type="text"
+                          placeholder="Type here"
+                          value={addr}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        <InputRightElement width="3rem">
+                          <Button
+                            size="md"
+                            variant="icon"
+                            onClick={() => arrayHelper.remove(index)}
+                          >
+                            <MdDelete />
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    ),
+                  )}
                 <Button
                   variant="link"
                   type="button"
-                  onClick={arrayHelper.push('')}
+                  onClick={() => arrayHelper.push('')}
                   alignSelf="flex-start"
                 >
                   + Add anouther recipients
@@ -99,6 +119,7 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({
               </Stack>
             )}
           />
+          <FormErrorMessage>{formik.errors.recipients}</FormErrorMessage>
         </FormControl>
       </Stack>
     </Box>

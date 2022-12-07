@@ -1,12 +1,14 @@
 import { Badge, Button, Circle, Heading, HStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { getRecipients } from '../../../api/services/recipientsService';
 import Address from '../../../design-system/atoms/Address';
 import DataTable, {
   DataTableProps,
 } from '../../../design-system/atoms/DataTable';
 import Wrapper from '../../../design-system/atoms/Wrapper';
+import { ADMIN_URL } from '../../../Global';
 
 const SamleData: DataTableProps = {
   header: [
@@ -99,6 +101,8 @@ const SamleData: DataTableProps = {
   ],
 };
 const RecipientsPage = (): JSX.Element => {
+  const navigate = useNavigate();
+
   React.useEffect(() => {
     getRecipients()
       .then(res => {
@@ -114,7 +118,10 @@ const RecipientsPage = (): JSX.Element => {
     >
       <HStack justifyContent="space-between" mb={10}>
         <Heading>Recipients</Heading>
-        <Button colorScheme="primary" onClick={() => console.log('send Veri')}>
+        <Button
+          colorScheme="primary"
+          onClick={() => navigate(ADMIN_URL + '/send')}
+        >
           Send VERIs
         </Button>
       </HStack>
