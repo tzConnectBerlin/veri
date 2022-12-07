@@ -5,11 +5,9 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Heading,
   InputGroup,
   InputRightElement,
   Button,
-  HStack,
   Select,
   FormErrorMessage,
 } from '@chakra-ui/react';
@@ -27,18 +25,6 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({
   onVeriChange,
 }) => {
   const formik = useFormikContext<RecipientsVeri>();
-
-  // const context = useContext(VeriContext);
-  // const [editMode, setEditMode] = useState<VeriFormStatus>();
-
-  // useEffect(() => {
-  //   setEditMode(context.formType);
-  // }, [context.formType]);
-
-  // const handleEdit = () => {
-  //   context.formik.handleSubmit();
-  //   setEditMode('View');
-  // };
 
   return (
     <Box
@@ -58,10 +44,9 @@ export const RecipientsForm: React.FC<RecipientsFormProps> = ({
           <Select
             name="selectedVeri"
             placeholder="Select an option"
+            value={formik.values.selectedVeri?.id}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
               onVeriChange(e, formik.setFieldValue);
-              formik.handleChange;
-              console.log(formik);
             }}
           >
             {veris.map(veri => (

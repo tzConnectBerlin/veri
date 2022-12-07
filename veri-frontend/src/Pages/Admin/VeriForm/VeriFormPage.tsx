@@ -29,6 +29,7 @@ import {
 } from '../../../api/services/veriService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { VeriFormStatus } from '../../../types';
+import { ADMIN_URL } from '../../../Global';
 
 export const VeriFormPage = (): JSX.Element => {
   const { id } = useParams();
@@ -150,6 +151,10 @@ export const VeriFormPage = (): JSX.Element => {
       });
   }, [id, navigate, toast]);
 
+  const handleSendVeri = useCallback(() => {
+    navigate(`${ADMIN_URL}/send/${id}`);
+  }, [id, navigate]);
+
   const InitialValues: VeriFormValues = useMemo(() => {
     const EventDetailValues: EventDetailValues = {
       eventName: '',
@@ -193,8 +198,9 @@ export const VeriFormPage = (): JSX.Element => {
       formik: formik,
       formType: type ?? 'Add',
       onDelete: handleDelete,
+      onSend: handleSendVeri,
     }),
-    [formik, handleDelete, type],
+    [formik, handleDelete, type, handleSendVeri],
   );
 
   return (

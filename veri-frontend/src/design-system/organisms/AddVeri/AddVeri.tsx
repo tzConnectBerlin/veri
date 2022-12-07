@@ -4,7 +4,6 @@ import { VeriContext } from '../../../contexts/veri';
 import { IoMdSave, IoMdCloudUpload, IoMdSend, IoMdEye } from 'react-icons/io';
 import { DistributionMethodForm } from '../../molecules/DistributionMethodForm';
 import { EventDetailForm } from '../../molecules/EventDetailForm';
-import { RecipientsForm } from '../../molecules/RecipientsForm';
 import { VeriDetailForm } from '../../molecules/VeriDetailForm';
 import { MdDelete } from 'react-icons/md';
 
@@ -57,7 +56,11 @@ export const AddVeri = () => {
             )}
             {context.formType === 'View' && (
               <>
-                <Button colorScheme="primary" leftIcon={<IoMdSend />}>
+                <Button
+                  colorScheme="primary"
+                  leftIcon={<IoMdSend />}
+                  onClick={context.onSend}
+                >
                   Send VERIs
                 </Button>
                 <Button

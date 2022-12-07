@@ -1,11 +1,10 @@
-import { Box, Button, Container, Heading, Stack } from '@chakra-ui/react';
-import { Form, Formik, FormikHelpers, FormikValues, useFormik } from 'formik';
+import { Button, Container, Heading, Stack } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { IoMdSend } from 'react-icons/io';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import { getRecipientsByVeriId } from '../../../api/services/recipientsService';
 import { getVeriById, getVeris } from '../../../api/services/veriService';
 import RecipientsForm from '../../../design-system/molecules/RecipientsForm';
 import { RecipientsVeri, VeriDropDown } from '../../../types';
@@ -18,51 +17,56 @@ export const SendVerisPage = () => {
   const [selectedVeri, setSelectedVeri] = useState<VeriDropDown>();
   const [recipients, setRecipients] = useState<string[]>([]);
 
+  const getRecipients = useCallback((id: number) => {
+    getVeriById(id)
+      .then(res => {
+        setRecipients(res.data.data.recipients);
+      })
+      .catch(err => console.log(err));
+  }, []);
+
   useEffect(() => {
     getVeris()
       .then(res => {
-        setVeriList(() => MapVeriToDropDown(res.data.data));
+        const veriDropDownList = MapVeriToDropDown(res.data.data);
+        setVeriList(veriDropDownList);
       })
       .catch(err => console.log(err));
+  }, []);
 
+  useEffect(() => {
     if (veri_id) {
-      getRecipientsByVeriId(Number(veri_id))
-        .then(res => {
-          setRecipients(res.data.data);
-        })
-        .catch(err => console.log(err));
-      setSelectedVeri(
-        () => veriList?.filter(item => item.id === Number(veri_id))[0],
-      );
+      getRecipients(Number(veri_id));
+      const veri = veriList?.filter(item => item.id === veri_id)[0];
+      setSelectedVeri(veri);
     }
-  }, [veriList, veri_id]);
+  }, [getRecipients, veriList, veri_id]);
 
-  const handleSubmit = () => {
-    console.log('submit');
+  const handleSubmit = (values: RecipientsVeri) => {
+    console.log(values);
   };
 
   const handleChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>, setFieldValue: any) => {
+    (e: ChangeEvent<HTMLSelectElement>) => {
       if (!e.target.value) {
         setRecipients([]);
         setSelectedVeri(undefined);
         return;
       }
+
       try {
-        const veriId = e.target.value;
-        getVeriById(Number(veriId))
-          .then(res => {
-            const rec = res.data.data.recipients;
-            setRecipients(rec);
-            setFieldValue('recipients', rec);
-          })
-          .catch(err => console.log(err));
-        setFieldValue('selectedVeri', e.target.value);
+        const veri: VeriDropDown = {
+          id: e.target.value,
+          title: e.target.name,
+          artWork: '',
+        };
+        setSelectedVeri(veri);
+        getRecipients(Number(veri.id));
       } catch (err) {
         console.log(err);
       }
     },
-    [],
+    [getRecipients],
   );
 
   const validationSchema = Yup.object().shape({
@@ -72,7 +76,7 @@ export const SendVerisPage = () => {
 
   const initialValues: RecipientsVeri = {
     recipients: recipients,
-    selectedVeri: selectedVeri,
+    selectedVeri,
   };
 
   return (
@@ -88,22 +92,23 @@ export const SendVerisPage = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            validateOnChange={true}
             enableReinitialize={true}
           >
-            {({ isSubmitting, isValid, dirty }) => (
+            {({ isSubmitting, isValid }) => (
               <Form>
                 <Stack gap={8}>
                   <RecipientsForm
                     veris={veriList}
                     onVeriChange={handleChange}
                   />
-                  <div>{isValid}</div>
+                  {/* <div>{JSON.stringify(isValid)}</div> */}
                   <Button
                     width={80}
                     alignSelf="center"
                     colorScheme="primary"
                     leftIcon={<IoMdSend />}
-                    isDisabled={isSubmitting || !(isValid && dirty)}
+                    isDisabled={isSubmitting || !isValid}
                   >
                     Send VERI
                   </Button>
