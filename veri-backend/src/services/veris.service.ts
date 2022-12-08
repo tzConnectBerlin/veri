@@ -54,17 +54,17 @@ class VeriService {
     delete file.buffer;
     delete thumbnail.buffer;
 
-    const findVeri: Veri = await Veris.query()
-      .select()
-      .from('veris')
-      .where('event_name', '=', veriData.event_name)
-      .first();
-    if (findVeri)
-      throw new HttpException(
-        409,
-        `Veri for this event ${veriData.event_name} already exists`
-      );
-    console.log(file);
+    // const findVeri: Veri = await Veris.query()
+    //   .select()
+    //   .from('veris')
+    //   .where('event_name', '=', veriData.event_name)
+    //   .first();
+    // if (findVeri)
+    //   throw new HttpException(
+    //     409,
+    //     `Veri for this event ${veriData.event_name} already exists`
+    //   );
+    // console.log(file);
 
     const createFileEntry: File = await Files.query()
       .insert({ ...file })
@@ -110,6 +110,7 @@ class VeriService {
 
     if (recipients) {
       recipients = [...new Set(recipients)];
+      console.log(user.id);
       for (const address of recipients) {
         const createRecipientData: Recipient = await Recipients.query()
           .insert({

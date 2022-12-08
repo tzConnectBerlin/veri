@@ -6,4 +6,5 @@ export interface Recipient {
   amount: number;
   state: string;
   created_by?: number;
+  operation?: string;
 }

@@ -11,8 +11,17 @@ class RecipientService {
     const findRecipient: Recipient[] = await Recipients.query()
       .select()
       .from('recipients')
-      .where('created_by', '=', userId);
-
+      .where('recipients.created_by', '=', userId)
+      .join('veris', 'veris.id', '=', 'recipients.token_id')
+      .join('files', 'files.id', '=', 'veris.thumb_id')
+      .select(
+        'files.path as image',
+        'veris.event_name as veri',
+        'recipients.address as recipient',
+        'recipients.operation',
+        'recipients.state as status'
+      );
+    console.log(findRecipient);
     return findRecipient;
   }
 }
