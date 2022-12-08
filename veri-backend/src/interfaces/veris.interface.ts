@@ -13,6 +13,5 @@ export interface Veri {
   live_distribution_url?: string;
   file_id: number;
   status: string;
-  recipients?: string[];
   file?: object;
 }

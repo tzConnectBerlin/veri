@@ -4,7 +4,7 @@ import {
   IsDateString,
   IsUrl,
   IsBooleanString,
-  IsArray,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateVeriDto {
@@ -35,15 +35,14 @@ export class CreateVeriDto {
   @IsBooleanString()
   public live_distribution: string;
 
+  @IsOptional()
   @IsUrl()
-  public live_distribution_url: string;
+  public live_distribution_url?: string;
 
+  @IsOptional()
   @IsString()
-  public live_distribution_password: string;
+  public live_distribution_password?: string;
 
   @IsString()
   public status: string;
-
-  @IsArray()
-  public recipients: string[];
 }

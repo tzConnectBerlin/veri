@@ -2,9 +2,7 @@ import { File } from '../interfaces/file.interface';
 import { Files } from '../models/files.model';
 import { HttpException } from '../exceptions/HttpException';
 import { Veri } from '../interfaces/veris.interface';
-import { Recipient } from '../interfaces/recipients.interface';
 import { Veris } from '../models/veris.model';
-import { Recipients } from '../models/recipients.model';
 import { isEmpty } from '../utils/util';
 import { User } from '@/interfaces/users.interface';
 import { hash } from 'bcryptjs';
@@ -47,10 +45,8 @@ class VeriService {
       throw new HttpException(400, 'Please enter Veri details.');
 
     const hashedPassword = await hash(veriData.live_distribution_password, 10);
-    let recipients = veriData.recipients;
     const buffer = file.buffer;
 
-    delete veriData.recipients;
     delete file.buffer;
     delete thumbnail.buffer;
 
@@ -64,7 +60,6 @@ class VeriService {
     //     409,
     //     `Veri for this event ${veriData.event_name} already exists`
     //   );
-    // console.log(file);
 
     const createFileEntry: File = await Files.query()
       .insert({ ...file })
@@ -97,7 +92,6 @@ class VeriService {
       {
         token_details: createTokenDetails(veriData),
         image_asset: createImageAsset(file, buffer),
-        recipients,
       },
       {
         headers: {
@@ -107,25 +101,6 @@ class VeriService {
     );
 
     if (!createTask) throw new HttpException(500, `Internal server error`);
-
-    if (recipients) {
-      recipients = [...new Set(recipients)];
-      console.log(user.id);
-      for (const address of recipients) {
-        const createRecipientData: Recipient = await Recipients.query()
-          .insert({
-            token_id: createVeriData.id,
-            address: address,
-            amount: 1,
-            state: 'pending',
-            created_by: user.id,
-          })
-          .into('recipients');
-
-        if (!createRecipientData)
-          throw new HttpException(500, `Internal server error`);
-      }
-    }
 
     return createVeriData;
   }

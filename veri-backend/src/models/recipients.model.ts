@@ -3,7 +3,6 @@ import { Recipient } from '../interfaces/recipients.interface';
 
 export class Recipients extends Model implements Recipient {
   id!: number;
-  task_id: number;
   token_id: number;
   address: string;
   amount: number;

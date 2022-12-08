@@ -270,6 +270,51 @@ paths:
         500:
           description: 'Server Error'
 
+# [GET] recipients/id
+  /recipients/{id}:
+    get:
+      tags:
+      - recipients
+      summary: Find Recipients By Token Id
+      parameters:
+      - name: id
+        in: path
+        description: Token Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# [POST] recipients
+    post:
+      tags:
+      - recipients
+      summary: Add Recipients By Token Id
+      parameters:
+      - name: id
+        in: path
+        description: Veri Id
+        required: true
+        type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/definitions/recipients'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -315,7 +360,6 @@ definitions:
         - artwork_description
         - live_distribution_url
         - live_distribution_password
-        - recipients
     properties:
       event_name:
         type: string
@@ -372,13 +416,17 @@ definitions:
         type: string
         description: Current status of Veri 
         example: 'created'
-      recipients:
+  recipients:
+    type: object
+    required:
+        - addresses
+    properties:
+      addresses:
         type: array
         description: Recipient list
         items:
           type: string
         example: ["tz1LJtXoZoTiSHSTcpPPAs5rBZCftngyLe4x"]
-
 schemes:
  - https
  - http

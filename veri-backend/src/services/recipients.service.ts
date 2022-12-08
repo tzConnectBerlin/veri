@@ -2,12 +2,12 @@ import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { Recipients } from '@/models/recipients.model';
 import { Recipient } from '@/interfaces/recipients.interface';
+import { CreateRecipientsDto } from '@/dtos/recipients.dto';
 
 class RecipientService {
   public async findRecipients(userId: number): Promise<Recipient[]> {
     if (isEmpty(userId))
       throw new HttpException(400, 'Please provide a valid user id');
-    console.log(userId);
     const findRecipient: Recipient[] = await Recipients.query()
       .select()
       .from('recipients')
@@ -21,9 +21,57 @@ class RecipientService {
         'recipients.operation',
         'recipients.state as status'
       );
-    console.log(findRecipient);
     return findRecipient;
   }
-}
 
+  public async findRecipientByTokenId(tokenId: number): Promise<Recipient[]> {
+    const findRecipient: Recipient[] = await Recipients.query()
+      .select()
+      .from('recipients')
+      .where('recipients.token_id', '=', tokenId)
+      .join('veris', 'veris.id', '=', 'recipients.token_id')
+      .join('files', 'files.id', '=', 'veris.thumb_id')
+      .select(
+        'files.path as image',
+        'veris.event_name as veri',
+        'recipients.address as recipient',
+        'recipients.operation',
+        'recipients.state as status'
+      );
+
+    if (findRecipient.length === 0)
+      throw new HttpException(409, 'No recipients exist for this token');
+
+    return findRecipient;
+  }
+
+  public async createRecipients(
+    user_id: number,
+    token_id: number,
+    addresses: CreateRecipientsDto[]
+  ): Promise<Recipient[]> {
+    if (addresses.length === 0)
+      throw new HttpException(400, 'Recipient list is empty');
+    addresses = [...new Set(addresses)];
+    const recipients: Recipient[] = [];
+
+    addresses.forEach((address) => {
+      recipients.push({
+        token_id,
+        address, //fix this
+        amount: 1,
+        state: 'pending',
+        created_by: user_id,
+      });
+    });
+
+    const createRecipientData: Recipient[] = await Recipients.query()
+      .insert(recipients)
+      .into('recipients');
+    if (!createRecipientData)
+      throw new HttpException(500, `Internal server error`);
+
+    return createRecipientData;
+  }
+}
 export default RecipientService;
