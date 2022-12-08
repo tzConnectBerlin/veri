@@ -109,6 +109,7 @@ class VeriService {
     veriId: number,
     veriData: Veri,
     file: File,
+    thumbnail: File,
     user: User
   ): Promise<Veri> {
     if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
@@ -121,10 +122,22 @@ class VeriService {
 
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
-    await Files.query()
+    delete file.buffer;
+    delete thumbnail.buffer;
+
+    const fileUpdate = await Files.query()
       .update({ ...file })
       .where('id', '=', findVeri.file_id)
       .into('files');
+
+    if (!fileUpdate) throw new HttpException(500, `Internal server error`);
+
+    const thumbUpdate = await Files.query()
+      .update({ ...thumbnail })
+      .where('id', '=', findVeri.thumb_id)
+      .into('files');
+
+    if (!thumbUpdate) throw new HttpException(500, `Internal server error`);
 
     await Veris.query()
       .update({

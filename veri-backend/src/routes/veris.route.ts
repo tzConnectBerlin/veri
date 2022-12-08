@@ -40,6 +40,7 @@ class VerisRoute implements Routes {
       `${this.path}/:id(\\d+)`,
       authMiddleware,
       fileMiddleware,
+      imageMiddleware,
       validationMiddleware(CreateVeriDto, 'body', true),
       this.verisController.updateVeri
     );
