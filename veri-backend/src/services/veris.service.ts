@@ -50,16 +50,16 @@ class VeriService {
     delete file.buffer;
     delete thumbnail.buffer;
 
-    // const findVeri: Veri = await Veris.query()
-    //   .select()
-    //   .from('veris')
-    //   .where('event_name', '=', veriData.event_name)
-    //   .first();
-    // if (findVeri)
-    //   throw new HttpException(
-    //     409,
-    //     `Veri for this event ${veriData.event_name} already exists`
-    //   );
+    const findVeri: Veri = await Veris.query()
+      .select()
+      .from('veris')
+      .where('event_name', '=', veriData.event_name)
+      .first();
+    if (findVeri)
+      throw new HttpException(
+        409,
+        `Veri for this event ${veriData.event_name} already exists`
+      );
 
     const createFileEntry: File = await Files.query()
       .insert({ ...file })

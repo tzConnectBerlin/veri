@@ -24,6 +24,19 @@ class RecipientService {
     return findRecipient;
   }
 
+  public async findDuplicate(
+    tokenId: number,
+    recipients: any
+  ): Promise<Recipient[]> {
+    const findDup: Recipient[] = await Recipients.query()
+      .select()
+      .from('recipients')
+      .whereIn('recipients.address', recipients)
+      .where('recipients.token_id', '=', tokenId);
+
+    return findDup;
+  }
+
   public async findRecipientByTokenId(tokenId: number): Promise<Recipient[]> {
     const findRecipient: Recipient[] = await Recipients.query()
       .select()
@@ -53,8 +66,19 @@ class RecipientService {
     if (addresses.length === 0)
       throw new HttpException(400, 'Recipient list is empty');
     addresses = [...new Set(addresses)];
-    const recipients: Recipient[] = [];
+    let duplicate_addresses = '';
+    const duplicates = await this.findDuplicate(token_id, addresses);
+    duplicates.forEach((duplicate) => {
+      duplicate_addresses = `${duplicate_addresses} ${duplicate.address}`;
+    });
+    console.log(duplicate_addresses);
+    if (duplicates.length !== 0)
+      throw new HttpException(
+        500,
+        `${duplicate_addresses} has already entered.`
+      );
 
+    const recipients: Recipient[] = [];
     addresses.forEach((address) => {
       recipients.push({
         token_id,

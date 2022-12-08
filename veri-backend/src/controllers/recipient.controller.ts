@@ -49,7 +49,6 @@ class RecipientsController {
       const userId = Number(req.user.id);
       const tokenId = Number(req.params.id);
       const addresses = req.body.addresses;
-      console.log(addresses);
       const createRecipients: Recipient[] =
         await this.RecipientService.createRecipients(
           userId,
