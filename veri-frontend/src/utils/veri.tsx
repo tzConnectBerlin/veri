@@ -3,7 +3,7 @@ import moment from 'moment';
 import { row } from '../design-system/atoms/DataTable/DataTable';
 import { ADMIN_URL, BASE_URL, VERI_URL } from '../Global';
 import { VeriDropDown, VeriFormValues, VeriType } from '../types/veris';
-import { getDisplayTimeRange, MakeURL } from './general';
+import { CapitalizeFirstLetter, getDisplayTimeRange, MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
   const startDate = new Date(veri.eventStartDate).toISOString();
@@ -84,7 +84,9 @@ export const MapVerisToDataTable = (veris: any): row[] => {
         {
           field: 'status',
           value: (
-            <Badge variant={veri.status.toLowerCase()}>{veri.status}</Badge>
+            <Badge variant={veri.status.toLowerCase()}>
+              {CapitalizeFirstLetter(veri.status)}
+            </Badge>
           ),
           sortable: true,
         },
