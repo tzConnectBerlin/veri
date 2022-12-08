@@ -61,7 +61,7 @@ class RecipientService {
   public async createRecipients(
     user_id: number,
     token_id: number,
-    addresses: CreateRecipientsDto[]
+    addresses: string[]
   ): Promise<Recipient[]> {
     if (addresses.length === 0)
       throw new HttpException(400, 'Recipient list is empty');
@@ -82,7 +82,7 @@ class RecipientService {
     addresses.forEach((address) => {
       recipients.push({
         token_id,
-        address, //fix this
+        address,
         amount: 1,
         state: 'pending',
         created_by: user_id,

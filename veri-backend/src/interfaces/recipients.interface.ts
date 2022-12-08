@@ -1,5 +1,5 @@
 export interface Recipient {
-  id: number;
+  id?: number;
   token_id: number;
   address: string;
   amount: number;
