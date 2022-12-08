@@ -5,9 +5,10 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { IoMdSend } from 'react-icons/io';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import { getVeriById, getVeris } from '../../../api/services/veriService';
-import RecipientsForm from '../../../design-system/molecules/RecipientsForm';
-import { RecipientsVeri, VeriDropDown } from '../../../types';
+import { getRecipientsByVeriId } from '../../../api/services/recipientsService';
+import { getVeris } from '../../../api/services/veriService';
+import { RecipientsForm } from '../../../design-system/molecules/RecipientsForm';
+import { Recipient, RecipientsVeri, VeriDropDown } from '../../../types';
 import { MapVeriToDropDown } from '../../../utils/veri';
 
 export const SendVerisPage = () => {
@@ -18,9 +19,9 @@ export const SendVerisPage = () => {
   const [recipients, setRecipients] = useState<string[]>([]);
 
   const getRecipients = useCallback((id: number) => {
-    getVeriById(id)
+    getRecipientsByVeriId(id)
       .then(res => {
-        setRecipients(res.data.data.recipients);
+        setRecipients(res.data.data.map((i: Recipient) => i.recipient));
       })
       .catch(err => console.log(err));
   }, []);

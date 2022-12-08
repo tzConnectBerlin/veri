@@ -18,7 +18,6 @@ export interface VeriDetailValues {
 }
 
 export interface VeriFormValues extends EventDetailValues, VeriDetailValues {
-  recipients: string[];
   distributionMethod?: 'QR-code' | 'Post-event';
   password?: string;
   status: string;
@@ -52,7 +51,6 @@ export interface VeriType {
   live_distribution_url: string;
   live_distribution_password: string;
   status: string;
-  recipients: string[];
   updated_at?: string;
   updated_by?: number;
   file: {

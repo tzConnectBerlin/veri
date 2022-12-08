@@ -9,4 +9,4 @@ export type {
 } from './veris';
 export type { User } from './user';
 
-export type { RecipientsVeri } from './recipients';
+export type { RecipientsVeri, Recipient } from './recipients';
