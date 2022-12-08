@@ -28,9 +28,17 @@ export interface VeriFormikType {
   formik: FormikProps<VeriFormValues>;
   formType: VeriFormStatus;
   onDelete: () => void;
+  onSend: () => void;
+}
+
+export interface VeriDropDown {
+  id: string;
+  artWork: string;
+  title: string;
 }
 
 export interface VeriType {
+  id: string;
   event_name: string;
   event_description?: string;
   event_contact_email: string;

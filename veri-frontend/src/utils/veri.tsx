@@ -2,7 +2,7 @@ import { Badge, Image } from '@chakra-ui/react';
 import moment from 'moment';
 import { row } from '../design-system/atoms/DataTable/DataTable';
 import { ADMIN_URL, BASE_URL, VERI_URL } from '../Global';
-import { VeriFormValues, VeriType } from '../types/veris';
+import { VeriDropDown, VeriFormValues, VeriType } from '../types/veris';
 import { getDisplayTimeRange, MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
@@ -49,6 +49,14 @@ export const MapServerValueToVeri = (veri: VeriType): VeriFormValues => {
     status: veri.status,
     recipients: veri.recipients,
   };
+};
+
+export const MapVeriToDropDown = (veris: VeriType[]): VeriDropDown[] => {
+  return veris.map((veri: any) => ({
+    id: veri.id,
+    title: veri.event_name,
+    artWork: veri.file.filename,
+  }));
 };
 
 export const MapVerisToDataTable = (veris: any): row[] => {

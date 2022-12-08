@@ -6,3 +6,9 @@ export const getRecipients = () => {
     withCredentials: true,
   });
 };
+
+export const getRecipientsByVeriId = (veriId: number) => {
+  return axios.get(`${BASE_URL}/recipients/${veriId}`, {
+    withCredentials: true,
+  });
+};

@@ -5,5 +5,8 @@ export type {
   EventDetailValues,
   VeriFormValues,
   VeriFormStatus,
+  VeriDropDown,
 } from './veris';
 export type { User } from './user';
+
+export type { RecipientsVeri } from './recipients';

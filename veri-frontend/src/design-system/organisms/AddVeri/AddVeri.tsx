@@ -4,7 +4,6 @@ import { VeriContext } from '../../../contexts/veri';
 import { IoMdSave, IoMdCloudUpload, IoMdSend, IoMdEye } from 'react-icons/io';
 import { DistributionMethodForm } from '../../molecules/DistributionMethodForm';
 import { EventDetailForm } from '../../molecules/EventDetailForm';
-import { RecipientsForm } from '../../molecules/RecipientsForm';
 import { VeriDetailForm } from '../../molecules/VeriDetailForm';
 import { MdDelete } from 'react-icons/md';
 
@@ -25,9 +24,6 @@ export const AddVeri = () => {
         <EventDetailForm title="EVENT DETAILS" />
         <VeriDetailForm title="VERI DETAILS" />
         <DistributionMethodForm title="Distribution Method" />
-        {context.formik.values.distributionMethod === 'Post-event' && (
-          <RecipientsForm title="Recipients" />
-        )}
         {/* <>{JSON.stringify(context.formik.values)}</> */}
 
         <Box>
@@ -36,13 +32,6 @@ export const AddVeri = () => {
               <>
                 <Button
                   colorScheme="primary"
-                  leftIcon={<IoMdSave />}
-                  onClick={() => handleDifferentSubmit('Draft')}
-                >
-                  Save Draft
-                </Button>
-                <Button
-                  variant="secondary"
                   isDisabled={
                     context.formik.isSubmitting ||
                     !(context.formik.isValid && context.formik.dirty)
@@ -58,17 +47,21 @@ export const AddVeri = () => {
                     context.formik.isSubmitting ||
                     !(context.formik.isValid && context.formik.dirty)
                   }
-                  leftIcon={<IoMdSend />}
-                  onClick={() => handleDifferentSubmit('Minting')}
+                  leftIcon={<IoMdSave />}
+                  onClick={() => handleDifferentSubmit('Draft')}
                 >
-                  Create & Mint VERIs
+                  Save Draft
                 </Button>
               </>
             )}
             {context.formType === 'View' && (
               <>
-                <Button colorScheme="primary" leftIcon={<IoMdSend />}>
-                  Mint VERIs
+                <Button
+                  colorScheme="primary"
+                  leftIcon={<IoMdSend />}
+                  onClick={context.onSend}
+                >
+                  Send VERIs
                 </Button>
                 <Button
                   variant="secondary"

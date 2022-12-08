@@ -45,6 +45,7 @@ const Badge = defineStyleConfig({
   baseStyle: {
     textTransform: 'normal',
     fontWeight: '500',
+    fontsize: '14px',
     padding: '4px 8px',
     borderRadius: '6px',
   },
