@@ -12,6 +12,7 @@ export interface Veri {
   live_distribution_password?: string;
   live_distribution_url?: string;
   file_id: number;
+  thumb_id: number;
   status: string;
   file?: object;
 }
