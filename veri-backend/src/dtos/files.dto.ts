@@ -26,5 +26,5 @@ export class CreateFileDto {
   public size: number;
 
   @IsString()
-  public buffer: Buffer;
+  public buffer?: Buffer;
 }

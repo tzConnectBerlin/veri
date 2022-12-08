@@ -19,7 +19,6 @@ export class Veris extends Model implements Veri {
   created_by: number;
   updated_by: number;
   status!: string;
-  recipients: string[];
   file?: object;
 
   static tableName = 'veris'; // database table name
