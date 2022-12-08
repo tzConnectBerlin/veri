@@ -3,6 +3,7 @@ import {
   useColorModeValue,
   ChakraProvider,
   useColorMode,
+  ToastProvider,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { MdViewList } from 'react-icons/md';
@@ -38,18 +39,22 @@ export const DashboardLayout = () => {
   // }, [colorMode, toggleColorMode]);
   return (
     <ChakraProvider theme={adminTheme}>
-      <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
-        <Sidebar
-          links={adminRoutes}
-          logo={logo}
-          onLogout={onLogout}
-          display={{ base: 'none', md: 'block' }}
-          userName={user.email}
-        />
-        <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
-          <Outlet />
+      <ToastProvider
+        defaultOptions={{ duration: 5000, position: 'bottom-right' }}
+      >
+        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+          <Sidebar
+            links={adminRoutes}
+            logo={logo}
+            onLogout={onLogout}
+            display={{ base: 'none', md: 'block' }}
+            userName={user.email}
+          />
+          <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
+            <Outlet />
+          </Box>
         </Box>
-      </Box>
+      </ToastProvider>
     </ChakraProvider>
   );
 };
