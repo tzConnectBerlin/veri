@@ -68,6 +68,7 @@ const Badge = defineStyleConfig({
     },
   },
 });
+
 const Button = defineStyleConfig({
   baseStyle: {
     _focus: {

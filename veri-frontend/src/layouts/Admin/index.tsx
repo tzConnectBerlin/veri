@@ -1,8 +1,8 @@
 import {
   Box,
   useColorModeValue,
-  ChakraProvider,
   useColorMode,
+  ChakraProvider,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { MdViewList } from 'react-icons/md';
@@ -12,6 +12,7 @@ import useAuth from '../../contexts/useAuth';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
 import adminTheme from '../../design-system/theme/adminTheme';
+import { ToastProvider } from 'react-toast-notifications';
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: 'VERIs', icon: <MdViewList />, path: '/' },
@@ -38,18 +39,20 @@ export const DashboardLayout = () => {
   // }, [colorMode, toggleColorMode]);
   return (
     <ChakraProvider theme={adminTheme}>
-      <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
-        <Sidebar
-          links={adminRoutes}
-          logo={logo}
-          onLogout={onLogout}
-          display={{ base: 'none', md: 'block' }}
-          userName={user.email}
-        />
-        <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
-          <Outlet />
+      <ToastProvider placement="bottom-right" autoDismiss={false}>
+        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+          <Sidebar
+            links={adminRoutes}
+            logo={logo}
+            onLogout={onLogout}
+            display={{ base: 'none', md: 'block' }}
+            userName={user.email}
+          />
+          <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
+            <Outlet />
+          </Box>
         </Box>
-      </Box>
+      </ToastProvider>
     </ChakraProvider>
   );
 };

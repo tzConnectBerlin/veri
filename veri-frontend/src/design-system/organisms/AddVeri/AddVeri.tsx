@@ -24,7 +24,7 @@ export const AddVeri = () => {
         <EventDetailForm title="EVENT DETAILS" />
         <VeriDetailForm title="VERI DETAILS" />
         <DistributionMethodForm title="Distribution Method" />
-        {/* <>{JSON.stringify(context.formik.values)}</> */}
+        <>{JSON.stringify(context.formik.values)}</>
 
         <Box>
           <Stack spacing={4} width={80} mx="auto">
