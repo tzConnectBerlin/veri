@@ -11,6 +11,3 @@ const Template: Story<RecipientsFormProps> = args => (
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  title: 'Recipients',
-};
