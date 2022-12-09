@@ -2,7 +2,6 @@ import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { Recipients } from '@/models/recipients.model';
 import { Recipient } from '@/interfaces/recipients.interface';
-import { CreateRecipientsDto } from '@/dtos/recipients.dto';
 
 class RecipientService {
   public async findRecipients(userId: number): Promise<Recipient[]> {
@@ -51,9 +50,6 @@ class RecipientService {
         'recipients.operation',
         'recipients.state as status'
       );
-
-    if (findRecipient.length === 0)
-      throw new HttpException(409, 'No recipients exist for this token');
 
     return findRecipient;
   }

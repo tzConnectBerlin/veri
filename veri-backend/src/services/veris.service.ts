@@ -42,6 +42,7 @@ class VeriService {
         'veris.event_start_date',
         'veris.event_end_date',
         'files.path as artwork',
+        'veris.artwork_description',
         'veris.live_distribution',
         'veris.live_distribution_url',
         'veris.live_distribution_password',
@@ -120,7 +121,7 @@ class VeriService {
 
     if (!createTask) throw new HttpException(500, `Internal server error`);
 
-    return createVeriData;
+    return await this.findVeriById(createVeriData.id);
   }
 
   public async updateVeri(
@@ -183,7 +184,8 @@ class VeriService {
       .from('veris')
       .where('id', '=', veriId)
       .first();
-    return updateVeriData;
+
+    return await this.findVeriById(updateVeriData.id);
   }
 
   public async deleteVeri(veriId: number): Promise<Veri> {
