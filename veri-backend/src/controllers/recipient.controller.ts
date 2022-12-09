@@ -56,7 +56,9 @@ class RecipientsController {
           addresses
         );
 
-      res.status(200).json({ data: createRecipients, message: 'findAll' });
+      res
+        .status(200)
+        .json({ data: createRecipients, message: 'createRecipient' });
     } catch (error) {
       next(error);
     }
