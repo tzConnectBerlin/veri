@@ -1,11 +1,14 @@
-import { Button, Container, Heading, Stack } from '@chakra-ui/react';
+import { Button, Container, Heading, Stack, useToast } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { IoMdSend } from 'react-icons/io';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import { getRecipientsByVeriId } from '../../../api/services/recipientsService';
+import {
+  getRecipientsByVeriId,
+  postRcipientsByVeriId,
+} from '../../../api/services/recipientsService';
 import { getVeris } from '../../../api/services/veriService';
 import { RecipientsForm } from '../../../design-system/molecules/RecipientsForm';
 import { Recipient, RecipientsVeri, VeriDropDown } from '../../../types';
@@ -13,6 +16,12 @@ import { MapVeriToDropDown } from '../../../utils/veri';
 
 export const SendVerisPage = () => {
   const { veri_id } = useParams();
+  const navigate = useNavigate();
+  const toast = useToast({
+    position: 'bottom-right',
+    duration: 5000,
+    isClosable: true,
+  });
 
   const [veriList, setVeriList] = useState<VeriDropDown[]>([]);
   const [selectedVeri, setSelectedVeri] = useState<VeriDropDown>();
@@ -46,9 +55,40 @@ export const SendVerisPage = () => {
     }
   }, [getRecipients, veriList, veri_id]);
 
-  const handleSubmit = (values: RecipientsVeri) => {
-    console.log(values);
-  };
+  const handleSubmit = useCallback(
+    (values: RecipientsVeri) => {
+      if (!values.selectedVeri) return;
+      try {
+        const body = {
+          addresses: values.recipients.toString(),
+        };
+        postRcipientsByVeriId(Number(values.selectedVeri.id), body)
+          .then(() => {
+            toast({
+              title: `VERIs minting`,
+              status: 'success',
+            });
+            navigate('/admin/recipients');
+          })
+          .catch(err => {
+            toast({
+              title: 'Something went wrong.',
+              description: 'Try again later.',
+              status: 'error',
+            });
+            console.error(err);
+          });
+      } catch (err) {
+        toast({
+          title: 'Something went wrong.',
+          description: 'Try again later.',
+          status: 'error',
+        });
+        console.log(err);
+      }
+    },
+    [navigate, toast],
+  );
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -75,7 +115,10 @@ export const SendVerisPage = () => {
 
   const validationSchema = Yup.object().shape({
     selectedVeri: Yup.object().required('This field is required'),
-    recipients: Yup.array().of(Yup.string()).min(1),
+    recipients: Yup.array()
+      .of(Yup.string())
+      .min(1)
+      .required('This field is required'),
   });
 
   const initialValues: RecipientsVeri = {
@@ -99,20 +142,23 @@ export const SendVerisPage = () => {
             validateOnChange={true}
             enableReinitialize={true}
           >
-            {({ isSubmitting, isValid }) => (
+            {({ isSubmitting, isValid, dirty }) => (
               <Form>
                 <Stack gap={8}>
                   <RecipientsForm
                     veris={veriList}
                     onVeriChange={handleChange}
                   />
-                  {/* <div>{JSON.stringify(isValid)}</div> */}
+                  <div>
+                    {JSON.stringify(isValid)} | {JSON.stringify(dirty)}
+                  </div>
                   <Button
                     width={80}
+                    type="submit"
                     alignSelf="center"
                     colorScheme="primary"
                     leftIcon={<IoMdSend />}
-                    isDisabled={isSubmitting || !isValid}
+                    isDisabled={isSubmitting || !(isValid && dirty)}
                   >
                     Send VERI
                   </Button>

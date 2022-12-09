@@ -32,7 +32,11 @@ export const VeriFormPage = (): JSX.Element => {
   const navigate = useNavigate();
   const [veri, setVeri] = useState<VeriFormValues>();
   const [type, setType] = useState<VeriFormStatus>('Add');
-  const toast = useToast();
+  const toast = useToast({
+    position: 'bottom-right',
+    duration: 5000,
+    isClosable: true,
+  });
 
   useEffect(() => {
     if (id) {
@@ -68,8 +72,6 @@ export const VeriFormPage = (): JSX.Element => {
                 title: `Veri Updated`,
                 description: 'View on the list',
                 status: 'success',
-                duration: 9000,
-                isClosable: true,
               });
               navigate('/admin');
               console.log(res);
@@ -79,8 +81,6 @@ export const VeriFormPage = (): JSX.Element => {
                 title: 'Something went wrong.',
                 description: 'Try again later.',
                 status: 'error',
-                duration: 9000,
-                isClosable: true,
               });
               console.error(e);
             });
@@ -90,8 +90,6 @@ export const VeriFormPage = (): JSX.Element => {
               toast({
                 title: `Veri ${values.status}`,
                 status: 'success',
-                duration: 9000,
-                isClosable: true,
               });
               setType('View');
               console.log(res);
@@ -101,8 +99,6 @@ export const VeriFormPage = (): JSX.Element => {
                 title: 'Something went wrong.',
                 description: 'Try again later.',
                 status: 'error',
-                duration: 9000,
-                isClosable: true,
               });
               console.error(e);
             });
@@ -113,8 +109,6 @@ export const VeriFormPage = (): JSX.Element => {
           title: 'Something went wrong.',
           description: 'Try again later.',
           status: 'error',
-          duration: 9000,
-          isClosable: true,
         });
       }
     },
@@ -129,8 +123,6 @@ export const VeriFormPage = (): JSX.Element => {
           title: `Veri`,
           description: 'Successfully Deleted',
           status: 'success',
-          duration: 9000,
-          isClosable: true,
         });
         navigate('/admin');
       })
@@ -140,8 +132,6 @@ export const VeriFormPage = (): JSX.Element => {
           title: 'Something went wrong.',
           description: 'Try again later.',
           status: 'error',
-          duration: 9000,
-          isClosable: true,
         });
       });
   }, [id, navigate, toast]);
