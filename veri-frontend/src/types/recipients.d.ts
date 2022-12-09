@@ -1,4 +1,3 @@
-import { string } from 'prop-types';
 import { VeriDropDown } from './index';
 
 export interface RecipientsVeri {

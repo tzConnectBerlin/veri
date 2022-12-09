@@ -23,7 +23,10 @@ export const SendVerisPage = () => {
       .then(res => {
         setRecipients(res.data.data.map((i: Recipient) => i.recipient));
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        setRecipients([]);
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {

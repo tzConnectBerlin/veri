@@ -56,11 +56,13 @@ export const MapServerValueToVeri = (veri: any): VeriFormValues => {
 };
 
 export const MapVeriToDropDown = (veris: VeriFormType[]): VeriDropDown[] => {
-  return veris.map((veri: any) => ({
-    id: veri.id,
-    title: veri.event_name,
-    artWork: veri.file.filename,
-  }));
+  return veris
+    .filter(item => item.status === 'Created')
+    .map((veri: any) => ({
+      id: veri.id,
+      title: veri.veri,
+      artWork: veri.thumbnail,
+    }));
 };
 
 export const MapVerisToDataTable = (veris: VeriListType[]): row[] => {
