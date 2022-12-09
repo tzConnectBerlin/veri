@@ -142,23 +142,25 @@ export const SendVerisPage = () => {
             validateOnChange={true}
             enableReinitialize={true}
           >
-            {({ isSubmitting, isValid, dirty }) => (
+            {({ isSubmitting, isValid }) => (
               <Form>
                 <Stack gap={8}>
                   <RecipientsForm
                     veris={veriList}
                     onVeriChange={handleChange}
                   />
-                  <div>
-                    {JSON.stringify(isValid)} | {JSON.stringify(dirty)}
-                  </div>
                   <Button
                     width={80}
                     type="submit"
                     alignSelf="center"
                     colorScheme="primary"
                     leftIcon={<IoMdSend />}
-                    isDisabled={isSubmitting || !(isValid && dirty)}
+                    isDisabled={
+                      isSubmitting ||
+                      !isValid ||
+                      !recipients ||
+                      recipients.length === 0
+                    }
                   >
                     Send VERI
                   </Button>
