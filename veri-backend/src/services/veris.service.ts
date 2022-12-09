@@ -14,23 +14,41 @@ import { PEPPERMINTERY_URL } from '../config';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
-    const veris: Veri[] = await Veris.query().select().from('veris');
-    const result: Veri[] = [];
-    for (const veri of veris) {
-      const findFile: File = await Files.query().findById(veri.file_id);
-      veri.file = findFile;
-      result.push(veri);
-    }
+    const veris: Veri[] = await Veris.query()
+      .from('veris')
+      .join('files', 'files.id', '=', 'veris.thumb_id')
+      .select(
+        'veris.id',
+        'files.path as thumbnail',
+        'veris.event_name as veri',
+        'veris.organizer',
+        'veris.event_start_date',
+        'veris.event_end_date',
+        'veris.status'
+      );
     return veris;
   }
 
   public async findVeriById(veriId: number): Promise<Veri> {
-    const findVeri: Veri = await Veris.query().findById(veriId);
-    if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
+    const findVeri: Veri = await Veris.query()
+      .findById(veriId)
+      .join('files', 'files.id', '=', 'veris.file_id')
+      .select(
+        'veris.id',
+        'veris.event_name as veri',
+        'veris.organizer',
+        'veris.organizer_email',
+        'veris.event_type',
+        'veris.event_start_date',
+        'veris.event_end_date',
+        'files.path as artwork',
+        'veris.live_distribution',
+        'veris.live_distribution_url',
+        'veris.live_distribution_password',
+        'veris.status'
+      );
 
-    const findFile: File = await Files.query().findById(findVeri.file_id);
-    if (!findFile) throw new HttpException(409, "Veri doesn't exist");
-    findVeri.file = findFile;
+    if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
     return findVeri;
   }
@@ -119,6 +137,17 @@ class VeriService {
       .from('veris')
       .where('id', '=', veriId)
       .first();
+
+    const findEvent: Veri = await Veris.query()
+      .select()
+      .from('veris')
+      .where('event_name', '=', veriData.event_name)
+      .first();
+    if (findEvent)
+      throw new HttpException(
+        409,
+        `Event ${veriData.event_name} already exists`
+      );
 
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 

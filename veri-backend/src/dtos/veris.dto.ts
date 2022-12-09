@@ -11,11 +11,12 @@ export class CreateVeriDto {
   @IsString()
   public event_name: string;
 
+  @IsOptional()
   @IsString()
-  public event_description: string;
+  public organizer?: string;
 
   @IsEmail()
-  public event_contact_email: string;
+  public organizer_email: string;
 
   @IsString()
   public event_type: string;
