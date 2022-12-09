@@ -4,9 +4,9 @@ import { CreateVeriDto } from '@/dtos/veris.dto';
 export function createTokenDetails(veri: CreateVeriDto) {
   return {
     name: veri.event_name,
-    description: veri.event_description,
+    description: veri.artwork_description,
     tags: ['veri'],
-    creators: veri.event_contact_email,
+    creators: veri.organizer,
     date: veri.event_start_date,
   };
 }
