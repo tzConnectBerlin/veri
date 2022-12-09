@@ -7,11 +7,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
-import {
-  VeriFormValues,
-  VeriFormikType,
-  EventDetailValues,
-} from '../../../types/veris';
+import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { useFormik } from 'formik';
@@ -54,7 +50,6 @@ export const VeriFormPage = (): JSX.Element => {
     organizer: Yup.string().trim().required('This field is required'),
     description: Yup.string().max(250).required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
-    recipients: Yup.array().of(Yup.string()).min(1),
     organizerEmail: Yup.string()
       .trim()
       .email('Should be a valid email')
@@ -156,23 +151,16 @@ export const VeriFormPage = (): JSX.Element => {
   }, [id, navigate]);
 
   const InitialValues: VeriFormValues = useMemo(() => {
-    const EventDetailValues: EventDetailValues = {
+    return {
       eventName: '',
       organizer: '',
       organizerEmail: '',
       eventDuration: 'Single',
       eventStartDate: '',
       eventEndDate: '',
-    };
-    const VeriDetailValues = {
       artworkName: '',
       artworkFile: undefined,
       description: '',
-    };
-    return {
-      ...EventDetailValues,
-      ...VeriDetailValues,
-      recipients: [''],
       distributionMethod: 'Post-event',
       password: '',
       status: 'Draft',

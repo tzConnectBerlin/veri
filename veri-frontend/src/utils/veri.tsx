@@ -2,7 +2,12 @@ import { Badge, Image } from '@chakra-ui/react';
 import moment from 'moment';
 import { row } from '../design-system/atoms/DataTable/DataTable';
 import { ADMIN_URL, BASE_URL, VERI_URL } from '../Global';
-import { VeriDropDown, VeriFormValues, VeriType } from '../types/veris';
+import {
+  VeriDropDown,
+  VeriFormValues,
+  VeriListType,
+  VeriFormType,
+} from '../types/veris';
 import { CapitalizeFirstLetter, getDisplayTimeRange, MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
@@ -14,8 +19,8 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
 
   return {
     event_name: veri.eventName,
-    event_description: veri.description,
-    event_contact_email: veri.organizerEmail,
+    organizer: veri.description,
+    organizer_email: veri.organizerEmail,
     event_type: veri.eventDuration,
     event_start_date: startDate,
     event_end_date: endDate,
@@ -29,11 +34,11 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
   };
 };
 
-export const MapServerValueToVeri = (veri: VeriType): VeriFormValues => {
+export const MapServerValueToVeri = (veri: any): VeriFormValues => {
   return {
-    eventName: veri.event_name,
-    organizer: veri.event_contact_email,
-    organizerEmail: veri.event_contact_email,
+    eventName: veri.veri,
+    organizer: veri.organizer ?? '',
+    organizerEmail: veri.organizer_email,
     eventDuration: veri.event_type,
     eventStartDate: moment(new Date(veri.event_start_date)).format(
       'YYYY-MM-DDTkk:mm',
@@ -41,7 +46,8 @@ export const MapServerValueToVeri = (veri: VeriType): VeriFormValues => {
     eventEndDate: moment(new Date(veri.event_end_date)).format(
       'YYYY-MM-DDTkk:mm',
     ),
-    artworkName: veri.file.filename,
+    artworkFile: veri.artwork_file,
+    artworkName: veri.artwork_name,
     description: veri.artwork_description,
     distributionMethod: GetDistributionMethodString(veri.live_distribution),
     password: veri.live_distribution_password,
@@ -49,7 +55,7 @@ export const MapServerValueToVeri = (veri: VeriType): VeriFormValues => {
   };
 };
 
-export const MapVeriToDropDown = (veris: VeriType[]): VeriDropDown[] => {
+export const MapVeriToDropDown = (veris: VeriFormType[]): VeriDropDown[] => {
   return veris.map((veri: any) => ({
     id: veri.id,
     title: veri.event_name,
@@ -57,8 +63,8 @@ export const MapVeriToDropDown = (veris: VeriType[]): VeriDropDown[] => {
   }));
 };
 
-export const MapVerisToDataTable = (veris: any): row[] => {
-  const newVeris = veris.map((veri: any) => {
+export const MapVerisToDataTable = (veris: VeriListType[]): row[] => {
+  const newVeris = veris.map((item: VeriListType) => {
     return {
       cols: [
         {
@@ -67,31 +73,31 @@ export const MapVerisToDataTable = (veris: any): row[] => {
             <Image
               borderRadius="full"
               boxSize="40px"
-              src={BASE_URL + '/' + veri.file.filename}
-              alt={veri.artwork_description}
+              src={BASE_URL + '/' + item.thumbnail}
+              alt={item.veri}
             />
           ),
         },
-        { field: 'event_name', value: veri.event_name },
-        { field: 'organizer', value: veri.event_contact_email },
+        { field: 'event_name', value: item.veri },
+        { field: 'organizer', value: item.organizer ?? '—' },
         {
           field: 'mint_date',
           value: getDisplayTimeRange(
-            new Date(veri.event_start_date),
-            new Date(veri.event_end_date),
+            new Date(item.event_start_date),
+            new Date(item.event_end_date),
           ),
         },
         {
           field: 'status',
           value: (
-            <Badge variant={veri.status.toLowerCase()}>
-              {CapitalizeFirstLetter(veri.status)}
+            <Badge variant={item.status.toLowerCase()}>
+              {CapitalizeFirstLetter(item.status)}
             </Badge>
           ),
           sortable: true,
         },
       ],
-      actionLink: `${ADMIN_URL}/veri/${veri.id}`,
+      actionLink: `${ADMIN_URL}/veri/${item.id}`,
     };
   });
   return newVeris;
