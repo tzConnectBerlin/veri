@@ -1,41 +1,41 @@
 import { Badge, Image } from '@chakra-ui/react';
+import Address from '../design-system/atoms/Address';
 import { row } from '../design-system/atoms/DataTable/DataTable';
-import { ADMIN_URL, BASE_URL } from '../Global';
-import { getDisplayTimeRange } from './general';
+import { BASE_URL } from '../Global';
+import { Recipient } from '../types';
+import { CapitalizeFirstLetter } from './general';
 
-export const MapVerisToDataTable = (recipients: any): row[] => {
-  const newRecipients = recipients.map((veri: any) => {
+export const MapRecipientsToDataTable = (recipients: Recipient[]): row[] => {
+  const newRecipients = recipients.map((item: Recipient) => {
     return {
       cols: [
         {
-          field: 'artwork_file',
+          field: 'img',
           value: (
             <Image
               borderRadius="full"
               boxSize="40px"
-              src={BASE_URL + '/' + veri.file.filename}
-              alt={veri.artwork_description}
+              src={BASE_URL + '/' + item.image}
+              alt={item.veri}
             />
           ),
         },
-        { field: 'event_name', value: veri.event_name },
-        { field: 'organizer', value: veri.event_contact_email },
+        { field: 'veri', value: item.veri },
+        { field: 'recipient', value: <Address addr={item.recipient} /> },
         {
-          field: 'mint_date',
-          value: getDisplayTimeRange(
-            new Date(veri.event_start_date),
-            new Date(veri.event_end_date),
-          ),
+          field: 'operation',
+          value: item.operation ?? '—',
         },
         {
           field: 'status',
           value: (
-            <Badge variant={veri.status.toLowerCase()}>{veri.status}</Badge>
+            <Badge variant={item.status.toLowerCase()}>
+              {CapitalizeFirstLetter(item.status)}
+            </Badge>
           ),
           sortable: true,
         },
       ],
-      actionLink: `${ADMIN_URL}/veri/${veri.id}`,
     };
   });
   return newRecipients;

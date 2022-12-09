@@ -12,3 +12,9 @@ export const getRecipientsByVeriId = (veriId: number) => {
     withCredentials: true,
   });
 };
+
+export const postRcipientsByVeriId = (veriId: number, body: any) => {
+  return axios.post(`${BASE_URL}/recipients/${veriId}`, body, {
+    withCredentials: true,
+  });
+};

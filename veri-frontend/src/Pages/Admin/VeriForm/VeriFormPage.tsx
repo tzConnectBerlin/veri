@@ -7,11 +7,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
-import {
-  VeriFormValues,
-  VeriFormikType,
-  EventDetailValues,
-} from '../../../types/veris';
+import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { useFormik } from 'formik';
@@ -36,7 +32,11 @@ export const VeriFormPage = (): JSX.Element => {
   const navigate = useNavigate();
   const [veri, setVeri] = useState<VeriFormValues>();
   const [type, setType] = useState<VeriFormStatus>('Add');
-  const toast = useToast();
+  const toast = useToast({
+    position: 'bottom-right',
+    duration: 5000,
+    isClosable: true,
+  });
 
   useEffect(() => {
     if (id) {
@@ -54,7 +54,6 @@ export const VeriFormPage = (): JSX.Element => {
     organizer: Yup.string().trim().required('This field is required'),
     description: Yup.string().max(250).required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
-    recipients: Yup.array().of(Yup.string()).min(1),
     organizerEmail: Yup.string()
       .trim()
       .email('Should be a valid email')
@@ -73,8 +72,6 @@ export const VeriFormPage = (): JSX.Element => {
                 title: `Veri Updated`,
                 description: 'View on the list',
                 status: 'success',
-                duration: 9000,
-                isClosable: true,
               });
               navigate('/admin');
               console.log(res);
@@ -84,8 +81,6 @@ export const VeriFormPage = (): JSX.Element => {
                 title: 'Something went wrong.',
                 description: 'Try again later.',
                 status: 'error',
-                duration: 9000,
-                isClosable: true,
               });
               console.error(e);
             });
@@ -95,8 +90,6 @@ export const VeriFormPage = (): JSX.Element => {
               toast({
                 title: `Veri ${values.status}`,
                 status: 'success',
-                duration: 9000,
-                isClosable: true,
               });
               setType('View');
               console.log(res);
@@ -106,8 +99,6 @@ export const VeriFormPage = (): JSX.Element => {
                 title: 'Something went wrong.',
                 description: 'Try again later.',
                 status: 'error',
-                duration: 9000,
-                isClosable: true,
               });
               console.error(e);
             });
@@ -118,8 +109,6 @@ export const VeriFormPage = (): JSX.Element => {
           title: 'Something went wrong.',
           description: 'Try again later.',
           status: 'error',
-          duration: 9000,
-          isClosable: true,
         });
       }
     },
@@ -134,8 +123,6 @@ export const VeriFormPage = (): JSX.Element => {
           title: `Veri`,
           description: 'Successfully Deleted',
           status: 'success',
-          duration: 9000,
-          isClosable: true,
         });
         navigate('/admin');
       })
@@ -145,8 +132,6 @@ export const VeriFormPage = (): JSX.Element => {
           title: 'Something went wrong.',
           description: 'Try again later.',
           status: 'error',
-          duration: 9000,
-          isClosable: true,
         });
       });
   }, [id, navigate, toast]);
@@ -156,23 +141,16 @@ export const VeriFormPage = (): JSX.Element => {
   }, [id, navigate]);
 
   const InitialValues: VeriFormValues = useMemo(() => {
-    const EventDetailValues: EventDetailValues = {
+    return {
       eventName: '',
       organizer: '',
       organizerEmail: '',
       eventDuration: 'Single',
       eventStartDate: '',
       eventEndDate: '',
-    };
-    const VeriDetailValues = {
       artworkName: '',
       artworkFile: undefined,
       description: '',
-    };
-    return {
-      ...EventDetailValues,
-      ...VeriDetailValues,
-      recipients: [''],
       distributionMethod: 'Post-event',
       password: '',
       status: 'Draft',
