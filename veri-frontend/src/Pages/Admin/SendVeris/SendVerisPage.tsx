@@ -142,7 +142,7 @@ export const SendVerisPage = () => {
             validateOnChange={true}
             enableReinitialize={true}
           >
-            {({ isSubmitting, isValid }) => (
+            {({ isSubmitting, values, isValid }) => (
               <Form>
                 <Stack gap={8}>
                   <RecipientsForm
@@ -158,8 +158,8 @@ export const SendVerisPage = () => {
                     isDisabled={
                       isSubmitting ||
                       !isValid ||
-                      !recipients ||
-                      recipients.length === 0
+                      !values.recipients ||
+                      values.recipients.length === 0
                     }
                   >
                     Send VERI
