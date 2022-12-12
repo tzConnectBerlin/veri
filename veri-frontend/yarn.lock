@@ -1538,6 +1538,14 @@
     "@chakra-ui/react-context" "2.0.5"
     "@chakra-ui/react-use-safe-layout-effect" "2.0.3"
 
+"@chakra-ui/portal@2.0.12":
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/portal/-/portal-2.0.12.tgz#bba0dac00f5610efbf2f15b0e5e6e984135c82c2"
+  integrity sha512-8D/1fFUdbJtzyGL5sCBIb4oyTnPG2v6rx/L/qbG43FcXDrongmzLj0+tJ//PbJr+5hxjXAWFUjpPvyx10pTN6Q==
+  dependencies:
+    "@chakra-ui/react-context" "2.0.5"
+    "@chakra-ui/react-use-safe-layout-effect" "2.0.3"
+
 "@chakra-ui/progress@2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@chakra-ui/progress/-/progress-2.1.1.tgz#b94399af12e9324737f9e690201f78546572ac59"
@@ -1552,6 +1560,17 @@
   dependencies:
     "@chakra-ui/css-reset" "2.0.10"
     "@chakra-ui/portal" "2.0.11"
+    "@chakra-ui/react-env" "2.0.11"
+    "@chakra-ui/system" "2.3.4"
+    "@chakra-ui/utils" "2.0.12"
+
+"@chakra-ui/provider@^2.0.25":
+  version "2.0.25"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/provider/-/provider-2.0.25.tgz#6f27abcb8744a7d3c4ebd09409a9e00e0f90c566"
+  integrity sha512-9BQm9aqiUK/5xeYECpD9dfULd/BfxV4nncFGQNXFqZr0Nx54BALndeKdtId3j+36j9MwcKqjHgKyEpv4s+4vkQ==
+  dependencies:
+    "@chakra-ui/css-reset" "2.0.10"
+    "@chakra-ui/portal" "2.0.12"
     "@chakra-ui/react-env" "2.0.11"
     "@chakra-ui/system" "2.3.4"
     "@chakra-ui/utils" "2.0.12"

@@ -3,6 +3,7 @@ import { FormikProps } from 'formik';
 export type VeriFormStatus = 'Add' | 'Edit' | 'View';
 
 export interface VeriFormValues {
+  id?: string;
   eventName: string;
   organizer: string;
   organizerEmail: string;

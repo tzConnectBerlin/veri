@@ -36,6 +36,7 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
 
 export const MapServerValueToVeri = (veri: any): VeriFormValues => {
   return {
+    id: veri.id,
     eventName: veri.veri,
     organizer: veri.organizer ?? '',
     organizerEmail: veri.organizer_email,

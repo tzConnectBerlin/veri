@@ -73,13 +73,6 @@ export const VeriFormPage = (): JSX.Element => {
                 description: 'View on the list',
                 status: 'success',
               });
-              // toast({
-              //   title: `Veri Updated`,
-              //   description: 'View on the list',
-              //   status: 'success',
-              //   duration: 5000,
-              //   isClosable: true,
-              // });
 
               navigate(ADMIN_URL + '/');
             })
@@ -89,28 +82,16 @@ export const VeriFormPage = (): JSX.Element => {
                 description: 'Try again later.',
                 status: 'error',
               });
-              // toast({
-              //   title: 'Something went wrong.',
-              //   description: 'Try again later.',
-              //   status: 'error',
-              //   duration: 5000,
-              //   isClosable: true,
-              // });
               console.error(e);
             });
         } else {
           addVeri(body)
             .then(res => {
+              setVeri(() => MapServerValueToVeri(res.data.data));
               toast({
                 title: `Veri ${values.status}`,
                 status: 'success',
               });
-              // toast({
-              //   title: `Veri ${values.status}`,
-              //   status: 'success',
-              //   duration: 5000,
-              //   isClosable: true,
-              // });
               setType('View');
             })
             .catch(e => {
@@ -119,13 +100,6 @@ export const VeriFormPage = (): JSX.Element => {
                 description: 'Try again later.',
                 status: 'error',
               });
-              // toast({
-              //   title: 'Something went wrong.',
-              //   description: 'Try again later.',
-              //   status: 'error',
-              //   duration: 5000,
-              //   isClosable: true,
-              // });
               console.error(e);
             });
         }
@@ -136,20 +110,14 @@ export const VeriFormPage = (): JSX.Element => {
           description: 'Try again later.',
           status: 'error',
         });
-        // toast({
-        //   title: 'Something went wrong.',
-        //   description: 'Try again later.',
-        //   status: 'error',
-        //   duration: 3000,
-        //   isClosable: true,
-        // });
       }
     },
     [navigate, id, veri, toast],
   );
 
   const handleDelete = useCallback(() => {
-    deleteVeriById(Number(id))
+    if (!veri) return;
+    deleteVeriById(Number(veri.id))
       .then(res => {
         console.log(res);
         toast({
@@ -157,13 +125,6 @@ export const VeriFormPage = (): JSX.Element => {
           description: 'Successfully Deleted',
           status: 'success',
         });
-        // toast({
-        //   title: `Veri`,
-        //   description: 'Successfully Deleted',
-        //   status: 'success',
-        //   duration: 9000,
-        //   isClosable: true,
-        // });
         navigate('/admin/');
       })
       .catch(err => {
@@ -173,15 +134,8 @@ export const VeriFormPage = (): JSX.Element => {
           description: 'Try again later.',
           status: 'error',
         });
-        // toast({
-        //   title: 'Something went wrong.',
-        //   description: 'Try again later.',
-        //   status: 'error',
-        //   duration: 9000,
-        //   isClosable: true,
-        // });
       });
-  }, [id, navigate, toast]);
+  }, [navigate, toast, veri]);
 
   const handleSendVeri = useCallback(() => {
     navigate(`${ADMIN_URL}/send/${id}`);

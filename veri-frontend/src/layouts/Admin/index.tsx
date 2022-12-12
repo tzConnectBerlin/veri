@@ -3,8 +3,8 @@ import {
   useColorModeValue,
   useColorMode,
   ToastProvider,
-  ChakraProvider,
 } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/provider';
 import { useEffect } from 'react';
 import { MdViewList } from 'react-icons/md';
 import { HiUser } from 'react-icons/hi2';

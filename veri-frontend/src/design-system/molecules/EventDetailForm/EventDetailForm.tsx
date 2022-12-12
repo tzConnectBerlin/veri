@@ -28,7 +28,7 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
   const [editMode, setEditMode] = useState<VeriFormStatus>();
   const BoxBg = useColorModeValue('white', 'none');
   const BoxBorder = useColorModeValue('none', 'gray.500');
-
+  const Today = new Date().toLocaleString();
   useEffect(() => {
     setEditMode(context.formType);
   }, [context.formType]);
@@ -168,6 +168,7 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
                 <Input
                   type="datetime-local"
                   name="eventStartDate"
+                  min={Today}
                   value={context.formik.values.eventStartDate}
                   onChange={context.formik.handleChange}
                   onBlur={context.formik.handleBlur}
