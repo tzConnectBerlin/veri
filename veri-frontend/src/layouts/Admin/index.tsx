@@ -1,10 +1,5 @@
-import {
-  Box,
-  useColorModeValue,
-  ChakraProvider,
-  useColorMode,
-  ToastProvider,
-} from '@chakra-ui/react';
+import { Box, useColorModeValue, useColorMode } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/provider';
 import { useEffect } from 'react';
 import { MdViewList } from 'react-icons/md';
 import { HiUser } from 'react-icons/hi2';
@@ -39,22 +34,18 @@ export const DashboardLayout = () => {
   // }, [colorMode, toggleColorMode]);
   return (
     <ChakraProvider theme={adminTheme}>
-      <ToastProvider
-        defaultOptions={{ duration: 5000, position: 'bottom-right' }}
-      >
-        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
-          <Sidebar
-            links={adminRoutes}
-            logo={logo}
-            onLogout={onLogout}
-            display={{ base: 'none', md: 'block' }}
-            userName={user.email}
-          />
-          <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
-            <Outlet />
-          </Box>
+      <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+        <Sidebar
+          links={adminRoutes}
+          logo={logo}
+          onLogout={onLogout}
+          display={{ base: 'none', md: 'block' }}
+          userName={user.email}
+        />
+        <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
+          <Outlet />
         </Box>
-      </ToastProvider>
+      </Box>
     </ChakraProvider>
   );
 };

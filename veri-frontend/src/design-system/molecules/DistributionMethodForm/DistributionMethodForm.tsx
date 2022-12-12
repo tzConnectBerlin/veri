@@ -35,7 +35,7 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
 
   const handleEdit = () => {
     context.formik.handleSubmit();
-    setEditMode('View');
+    // setEditMode('View');
   };
 
   return (

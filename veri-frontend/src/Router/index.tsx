@@ -1,5 +1,6 @@
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
+import { GeneralLayout } from '../layouts/General';
 import { DashboardLayout } from '../layouts/Admin';
 import { EventLayout } from '../layouts/Event';
 import {
@@ -35,7 +36,7 @@ const PrivateRoutes = () => {
 const AuthRoutes = () => {
   const { user } = useAuth();
   if (user) return <Navigate to="/admin" />;
-  return <Login />;
+  return <GeneralLayout />;
 };
 
 const EventRoutes = () => {
@@ -58,24 +59,10 @@ export const Router = () => {
         </Route>
         <Route path="*" element={<NotFound />} />
         <Route path="/admin" element={<PrivateRoutes />}>
-          <Route
-            index
-            element={
-              <Suspense fallback={<>...</>}>
-                <VerisOverviewPage />
-              </Suspense>
-            }
-          />
+          <Route index element={<VerisOverviewPage />} />
           <Route path="veri" element={<VeriForm />} />
           <Route path="veri/:id" element={<VeriForm />} />
-          <Route
-            path="recipients"
-            element={
-              <Suspense fallback={<>...</>}>
-                <RecipientsPage />
-              </Suspense>
-            }
-          />
+          <Route path="recipients" element={<RecipientsPage />} />
           <Route path="send" element={<SendVeris />} />
           <Route path="send/:veri_id" element={<SendVeris />} />
           <Route path="settings" element={<Settings />} />
