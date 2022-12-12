@@ -15,6 +15,7 @@ const imageMiddleware = async (
   try {
     const roundedImage = await createRoundedCorners(req.file);
     const thumbnail = await createThumbnailImage(req.file);
+    console.log(thumbnail);
     // fix this ugly section
     req.file.buffer = roundedImage;
     req.thumbnail = JSON.parse(JSON.stringify(req.file));
@@ -23,19 +24,18 @@ const imageMiddleware = async (
     const fullFilename = uuidv4();
     req.file.filename = 'original_' + uuidv4();
     req.file.destination = 'uploads/';
-    req.file.path =
-      req.file.destination + fullFilename + path.extname(req.file.originalname);
+    req.file.path = fullFilename + path.extname(req.file.originalname);
 
     const thumbFilename = uuidv4();
     req.thumbnail.filename = 'thumb_' + uuidv4();
     req.thumbnail.destination = 'uploads/';
-    req.thumbnail.path =
-      req.thumbnail.destination +
-      thumbFilename +
-      path.extname(req.file.originalname);
+    req.thumbnail.path = thumbFilename + path.extname(req.file.originalname);
 
-    fs.writeFileSync(req.file.path, req.file.buffer);
-    fs.writeFileSync(req.thumbnail.path, req.thumbnail.buffer);
+    fs.writeFileSync(req.file.destination + req.file.path, req.file.buffer);
+    fs.writeFileSync(
+      req.thumbnail.destination + req.thumbnail.path,
+      req.thumbnail.buffer
+    );
 
     req.files = JSON.parse(JSON.stringify(req.file));
     req.thumbnail = JSON.parse(JSON.stringify(req.thumbnail));

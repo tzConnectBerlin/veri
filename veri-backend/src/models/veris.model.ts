@@ -4,8 +4,8 @@ import { Veri } from '../interfaces/veris.interface';
 export class Veris extends Model implements Veri {
   id!: number;
   event_name!: string;
-  event_description: string;
-  event_contact_email!: string;
+  organizer?: string;
+  organizer_email!: string;
   event_type!: string;
   event_start_date!: string;
   event_end_date!: string;
@@ -19,7 +19,6 @@ export class Veris extends Model implements Veri {
   created_by: number;
   updated_by: number;
   status!: string;
-  recipients: string[];
   file?: object;
 
   static tableName = 'veris'; // database table name

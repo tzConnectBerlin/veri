@@ -125,7 +125,7 @@ paths:
     post:
       tags:
       - authorize
-      summary: Add User
+      summary: Login user
       requestBody:
          content:
            application/json:
@@ -146,7 +146,7 @@ paths:
     post:
       tags:
       - authorize
-      summary: register a user
+      summary: Register a user
       parameters:
       - email: id
         password: path
@@ -270,6 +270,51 @@ paths:
         500:
           description: 'Server Error'
 
+# [GET] recipients/id
+  /recipients/{id}:
+    get:
+      tags:
+      - recipients
+      summary: Find Recipients By Token Id
+      parameters:
+      - name: id
+        in: path
+        description: Token Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# [POST] recipients
+    post:
+      tags:
+      - recipients
+      summary: Add Recipients By Token Id
+      parameters:
+      - name: id
+        in: path
+        description: Veri Id
+        required: true
+        type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/definitions/recipients'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -302,7 +347,7 @@ definitions:
     type: object
     required:
         - event_name
-        - event_contact_email
+        - organizer_email
         - event_type
         - event_start_date
         - event_end_date
@@ -311,21 +356,20 @@ definitions:
         - live_distribution
         - status
     optional:
-        - event_description
+        - organizer
         - artwork_description
         - live_distribution_url
         - live_distribution_password
-        - recipients
     properties:
       event_name:
         type: string
         description: Event name
         example: Test Event
-      event_description:
+      organizer:
         type: string
-        description: Event description
-        example: Test Event Description
-      event_contact_email:
+        description: Event organizer
+        example: Veri INC.
+      organizer_email:
         type: string
         description: Event contact person
         example: contactperson@event.com
@@ -372,13 +416,17 @@ definitions:
         type: string
         description: Current status of Veri 
         example: 'created'
-      recipients:
+  recipients:
+    type: object
+    required:
+        - addresses
+    properties:
+      addresses:
         type: array
         description: Recipient list
         items:
           type: string
         example: ["tz1LJtXoZoTiSHSTcpPPAs5rBZCftngyLe4x"]
-
 schemes:
  - https
  - http

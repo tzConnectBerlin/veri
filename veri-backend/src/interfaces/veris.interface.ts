@@ -1,8 +1,8 @@
 export interface Veri {
   id: number;
   event_name: string;
-  event_description: string;
-  event_contact_email: string;
+  organizer?: string;
+  organizer_email: string;
   event_type: string;
   event_start_date: string;
   event_end_date: string;
@@ -12,7 +12,7 @@ export interface Veri {
   live_distribution_password?: string;
   live_distribution_url?: string;
   file_id: number;
+  thumb_id: number;
   status: string;
-  recipients?: string[];
   file?: object;
 }

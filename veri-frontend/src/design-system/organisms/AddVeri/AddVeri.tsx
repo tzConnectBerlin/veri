@@ -43,10 +43,6 @@ export const AddVeri = () => {
                 </Button>
                 <Button
                   variant="secondary"
-                  isDisabled={
-                    context.formik.isSubmitting ||
-                    !(context.formik.isValid && context.formik.dirty)
-                  }
                   leftIcon={<IoMdSave />}
                   onClick={() => handleDifferentSubmit('Draft')}
                 >
@@ -56,23 +52,43 @@ export const AddVeri = () => {
             )}
             {context.formType === 'View' && (
               <>
-                <Button
-                  colorScheme="primary"
-                  leftIcon={<IoMdSend />}
-                  onClick={context.onSend}
-                >
-                  Send VERIs
-                </Button>
-                <Button
-                  variant="secondary"
-                  leftIcon={<MdDelete />}
-                  onClick={context.onDelete}
-                >
-                  Delete VERI
-                </Button>
-                <Button variant="secondary" leftIcon={<IoMdEye />}>
-                  View on Block Explorer
-                </Button>
+                {context.formik.values.status === 'Draft' ? (
+                  <Button
+                    colorScheme="primary"
+                    isDisabled={
+                      context.formType !== 'View' &&
+                      (context.formik.isSubmitting ||
+                        !(context.formik.isValid && context.formik.dirty))
+                    }
+                    leftIcon={<IoMdCloudUpload />}
+                    onClick={() => handleDifferentSubmit('Created')}
+                  >
+                    Create VERI
+                  </Button>
+                ) : (
+                  <Button
+                    colorScheme="primary"
+                    leftIcon={<IoMdSend />}
+                    onClick={context.onSend}
+                  >
+                    Send VERIs
+                  </Button>
+                )}
+                {(context.formik.values.status === 'Draft' ||
+                  context.formik.values.status === 'Created') && (
+                  <Button
+                    variant="secondary"
+                    leftIcon={<MdDelete />}
+                    onClick={context.onDelete}
+                  >
+                    Delete VERI
+                  </Button>
+                )}
+                {context.formik.values.status !== 'Draft' && (
+                  <Button variant="secondary" leftIcon={<IoMdEye />}>
+                    View on Block Explorer
+                  </Button>
+                )}
               </>
             )}
           </Stack>

@@ -1,10 +1,13 @@
-import { Badge, Box, Container, Heading, Stack } from '@chakra-ui/react';
-import { VeriContext } from '../../../contexts/veri';
 import {
-  VeriFormValues,
-  VeriFormikType,
-  EventDetailValues,
-} from '../../../types/veris';
+  Badge,
+  Box,
+  Container,
+  Heading,
+  Stack,
+  useToast,
+} from '@chakra-ui/react';
+import { VeriContext } from '../../../contexts/veri';
+import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
 import AddVeri from '../../../design-system/organisms/AddVeri';
 import { useFormik } from 'formik';
@@ -23,14 +26,17 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { VeriFormStatus } from '../../../types';
 import { ADMIN_URL } from '../../../Global';
-import { useToasts } from 'react-toast-notifications';
 
 export const VeriFormPage = (): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [veri, setVeri] = useState<VeriFormValues>();
   const [type, setType] = useState<VeriFormStatus>('Add');
-  const { addToast } = useToasts();
+  const toast = useToast({
+    position: 'bottom-right',
+    duration: 5000,
+    isClosable: true,
+  });
 
   useEffect(() => {
     if (id) {
@@ -48,7 +54,6 @@ export const VeriFormPage = (): JSX.Element => {
     organizer: Yup.string().trim().required('This field is required'),
     description: Yup.string().max(250).required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
-    recipients: Yup.array().of(Yup.string()).min(1),
     organizerEmail: Yup.string()
       .trim()
       .email('Should be a valid email')
@@ -63,8 +68,10 @@ export const VeriFormPage = (): JSX.Element => {
         if (id && veri) {
           updateVeri(body, Number(id))
             .then(res => {
-              addToast('Veri Updated', {
-                appearance: 'success',
+              toast({
+                title: `Veri Updated`,
+                description: 'View on the list',
+                status: 'success',
               });
               // toast({
               //   title: `Veri Updated`,
@@ -77,8 +84,10 @@ export const VeriFormPage = (): JSX.Element => {
               navigate(ADMIN_URL + '/');
             })
             .catch(e => {
-              addToast('Something went wrong', {
-                appearance: 'error',
+              toast({
+                title: 'Something went wrong.',
+                description: 'Try again later.',
+                status: 'error',
               });
               // toast({
               //   title: 'Something went wrong.',
@@ -92,8 +101,9 @@ export const VeriFormPage = (): JSX.Element => {
         } else {
           addVeri(body)
             .then(res => {
-              addToast(`Veri ${values.status}`, {
-                appearance: 'success',
+              toast({
+                title: `Veri ${values.status}`,
+                status: 'success',
               });
               // toast({
               //   title: `Veri ${values.status}`,
@@ -104,8 +114,10 @@ export const VeriFormPage = (): JSX.Element => {
               setType('View');
             })
             .catch(e => {
-              addToast('Something went wrong', {
-                appearance: 'error',
+              toast({
+                title: 'Something went wrong.',
+                description: 'Try again later.',
+                status: 'error',
               });
               // toast({
               //   title: 'Something went wrong.',
@@ -119,8 +131,10 @@ export const VeriFormPage = (): JSX.Element => {
         }
       } catch (err) {
         console.error(err);
-        addToast('Something went wrong', {
-          appearance: 'error',
+        toast({
+          title: 'Something went wrong.',
+          description: 'Try again later.',
+          status: 'error',
         });
         // toast({
         //   title: 'Something went wrong.',
@@ -131,15 +145,17 @@ export const VeriFormPage = (): JSX.Element => {
         // });
       }
     },
-    [navigate, id, veri, addToast],
+    [navigate, id, veri, toast],
   );
 
   const handleDelete = useCallback(() => {
     deleteVeriById(Number(id))
       .then(res => {
         console.log(res);
-        addToast('Veri Successfully Deleted', {
-          appearance: 'success',
+        toast({
+          title: `Veri`,
+          description: 'Successfully Deleted',
+          status: 'success',
         });
         // toast({
         //   title: `Veri`,
@@ -152,8 +168,10 @@ export const VeriFormPage = (): JSX.Element => {
       })
       .catch(err => {
         console.warn(err);
-        addToast('Something went wrong', {
-          appearance: 'error',
+        toast({
+          title: 'Something went wrong.',
+          description: 'Try again later.',
+          status: 'error',
         });
         // toast({
         //   title: 'Something went wrong.',
@@ -163,30 +181,23 @@ export const VeriFormPage = (): JSX.Element => {
         //   isClosable: true,
         // });
       });
-  }, [id, navigate, addToast]);
+  }, [id, navigate, toast]);
 
   const handleSendVeri = useCallback(() => {
     navigate(`${ADMIN_URL}/send/${id}`);
   }, [id, navigate]);
 
   const InitialValues: VeriFormValues = useMemo(() => {
-    const EventDetailValues: EventDetailValues = {
+    return {
       eventName: '',
       organizer: '',
       organizerEmail: '',
       eventDuration: 'Single',
       eventStartDate: '',
       eventEndDate: '',
-    };
-    const VeriDetailValues = {
       artworkName: '',
       artworkFile: undefined,
       description: '',
-    };
-    return {
-      ...EventDetailValues,
-      ...VeriDetailValues,
-      recipients: [''],
       distributionMethod: 'Post-event',
       password: '',
       status: 'Draft',

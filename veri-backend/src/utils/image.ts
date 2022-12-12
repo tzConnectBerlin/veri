@@ -72,10 +72,3 @@ const writeStream = async (
 
   return writeStream;
 };
-
-// roundedCorners(
-//   '/Users/nazmussakib/Work/veri/veri-backend/uploads/0bca4d300b3b1c2cf1119161b872d375'
-// );
-// thumbnail(
-//   '/Users/nazmussakib/Work/veri/veri-backend/uploads/0bca4d300b3b1c2cf1119161b872d375'
-// );

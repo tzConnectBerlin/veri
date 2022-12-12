@@ -2,6 +2,7 @@ import {
   Box,
   useColorModeValue,
   useColorMode,
+  ToastProvider,
   ChakraProvider,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
@@ -12,7 +13,6 @@ import useAuth from '../../contexts/useAuth';
 import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
 import adminTheme from '../../design-system/theme/adminTheme';
-import { ToastProvider } from 'react-toast-notifications';
 
 const adminRoutes: SidebarLinkProps[] = [
   { name: 'VERIs', icon: <MdViewList />, path: '/' },
@@ -39,7 +39,9 @@ export const DashboardLayout = () => {
   // }, [colorMode, toggleColorMode]);
   return (
     <ChakraProvider theme={adminTheme}>
-      <ToastProvider placement="bottom-right" autoDismiss={false}>
+      <ToastProvider
+        defaultOptions={{ duration: 5000, position: 'bottom-right' }}
+      >
         <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
           <Sidebar
             links={adminRoutes}

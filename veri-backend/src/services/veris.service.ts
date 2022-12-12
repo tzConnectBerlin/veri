@@ -2,9 +2,7 @@ import { File } from '../interfaces/file.interface';
 import { Files } from '../models/files.model';
 import { HttpException } from '../exceptions/HttpException';
 import { Veri } from '../interfaces/veris.interface';
-import { Recipient } from '../interfaces/recipients.interface';
 import { Veris } from '../models/veris.model';
-import { Recipients } from '../models/recipients.model';
 import { isEmpty } from '../utils/util';
 import { User } from '@/interfaces/users.interface';
 import { hash } from 'bcryptjs';
@@ -16,23 +14,42 @@ import { PEPPERMINTERY_URL } from '../config';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
-    const veris: Veri[] = await Veris.query().select().from('veris');
-    const result: Veri[] = [];
-    for (const veri of veris) {
-      const findFile: File = await Files.query().findById(veri.file_id);
-      veri.file = findFile;
-      result.push(veri);
-    }
+    const veris: Veri[] = await Veris.query()
+      .from('veris')
+      .join('files', 'files.id', '=', 'veris.thumb_id')
+      .select(
+        'veris.id',
+        'files.path as thumbnail',
+        'veris.event_name as veri',
+        'veris.organizer',
+        'veris.event_start_date',
+        'veris.event_end_date',
+        'veris.status'
+      );
     return veris;
   }
 
   public async findVeriById(veriId: number): Promise<Veri> {
-    const findVeri: Veri = await Veris.query().findById(veriId);
-    if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
+    const findVeri: Veri = await Veris.query()
+      .findById(veriId)
+      .join('files', 'files.id', '=', 'veris.file_id')
+      .select(
+        'veris.id',
+        'veris.event_name as veri',
+        'veris.organizer',
+        'veris.organizer_email',
+        'veris.event_type',
+        'veris.event_start_date',
+        'veris.event_end_date',
+        'files.path as artwork',
+        'veris.artwork_description',
+        'veris.live_distribution',
+        'veris.live_distribution_url',
+        'veris.live_distribution_password',
+        'veris.status'
+      );
 
-    const findFile: File = await Files.query().findById(findVeri.file_id);
-    if (!findFile) throw new HttpException(409, "Veri doesn't exist");
-    findVeri.file = findFile;
+    if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
     return findVeri;
   }
@@ -47,10 +64,8 @@ class VeriService {
       throw new HttpException(400, 'Please enter Veri details.');
 
     const hashedPassword = await hash(veriData.live_distribution_password, 10);
-    let recipients = veriData.recipients;
     const buffer = file.buffer;
 
-    delete veriData.recipients;
     delete file.buffer;
     delete thumbnail.buffer;
 
@@ -64,7 +79,6 @@ class VeriService {
         409,
         `Veri for this event ${veriData.event_name} already exists`
       );
-    console.log(file);
 
     const createFileEntry: File = await Files.query()
       .insert({ ...file })
@@ -97,7 +111,6 @@ class VeriService {
       {
         token_details: createTokenDetails(veriData),
         image_asset: createImageAsset(file, buffer),
-        recipients,
       },
       {
         headers: {
@@ -108,31 +121,14 @@ class VeriService {
 
     if (!createTask) throw new HttpException(500, `Internal server error`);
 
-    if (recipients) {
-      recipients = [...new Set(recipients)];
-      for (const address of recipients) {
-        const createRecipientData: Recipient = await Recipients.query()
-          .insert({
-            token_id: createVeriData.id,
-            address: address,
-            amount: 1,
-            state: 'pending',
-            created_by: user.id,
-          })
-          .into('recipients');
-
-        if (!createRecipientData)
-          throw new HttpException(500, `Internal server error`);
-      }
-    }
-
-    return createVeriData;
+    return await this.findVeriById(createVeriData.id);
   }
 
   public async updateVeri(
     veriId: number,
     veriData: Veri,
     file: File,
+    thumbnail: File,
     user: User
   ): Promise<Veri> {
     if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
@@ -143,12 +139,35 @@ class VeriService {
       .where('id', '=', veriId)
       .first();
 
+    const findEvent: Veri = await Veris.query()
+      .select()
+      .from('veris')
+      .where('event_name', '=', veriData.event_name)
+      .first();
+    if (findEvent)
+      throw new HttpException(
+        409,
+        `Event ${veriData.event_name} already exists`
+      );
+
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
-    await Files.query()
+    delete file.buffer;
+    delete thumbnail.buffer;
+
+    const fileUpdate = await Files.query()
       .update({ ...file })
       .where('id', '=', findVeri.file_id)
       .into('files');
+
+    if (!fileUpdate) throw new HttpException(500, `Internal server error`);
+
+    const thumbUpdate = await Files.query()
+      .update({ ...thumbnail })
+      .where('id', '=', findVeri.thumb_id)
+      .into('files');
+
+    if (!thumbUpdate) throw new HttpException(500, `Internal server error`);
 
     await Veris.query()
       .update({
@@ -165,7 +184,8 @@ class VeriService {
       .from('veris')
       .where('id', '=', veriId)
       .first();
-    return updateVeriData;
+
+    return await this.findVeriById(updateVeriData.id);
   }
 
   public async deleteVeri(veriId: number): Promise<Veri> {

@@ -69,11 +69,13 @@ class VeriController {
       const veriId = Number(req.params.id);
       const veriData: Veri = req.body;
       const file: File = req.file;
+      const thumbnail: File = req.thumbnail;
       const user: User = req.user;
       const updateVeriData: Veri = await this.veriService.updateVeri(
         veriId,
         veriData,
         file,
+        thumbnail,
         user
       );
 

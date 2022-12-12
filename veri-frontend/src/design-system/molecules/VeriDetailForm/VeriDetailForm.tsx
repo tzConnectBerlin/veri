@@ -102,7 +102,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
               boxSize="120px"
               borderRadius="full"
               objectFit="cover"
-              src={BASE_URL + '/' + context.formik.values.artworkName}
+              src={BASE_URL + '/' + context.formik.values.artworkFile}
               alt=""
               mx="auto"
             />
