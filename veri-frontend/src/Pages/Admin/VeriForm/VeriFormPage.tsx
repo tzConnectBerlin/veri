@@ -1,11 +1,4 @@
-import {
-  Badge,
-  Box,
-  Container,
-  Heading,
-  Stack,
-  useToast,
-} from '@chakra-ui/react';
+import { Badge, Box, Container, Heading, Stack } from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
@@ -26,17 +19,14 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { VeriFormStatus } from '../../../types';
 import { ADMIN_URL } from '../../../Global';
+import { useToasts } from 'react-toast-notifications';
 
 export const VeriFormPage = (): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [veri, setVeri] = useState<VeriFormValues>();
   const [type, setType] = useState<VeriFormStatus>('Add');
-  const toast = useToast({
-    position: 'bottom-right',
-    duration: 5000,
-    isClosable: true,
-  });
+  const { addToast } = useToasts();
 
   useEffect(() => {
     if (id) {
@@ -68,19 +58,17 @@ export const VeriFormPage = (): JSX.Element => {
         if (id && veri) {
           updateVeri(body, Number(id))
             .then(res => {
-              toast({
-                title: `Veri Updated`,
+              addToast(`Veri Updated`, {
                 description: 'View on the list',
-                status: 'success',
+                appearance: 'success',
               });
 
               navigate(ADMIN_URL + '/');
             })
             .catch(e => {
-              toast({
-                title: 'Something went wrong.',
+              addToast('Something went wrong.', {
                 description: 'Try again later.',
-                status: 'error',
+                appearance: 'error',
               });
               console.error(e);
             });
@@ -88,31 +76,28 @@ export const VeriFormPage = (): JSX.Element => {
           addVeri(body)
             .then(res => {
               setVeri(() => MapServerValueToVeri(res.data.data));
-              toast({
-                title: `Veri ${values.status}`,
+              addToast(`Veri ${values.status}`, {
                 status: 'success',
               });
               setType('View');
             })
             .catch(e => {
-              toast({
-                title: 'Something went wrong.',
+              addToast('Something went wrong.', {
                 description: 'Try again later.',
-                status: 'error',
+                appearance: 'error',
               });
               console.error(e);
             });
         }
       } catch (err) {
         console.error(err);
-        toast({
-          title: 'Something went wrong.',
+        addToast('Something went wrong.', {
           description: 'Try again later.',
-          status: 'error',
+          appearance: 'error',
         });
       }
     },
-    [navigate, id, veri, toast],
+    [navigate, id, veri, addToast],
   );
 
   const handleDelete = useCallback(() => {
@@ -120,22 +105,19 @@ export const VeriFormPage = (): JSX.Element => {
     deleteVeriById(Number(veri.id))
       .then(res => {
         console.log(res);
-        toast({
-          title: `Veri`,
-          description: 'Successfully Deleted',
+        addToast('Veri Successfully Deleted', {
           status: 'success',
         });
-        navigate('/admin/');
+        navigate(`${ADMIN_URL}/`);
       })
       .catch(err => {
         console.warn(err);
-        toast({
-          title: 'Something went wrong.',
+        addToast('Something went wrong.', {
           description: 'Try again later.',
-          status: 'error',
+          appearance: 'error',
         });
       });
-  }, [navigate, toast, veri]);
+  }, [navigate, addToast, veri]);
 
   const handleSendVeri = useCallback(() => {
     navigate(`${ADMIN_URL}/send/${id}`);

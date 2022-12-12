@@ -35,7 +35,7 @@ export const VeriDetailForm: React.FC<VeriDetailFormProps> = ({ title }) => {
 
   const handleEdit = () => {
     context.formik.handleSubmit();
-    setEditMode('View');
+    // setEditMode('View');
   };
 
   const handleFileChange = useCallback(

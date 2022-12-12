@@ -1,9 +1,10 @@
-import { Button, Container, Heading, Stack, useToast } from '@chakra-ui/react';
+import { Button, Container, Heading, Stack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { IoMdSend } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import {
   getRecipientsByVeriId,
@@ -17,11 +18,7 @@ import { MapVeriToDropDown } from '../../../utils/veri';
 export const SendVerisPage = () => {
   const { veri_id } = useParams();
   const navigate = useNavigate();
-  const toast = useToast({
-    position: 'bottom-right',
-    duration: 5000,
-    isClosable: true,
-  });
+  const { addToast } = useToasts();
 
   const [veriList, setVeriList] = useState<VeriDropDown[]>([]);
   const [selectedVeri, setSelectedVeri] = useState<VeriDropDown>();
@@ -64,30 +61,27 @@ export const SendVerisPage = () => {
         };
         postRcipientsByVeriId(Number(values.selectedVeri.id), body)
           .then(() => {
-            toast({
-              title: `VERIs minting`,
-              status: 'success',
+            addToast('VERIs minting', {
+              appearance: 'success',
             });
             navigate('/admin/recipients');
           })
           .catch(err => {
-            toast({
-              title: 'Something went wrong.',
+            addToast('Something went wrong.', {
               description: 'Try again later.',
-              status: 'error',
+              appearance: 'error',
             });
             console.error(err);
           });
       } catch (err) {
-        toast({
-          title: 'Something went wrong.',
+        addToast('Something went wrong.', {
           description: 'Try again later.',
-          status: 'error',
+          appearance: 'error',
         });
         console.log(err);
       }
     },
-    [navigate, toast],
+    [navigate, addToast],
   );
 
   const handleChange = useCallback(

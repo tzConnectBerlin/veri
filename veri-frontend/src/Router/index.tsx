@@ -1,5 +1,6 @@
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
+import { GeneralLayout } from '../layouts/General';
 import { DashboardLayout } from '../layouts/Admin';
 import { EventLayout } from '../layouts/Event';
 import {
@@ -35,7 +36,7 @@ const PrivateRoutes = () => {
 const AuthRoutes = () => {
   const { user } = useAuth();
   if (user) return <Navigate to="/admin" />;
-  return <Login />;
+  return <GeneralLayout />;
 };
 
 const EventRoutes = () => {

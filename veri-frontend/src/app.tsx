@@ -1,23 +1,22 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './Router';
-import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider } from './contexts/useAuth';
-import theme from './design-system/theme/adminTheme';
 import Fonts from './design-system/fonts/Fonts';
+import { ToastProvider } from 'react-toast-notifications';
 
 function App() {
   return (
     <>
       <ColorModeScript />
-      <ChakraProvider theme={theme}>
+      <ToastProvider placement="bottom-right" autoDismiss>
         <Fonts />
         <BrowserRouter>
           <AuthProvider>
             <Router />
           </AuthProvider>
         </BrowserRouter>
-      </ChakraProvider>
+      </ToastProvider>
     </>
   );
 }

@@ -35,7 +35,7 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
 
   const handleEdit = () => {
     context.formik.handleSubmit();
-    setEditMode('View');
+    // setEditMode('View');
   };
 
   return (
