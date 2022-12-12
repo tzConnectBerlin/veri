@@ -4,10 +4,11 @@ import { Router } from './Router';
 import { AuthProvider } from './contexts/useAuth';
 import Fonts from './design-system/fonts/Fonts';
 import { ToastProvider } from 'react-toast-notifications';
+import { Suspense } from 'react';
 
 function App() {
   return (
-    <div>
+    <Suspense fallback={'...Loading'}>
       <ColorModeScript />
       <ToastProvider placement="bottom-right" autoDismiss>
         <Fonts />
@@ -17,7 +18,7 @@ function App() {
           </AuthProvider>
         </BrowserRouter>
       </ToastProvider>
-    </div>
+    </Suspense>
   );
 }
 

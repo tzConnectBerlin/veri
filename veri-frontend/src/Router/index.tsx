@@ -59,24 +59,10 @@ export const Router = () => {
         </Route>
         <Route path="*" element={<NotFound />} />
         <Route path="/admin" element={<PrivateRoutes />}>
-          <Route
-            index
-            element={
-              <Suspense fallback={<>...</>}>
-                <VerisOverviewPage />
-              </Suspense>
-            }
-          />
+          <Route index element={<VerisOverviewPage />} />
           <Route path="veri" element={<VeriForm />} />
           <Route path="veri/:id" element={<VeriForm />} />
-          <Route
-            path="recipients"
-            element={
-              <Suspense fallback={<>...</>}>
-                <RecipientsPage />
-              </Suspense>
-            }
-          />
+          <Route path="recipients" element={<RecipientsPage />} />
           <Route path="send" element={<SendVeris />} />
           <Route path="send/:veri_id" element={<SendVeris />} />
           <Route path="settings" element={<Settings />} />
