@@ -1,10 +1,4 @@
-import {
-  HStack,
-  useColorModeValue,
-  Text,
-  Tooltip,
-  useToast,
-} from '@chakra-ui/react';
+import { HStack, useColorModeValue, Text, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { MdOutlineFileCopy } from 'react-icons/md';
 import { CopyToClipboard } from 'react-copy-to-clipboard';

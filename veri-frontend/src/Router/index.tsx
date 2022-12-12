@@ -25,7 +25,7 @@ const VerisOverviewPage = React.lazy(
 );
 
 import { AnimatePresence } from 'framer-motion';
-import React, { Suspense } from 'react';
+import React from 'react';
 
 const PrivateRoutes = () => {
   const { user } = useAuth();
