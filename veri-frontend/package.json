@@ -41,7 +41,7 @@
     "prepare": "cd .. && husky install veri-frontend/.husky",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!@codemirror)/'",
+    "test": "react-scripts test --passWithNoTests --transformIgnorePatterns 'node_modules/(?!@codemirror)/'",
     "eject": "react-scripts eject",
     "commit": "cz",
     "storybook": "start-storybook -p 6006 -s public",
