@@ -7,7 +7,7 @@ import { ToastProvider } from 'react-toast-notifications';
 
 function App() {
   return (
-    <>
+    <div>
       <ColorModeScript />
       <ToastProvider placement="bottom-right" autoDismiss>
         <Fonts />
@@ -17,7 +17,7 @@ function App() {
           </AuthProvider>
         </BrowserRouter>
       </ToastProvider>
-    </>
+    </div>
   );
 }
 
