@@ -106,20 +106,20 @@ class VeriService {
 
     if (!createVeriData) throw new HttpException(500, `Internal server error`);
 
-    const createTask = await axios.put(
-      `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
-      {
-        token_details: createTokenDetails(veriData),
-        image_asset: createImageAsset(file, buffer),
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    // const createTask = await axios.put(
+    //   `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
+    //   {
+    //     token_details: createTokenDetails(veriData),
+    //     image_asset: createImageAsset(file, buffer),
+    //   },
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // );
 
-    if (!createTask) throw new HttpException(500, `Internal server error`);
+    // if (!createTask) throw new HttpException(500, `Internal server error`);
 
     return await this.findVeriById(createVeriData.id);
   }
