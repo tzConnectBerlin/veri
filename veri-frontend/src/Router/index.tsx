@@ -41,7 +41,8 @@ const AuthRoutes = () => {
 
 const EventRoutes = () => {
   const { user } = useAuth();
-  if (!user) return <Navigate to="/login" />;
+  const prevRoute = useLocation();
+  if (!user) return <Navigate to="/booth" state={{ prevRoute }} replace />;
   return <EventLayout />;
 };
 
@@ -50,14 +51,12 @@ export const Router = () => {
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Landing />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/reset" element={<ResetPassword />} />
         </Route>
-        <Route path="*" element={<NotFound />} />
         <Route path="/admin" element={<PrivateRoutes />}>
           <Route index element={<VerisOverviewPage />} />
           <Route path="veri" element={<VeriForm />} />
@@ -67,9 +66,13 @@ export const Router = () => {
           <Route path="send/:veri_id" element={<SendVeris />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-        <Route path="/booth" element={<Booth />} />
         <Route element={<EventRoutes />}>
           <Route path="/event/:eventName" element={<VeriScanner />} />
+        </Route>
+        <Route element={<GeneralLayout />}>
+          <Route index path="/" element={<Landing />} />
+          <Route path="/booth" element={<Booth />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </AnimatePresence>

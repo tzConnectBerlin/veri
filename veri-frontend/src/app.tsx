@@ -1,4 +1,4 @@
-import { ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './Router';
 import { AuthProvider } from './contexts/useAuth';
@@ -9,15 +9,17 @@ import { Suspense } from 'react';
 function App() {
   return (
     <Suspense fallback={'...Loading'}>
-      <ColorModeScript />
-      <ToastProvider placement="bottom-right" autoDismiss>
-        <Fonts />
-        <BrowserRouter>
-          <AuthProvider>
-            <Router />
-          </AuthProvider>
-        </BrowserRouter>
-      </ToastProvider>
+      <ChakraProvider>
+        <ColorModeScript />
+        <ToastProvider placement="bottom-right" autoDismiss>
+          <Fonts />
+          <BrowserRouter>
+            <AuthProvider>
+              <Router />
+            </AuthProvider>
+          </BrowserRouter>
+        </ToastProvider>
+      </ChakraProvider>
     </Suspense>
   );
 }
