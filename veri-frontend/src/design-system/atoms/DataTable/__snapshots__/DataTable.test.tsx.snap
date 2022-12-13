@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot testing DataTable Component renders correctly 1`] = `
+<div
+  className="css-0"
+>
+  <div
+    className="chakra-table__container css-zipzvv"
+  >
+    <table
+      className="chakra-table css-0"
+    >
+      <thead
+        className="css-0"
+      >
+        <tr
+          className="css-0"
+        >
+          <th
+            className="css-0"
+          >
+            Event Name
+          </th>
+          <th
+            className="css-0"
+          >
+            Organizer
+          </th>
+          <th
+            className="css-0"
+          >
+            <div
+              className="css-70qvj9"
+            >
+              Status
+              <button
+                aria-label="sort"
+                className="chakra-button css-p7mkev"
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="currentColor"
+                  focusable={false}
+                  height="1em"
+                  stroke="currentColor"
+                  strokeWidth="0"
+                  style={
+                    Object {
+                      "color": undefined,
+                    }
+                  }
+                  viewBox="0 0 512 512"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M128 192l128 128 128-128z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </th>
+          <th
+            className="css-0"
+          >
+            Mint Date
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        className="css-0"
+      >
+        <tr
+          className="css-ykqdxu"
+          onClick={[Function]}
+        >
+          <td
+            className="css-130zoje"
+          >
+            Event1
+          </td>
+          <td
+            className="css-130zoje"
+          >
+            Organizer1
+          </td>
+          <td
+            className="css-130zoje"
+          >
+            Draft
+          </td>
+          <td
+            className="css-130zoje"
+          >
+            21 Nov 2022
+          </td>
+        </tr>
+        <tr
+          className="css-ykqdxu"
+          onClick={[Function]}
+        >
+          <td
+            className="css-130zoje"
+          >
+            Event1
+          </td>
+          <td
+            className="css-130zoje"
+          >
+            Organizer1
+          </td>
+          <td
+            className="css-130zoje"
+          >
+            Draft
+          </td>
+          <td
+            className="css-130zoje"
+          >
+            21 Nov 2022
+          </td>
+        </tr>
+        <tr
+          className="css-ykqdxu"
+          onClick={[Function]}
+        >
+          <td
+            className="css-ipz9xt"
+          >
+            Event1
+          </td>
+          <td
+            className="css-ipz9xt"
+          >
+            Organizer1
+          </td>
+          <td
+            className="css-ipz9xt"
+          >
+            Draft
+          </td>
+          <td
+            className="css-ipz9xt"
+          >
+            21 Nov 2022
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

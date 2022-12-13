@@ -50,11 +50,11 @@ const Badge = defineStyleConfig({
     borderRadius: '6px',
   },
   variants: {
-    draft: {
+    error: {
       bg: 'pink.100',
       color: 'pink.600',
     },
-    created: {
+    pending: {
       bg: 'yellow.100',
       color: 'yellow.600',
     },
@@ -66,8 +66,25 @@ const Badge = defineStyleConfig({
       bg: 'cyan.100',
       color: 'cyan.600',
     },
+    draft: {
+      bg: 'purple.50',
+      color: 'purple.800',
+    },
+    created: {
+      bg: 'purple.100',
+      color: 'purple.800',
+    },
+    enabled: {
+      bg: 'purple.800',
+      color: 'white',
+    },
+    disabled: {
+      bg: 'gray.100',
+      color: 'gray.600',
+    },
   },
 });
+
 const Button = defineStyleConfig({
   baseStyle: {
     _focus: {

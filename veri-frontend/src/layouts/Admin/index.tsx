@@ -1,10 +1,5 @@
-import {
-  Box,
-  useColorModeValue,
-  ChakraProvider,
-  useColorMode,
-} from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/provider';
 import { MdViewList } from 'react-icons/md';
 import { HiUser } from 'react-icons/hi2';
 import { Outlet } from 'react-router-dom';
@@ -20,7 +15,6 @@ const adminRoutes: SidebarLinkProps[] = [
 
 export const DashboardLayout = () => {
   const { logout, user } = useAuth();
-  const { toggleColorMode, colorMode } = useColorMode();
   const logo = 'VERI Admin';
 
   const onLogout = async () => {
@@ -31,11 +25,6 @@ export const DashboardLayout = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (colorMode === 'dark') {
-  //     toggleColorMode();
-  //   }
-  // }, [colorMode, toggleColorMode]);
   return (
     <ChakraProvider theme={adminTheme}>
       <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>

@@ -2,23 +2,17 @@ import { FormikProps } from 'formik';
 
 export type VeriFormStatus = 'Add' | 'Edit' | 'View';
 
-export interface EventDetailValues {
+export interface VeriFormValues {
+  id?: string;
   eventName: string;
   organizer: string;
   organizerEmail: string;
   eventDuration: 'Single' | 'Multiday';
   eventStartDate: string;
   eventEndDate: string;
-}
-
-export interface VeriDetailValues {
   description?: string;
   artworkFile?: File;
   artworkName: string;
-}
-
-export interface VeriFormValues extends EventDetailValues, VeriDetailValues {
-  recipients: string[];
   distributionMethod?: 'QR-code' | 'Post-event';
   password?: string;
   status: string;
@@ -31,17 +25,11 @@ export interface VeriFormikType {
   onSend: () => void;
 }
 
-export interface VeriDropDown {
-  id: string;
-  artWork: string;
-  title: string;
-}
-
-export interface VeriType {
+export interface VeriFormType {
   id: string;
   event_name: string;
-  event_description?: string;
-  event_contact_email: string;
+  organizer?: string;
+  organizer_email: string;
   event_type: 'Single' | 'Multiday';
   event_start_date: Date;
   event_end_date: Date;
@@ -52,11 +40,20 @@ export interface VeriType {
   live_distribution_url: string;
   live_distribution_password: string;
   status: string;
-  recipients: string[];
-  updated_at?: string;
-  updated_by?: number;
-  file: {
-    filename: string;
-    mimetype: string;
-  };
+}
+
+export interface VeriListType {
+  id: string;
+  thumbnail: string;
+  veri: string;
+  organizer?: string;
+  event_start_date: string;
+  event_end_date: string;
+  status: string;
+}
+
+export interface VeriDropDown {
+  id: string;
+  artWork: string;
+  title: string;
 }
