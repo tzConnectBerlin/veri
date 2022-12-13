@@ -26,6 +26,21 @@ class VeriService {
         'veris.event_end_date',
         'veris.status'
       );
+
+    for await (const veri of veris) {
+      try {
+        const getCurrentStatus = await axios.get(
+          `${PEPPERMINTERY_URL}/tokens/${veri.id}`
+        );
+        veri.status = getCurrentStatus.data.status;
+      } catch {
+        throw new HttpException(
+          500,
+          'Service unavilable, Please try again later.'
+        );
+      }
+    }
+
     return veris;
   }
 
@@ -50,6 +65,18 @@ class VeriService {
       );
 
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
+
+    try {
+      const getCurrentStatus = await axios.get(
+        `${PEPPERMINTERY_URL}/tokens/${veriId}`
+      );
+      findVeri.status = getCurrentStatus.data.status;
+    } catch {
+      throw new HttpException(
+        500,
+        'Service unavilable, Please try again later.'
+      );
+    }
 
     return findVeri;
   }

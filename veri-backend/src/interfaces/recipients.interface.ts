@@ -4,6 +4,7 @@ export interface Recipient {
   address: string;
   amount: number;
   state: string;
+  status?: string;
   created_by?: number;
   operation?: string;
 }
