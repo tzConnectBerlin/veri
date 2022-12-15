@@ -33,7 +33,6 @@ class RecipientsController {
       const tokenId = Number(req.params.id);
       const findRecipientsData: Recipient[] =
         await this.RecipientService.findRecipientByTokenId(tokenId);
-
       res.status(200).json({ data: findRecipientsData, message: 'findbyVeri' });
     } catch (error) {
       next(error);

@@ -26,6 +26,21 @@ class VeriService {
         'veris.event_end_date',
         'veris.status'
       );
+
+    for await (const veri of veris) {
+      try {
+        const getCurrentStatus = await axios.get(
+          `${PEPPERMINTERY_URL}/tokens/${veri.id}`
+        );
+        veri.status = getCurrentStatus.data.status;
+      } catch {
+        throw new HttpException(
+          500,
+          'Service unavilable, Please try again later.'
+        );
+      }
+    }
+
     return veris;
   }
 
@@ -50,6 +65,18 @@ class VeriService {
       );
 
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
+
+    try {
+      const getCurrentStatus = await axios.get(
+        `${PEPPERMINTERY_URL}/tokens/${veriId}`
+      );
+      findVeri.status = getCurrentStatus.data.status;
+    } catch {
+      throw new HttpException(
+        500,
+        'Service unavilable, Please try again later.'
+      );
+    }
 
     return findVeri;
   }
@@ -90,8 +117,14 @@ class VeriService {
       .insert({ ...thumbnail })
       .into('files');
 
-    if (!createThumbEntry)
+    if (!createThumbEntry) {
+      await Files.query()
+        .delete()
+        .where('id', '=', createFileEntry.id)
+        .into('files');
+
       throw new HttpException(500, `Internal server error`);
+    }
 
     const createVeriData: Veri = await Veris.query()
       .insert({
@@ -104,22 +137,52 @@ class VeriService {
       })
       .into('veris');
 
-    if (!createVeriData) throw new HttpException(500, `Internal server error`);
+    if (!createVeriData) {
+      await Files.query()
+        .delete()
+        .where('id', '=', createFileEntry.id)
+        .into('files');
 
-    const createTask = await axios.put(
-      `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
-      {
-        token_details: createTokenDetails(veriData),
-        image_asset: createImageAsset(file, buffer),
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      await Files.query()
+        .delete()
+        .where('id', '=', createThumbEntry.id)
+        .into('files');
+
+      throw new HttpException(500, `Internal server error`);
+    }
+
+    if (veriData.status === 'created') {
+      try {
+        await axios.put(
+          `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
+          {
+            token_details: createTokenDetails(veriData),
+            image_asset: createImageAsset(file, buffer),
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+      } catch {
+        veriData.status = 'draft';
+        await Veris.query()
+          .update({
+            ...veriData,
+            file_id: createFileEntry.id,
+            thumb_id: createThumbEntry.id,
+            updated_by: user.id,
+          })
+          .where('id', '=', createVeriData.id)
+          .into('veris');
+
+        throw new HttpException(
+          500,
+          `Service unavailable, please try again later.`
+        );
       }
-    );
-
-    if (!createTask) throw new HttpException(500, `Internal server error`);
+    }
 
     return await this.findVeriById(createVeriData.id);
   }

@@ -2,12 +2,14 @@ import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import { Recipients } from '@/models/recipients.model';
 import { Recipient } from '@/interfaces/recipients.interface';
+import { PEPPERMINTERY_URL } from '@/config';
+import axios from 'axios';
 
 class RecipientService {
   public async findRecipients(userId: number): Promise<Recipient[]> {
     if (isEmpty(userId))
       throw new HttpException(400, 'Please provide a valid user id');
-    const findRecipient: Recipient[] = await Recipients.query()
+    const findRecipients: Recipient[] = await Recipients.query()
       .select()
       .from('recipients')
       .where('recipients.created_by', '=', userId)
@@ -17,10 +19,39 @@ class RecipientService {
         'files.path as image',
         'veris.event_name as veri',
         'recipients.address as recipient',
+        'recipients.token_id',
         'recipients.operation',
         'recipients.state as status'
       );
-    return findRecipient;
+
+    const veri_ids = [
+      ...new Set(
+        findRecipients.map((recipient: Recipient) => recipient.token_id)
+      ),
+    ];
+
+    for await (const id of veri_ids) {
+      try {
+        const getTaskStatus = await axios.get(
+          `${PEPPERMINTERY_URL}/tokens/${id}/recipients`
+        );
+        getTaskStatus.data.forEach((task: any) => {
+          //fix any
+          const idx = findRecipients.findIndex(
+            (recipient: any) =>
+              recipient.recipient == task.details.recipient_address
+          );
+          findRecipients[idx].status = task.status;
+          findRecipients[idx].operation = task.details.operation_group_hash;
+        });
+      } catch {
+        throw new HttpException(
+          500,
+          'Service unavilable, Please try again later.'
+        );
+      }
+    }
+    return findRecipients;
   }
 
   public async findDuplicate(
@@ -51,6 +82,26 @@ class RecipientService {
         'recipients.state as status'
       );
 
+    try {
+      const getTaskStatus = await axios.get(
+        `${PEPPERMINTERY_URL}/tokens/${tokenId}/recipients`
+      );
+      getTaskStatus.data.forEach((task: any) => {
+        //fix any
+        const idx = findRecipient.findIndex(
+          (recipient: any) =>
+            recipient.recipient == task.details.recipient_address
+        );
+        findRecipient[idx].status = task.status;
+        findRecipient[idx].operation = task.details.operation_group_hash;
+      });
+    } catch {
+      throw new HttpException(
+        500,
+        'Service unavilable, Please try again later.'
+      );
+    }
+
     return findRecipient;
   }
 
@@ -67,12 +118,28 @@ class RecipientService {
     duplicates.forEach((duplicate) => {
       duplicate_addresses = `${duplicate_addresses} ${duplicate.address}`;
     });
-    console.log(duplicate_addresses);
     if (duplicates.length !== 0)
       throw new HttpException(
         500,
         `${duplicate_addresses} has already entered.`
       );
+
+    try {
+      await axios.post(
+        `${PEPPERMINTERY_URL}/tokens/${token_id}/recipients`,
+        addresses,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    } catch {
+      throw new HttpException(
+        500,
+        'Service unavilable, Please try again later.'
+      );
+    }
 
     const recipients: Recipient[] = [];
     addresses.forEach((address) => {
