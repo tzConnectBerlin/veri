@@ -127,9 +127,7 @@ class RecipientService {
     try {
       await axios.post(
         `${PEPPERMINTERY_URL}/tokens/${token_id}/recipients`,
-        {
-          addresses,
-        },
+        addresses,
         {
           headers: {
             'Content-Type': 'application/json',
