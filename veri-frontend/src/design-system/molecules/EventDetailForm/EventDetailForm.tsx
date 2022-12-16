@@ -28,7 +28,7 @@ export const EventDetailForm: React.FC<EventDetailFormProps> = ({ title }) => {
   const [editMode, setEditMode] = useState<VeriFormStatus>();
   const BoxBg = useColorModeValue('white', 'none');
   const BoxBorder = useColorModeValue('none', 'gray.500');
-  const Today = new Date().toLocaleString();
+  const Today = moment(new Date()).format('YYYY-MM-DDTkk:mm');
   useEffect(() => {
     setEditMode(context.formType);
   }, [context.formType]);

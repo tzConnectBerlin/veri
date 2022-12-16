@@ -12,8 +12,12 @@ import {
   Input,
   HStack,
   Button,
+  InputGroup,
+  InputRightElement,
+  IconButton,
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
 import { VERI_URL } from '../../../Global';
@@ -28,6 +32,7 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
 }) => {
   const context = useContext(VeriContext);
   const [editMode, setEditMode] = useState<VeriFormStatus>();
+  const [show, setShow] = React.useState(false);
 
   useEffect(() => {
     setEditMode(context.formType);
@@ -127,13 +132,26 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
                 }
               >
                 <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  name="password"
-                  value={context.formik.values.password}
-                  onChange={context.formik.handleChange}
-                  onBlur={context.formik.handleBlur}
-                />
+                <InputGroup>
+                  <Input
+                    type={show ? 'text' : 'password'}
+                    name="password"
+                    pr="3.5rem"
+                    value={context.formik.values.password}
+                    onChange={context.formik.handleChange}
+                    onBlur={context.formik.handleBlur}
+                  />
+                  <InputRightElement width="3.5rem">
+                    <Button
+                      size="sm"
+                      onClick={() => setShow(!show)}
+                      variant="icon"
+                      fontSize="1.2rem"
+                    >
+                      {show ? <IoMdEyeOff /> : <IoMdEye />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
                 <FormErrorMessage>
                   {context.formik.errors.password}
                 </FormErrorMessage>
