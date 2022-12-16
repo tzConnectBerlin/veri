@@ -11,17 +11,17 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Login } from '../../types';
-import useAuth from '../../contexts/useAuth';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { eventLogin } from '../../api/services/recipientsService';
+import { EventAuth } from '../../types';
 
 export const BoothPage = () => {
-  const { login, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setisLoading] = useState(false);
   const [prevPath, setPrevPath] = useState();
+  const [eventName, setEventName] = useState('');
   const bgColor = useColorModeValue('gray.50', 'gray.800');
   const boxBgColor = useColorModeValue('white', 'gray.700');
 
@@ -33,18 +33,21 @@ export const BoothPage = () => {
     const prev = location.state?.prevRoute?.pathname;
     if (prev) {
       setPrevPath(prev);
+      setEventName(prev.split('/')[1]);
     } else {
       navigate('/');
     }
   }, [location, navigate]);
 
-  const onSubmit = async (values: Login) => {
+  const onSubmit = async (values: EventAuth) => {
     try {
       setisLoading(true);
-      login(values);
-      if (user && prevPath) {
-        navigate(prevPath);
-      }
+      eventLogin(values)
+        .then(res => {
+          console.log(res);
+          if (prevPath) navigate(prevPath);
+        })
+        .catch(error => console.error(error));
     } catch (error) {
       // console.error(error);
     } finally {
@@ -54,7 +57,7 @@ export const BoothPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'superadmin@veri.com',
+      eventName: eventName,
       password: '',
     },
     validationSchema: validationSchema,
