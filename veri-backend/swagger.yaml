@@ -315,6 +315,27 @@ paths:
         500:
           description: 'Server Error'
 
+# [POST] events
+  /events:
+    post:
+      tags:
+      - events
+      summary: Validate event
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/definitions/events'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -427,6 +448,20 @@ definitions:
         items:
           type: string
         example: ["tz1LJtXoZoTiSHSTcpPPAs5rBZCftngyLe4x"]
+  events:
+    type: object
+    required:
+        - name
+        - password
+    properties:
+      name:
+          type: string
+          description: Event name
+          example: 'Test Event'
+      password:
+        type: string
+        description: Event password
+        example: 'supersecurepass'
 schemes:
  - https
  - http
