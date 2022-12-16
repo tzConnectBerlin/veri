@@ -14,13 +14,12 @@ import {
   Button,
   InputGroup,
   InputRightElement,
-  IconButton,
+  Link,
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
-import { VERI_URL } from '../../../Global';
 import { VeriFormStatus } from '../../../types';
 import { MakeURL } from '../../../utils/general';
 
@@ -33,6 +32,7 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
   const context = useContext(VeriContext);
   const [editMode, setEditMode] = useState<VeriFormStatus>();
   const [show, setShow] = React.useState(false);
+  const URL = `${window.origin}/event`;
 
   useEffect(() => {
     setEditMode(context.formType);
@@ -120,7 +120,16 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
             <FormControl>
               <FormLabel>URL</FormLabel>
               <Text display="flex" color="primary.main">
-                {VERI_URL + '' + MakeURL(context.formik.values.eventName)}
+                {context.formType === 'View' ? (
+                  <Link
+                    href={URL + '/' + MakeURL(context.formik.values.eventName)}
+                    target="_blank"
+                  >
+                    {URL + '/' + MakeURL(context.formik.values.eventName)}
+                  </Link>
+                ) : (
+                  URL + '/' + MakeURL(context.formik.values.eventName)
+                )}
               </Text>
             </FormControl>
             {editMode !== 'View' && (

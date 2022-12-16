@@ -58,3 +58,12 @@ export const trimString = (
 export const CapitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+export const getEventNameUrl = (str: string) => {
+  if (!str) return '';
+  return str
+    .split('/')
+    .filter((word: string) => word !== '')
+    .slice(-1)
+    .toString();
+};

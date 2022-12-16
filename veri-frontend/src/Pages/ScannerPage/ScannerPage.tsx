@@ -1,21 +1,36 @@
-import React, { useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Scanner from '../../design-system/atoms/Scanner';
 import { validateAddress } from '@taquito/utils';
 import { messageType } from '../../design-system/atoms/Scanner/Scanner';
+import { postRcipientsByVeriId } from '../../api/services/recipientsService';
 
 export const ScannerPage = () => {
   const [tzAddress, setTzAddress] = useState('');
   const [message, setMessage] = useState<messageType>();
-  const params = useParams();
+  const [veriId, setVeriId] = useState();
+  const location = useLocation();
 
   const sendData = (address: string) => {
     setTzAddress(address);
-    //console.log(scanData);
-    setMessage({
-      type: 'Success',
-      msg: 'Your NFT gifts are on their way.',
-    });
+    const body = {
+      addresses: address.toString(),
+    };
+    postRcipientsByVeriId(Number(veriId), body)
+      .then(() => {
+        setMessage({
+          type: 'Success',
+          msg: 'Your NFT gifts are on their way.',
+        });
+      })
+      .catch(err => {
+        setMessage({
+          type: 'Error',
+          msg: 'Something is wrong',
+        });
+        console.error(err);
+      });
+
     refreshPage();
   };
 
@@ -43,7 +58,11 @@ export const ScannerPage = () => {
       setMessage(undefined);
     }, 3000);
   };
-  console.log(params);
+
+  useEffect(() => {
+    setVeriId(location.state);
+  }, [location.state]);
+
   return (
     <Scanner
       handleScan={handleScan}

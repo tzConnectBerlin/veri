@@ -1,4 +1,10 @@
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
 import { GeneralLayout } from '../layouts/General';
 import { DashboardLayout } from '../layouts/Admin';
@@ -40,9 +46,12 @@ const AuthRoutes = () => {
 };
 
 const EventRoutes = () => {
-  const { user } = useAuth();
   const prevRoute = useLocation();
-  if (!user) return <Navigate to="/booth" state={{ prevRoute }} replace />;
+  const params = useParams();
+  const url = params.eventName || '';
+  const token = localStorage.getItem(url);
+  if (!token)
+    return <Navigate to="/booth" state={{ prevRoute, params }} replace />;
   return <EventLayout />;
 };
 

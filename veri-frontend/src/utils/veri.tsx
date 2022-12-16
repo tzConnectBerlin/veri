@@ -1,7 +1,7 @@
 import { Badge, Image } from '@chakra-ui/react';
 import moment from 'moment';
 import { row } from '../design-system/atoms/DataTable/DataTable';
-import { ADMIN_URL, BASE_URL, VERI_URL } from '../Global';
+import { ADMIN_URL, BASE_URL } from '../Global';
 import {
   VeriDropDown,
   VeriFormValues,
@@ -11,6 +11,7 @@ import {
 import { CapitalizeFirstLetter, getDisplayTimeRange, MakeURL } from './general';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
+  const URL = `${window.origin}/event`;
   const startDate = new Date(veri.eventStartDate).toISOString();
   const endDate =
     veri.eventDuration === 'Single'
@@ -28,7 +29,7 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
     artwork_description: veri.description,
     artwork_file: veri.artworkFile,
     live_distribution: GetDistributionMethodBoolean(veri.distributionMethod),
-    live_distribution_url: VERI_URL + '' + MakeURL(veri.eventName),
+    live_distribution_url: URL + '/' + MakeURL(veri.eventName),
     live_distribution_password: veri.password,
     status: veri.status,
   };
