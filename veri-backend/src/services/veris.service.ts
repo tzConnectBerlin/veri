@@ -28,12 +28,14 @@ class VeriService {
       );
 
     for await (const veri of veris) {
+      console.log(veri.id);
       try {
         const getCurrentStatus = await axios.get(
           `${PEPPERMINTERY_URL}/tokens/${veri.id}`
         );
         veri.status = getCurrentStatus.data.status;
-      } catch {
+      } catch (e) {
+        // console.log(e);
         throw new HttpException(
           500,
           'Service unavilable, Please try again later.'
@@ -151,7 +153,10 @@ class VeriService {
       throw new HttpException(500, `Internal server error`);
     }
 
-    if (veriData.status === 'created') {
+    if (veriData.status.toLowerCase() === 'created') {
+      console.log(createVeriData.id);
+      console.log(createTokenDetails(veriData));
+      console.log(createImageAsset(file, buffer));
       try {
         await axios.put(
           `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
