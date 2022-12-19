@@ -22,21 +22,23 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({
   const textColor = useColorModeValue('secondaryGray.500', 'white');
 
   return (
-    <NavLink to={ADMIN_URL + path}>
-      <HStack
-        w="100%"
-        alignItems="center"
-        px={5}
-        py={2}
-        backgroundColor={isActive ? activeBg : undefined}
-      >
-        <Box color={isActive ? activeIcon : textColor} fontSize="1.5rem">
-          {icon}
-        </Box>
-        <Text me="auto" color={isActive ? activeColor : textColor}>
-          {name}
-        </Text>
-      </HStack>
+    <NavLink to={ADMIN_URL + path} end>
+      {({ isActive }) => (
+        <HStack
+          w="100%"
+          alignItems="center"
+          px={5}
+          py={2}
+          backgroundColor={isActive ? activeBg : undefined}
+        >
+          <Box color={isActive ? activeIcon : textColor} fontSize="1.5rem">
+            {icon}
+          </Box>
+          <Text me="auto" color={isActive ? activeColor : textColor}>
+            {name + '/' + isActive + '/' + path}
+          </Text>
+        </HStack>
+      )}
     </NavLink>
   );
 };

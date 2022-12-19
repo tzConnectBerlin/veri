@@ -31,9 +31,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const location = useLocation();
 
-  const activeRoute = (routeName: string) => {
-    return location.pathname === ADMIN_URL + routeName;
-  };
+  // const activeRoute = (routeName: string) => {
+  //   return location.pathname === ADMIN_URL + routeName;
+  // };
   return (
     <Box
       transition="3s ease"
@@ -51,11 +51,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </Text>
       </Flex>
       {links.map((link, index) => (
-        <SidebarLink
-          isActive={activeRoute(link.path.toLowerCase()) ? true : false}
-          {...link}
-          key={index}
-        />
+        <SidebarLink {...link} key={index} />
       ))}
 
       <Box position="absolute" bottom={0} p={6}>
