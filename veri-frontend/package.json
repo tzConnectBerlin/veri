@@ -8,6 +8,7 @@
     "@chakra-ui/react": "^2.3.5",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@taquito/utils": "^15.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -34,7 +35,7 @@
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "react-toast-notifications": "^2.5.1",
-    "react-test-renderer": "^18.2.0",
+    "stream": "npm:stream-browserify",
     "typescript": "^4.8.4",
     "web-vitals": "^3.0.3",
     "yup": "^0.32.11"
