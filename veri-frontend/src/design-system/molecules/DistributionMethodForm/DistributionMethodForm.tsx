@@ -22,6 +22,7 @@ import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormStatus } from '../../../types';
 import { MakeURL } from '../../../utils/general';
+import Address from '../../atoms/Address';
 
 export interface DistributionMethodFormProps {
   title?: string;
@@ -132,16 +133,30 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
                 )}
               </Text>
             </FormControl>
-            {editMode !== 'View' && (
-              <FormControl
-                isRequired
-                isInvalid={
-                  context.formik.touched.password &&
-                  !!context.formik.errors.password
-                }
-              >
-                <FormLabel>Password</FormLabel>
-                <InputGroup>
+
+            <FormControl
+              isReadOnly={editMode === 'View' ? true : false}
+              isRequired
+              isInvalid={
+                context.formik.touched.password &&
+                !!context.formik.errors.password
+              }
+            >
+              <FormLabel>Password</FormLabel>
+              <InputGroup height={editMode === 'View' ? '29' : 'auto'}>
+                {editMode === 'View' ? (
+                  <>
+                    {show ? (
+                      <Address
+                        addr={context.formik.values.password ?? ''}
+                        trimSize="large"
+                        bgColor="transparent"
+                      />
+                    ) : (
+                      <Text>● ● ● ● ●</Text>
+                    )}
+                  </>
+                ) : (
                   <Input
                     type={show ? 'text' : 'password'}
                     name="password"
@@ -150,22 +165,22 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
                     onChange={context.formik.handleChange}
                     onBlur={context.formik.handleBlur}
                   />
-                  <InputRightElement width="3.5rem">
-                    <Button
-                      size="sm"
-                      onClick={() => setShow(!show)}
-                      variant="icon"
-                      fontSize="1.2rem"
-                    >
-                      {show ? <IoMdEyeOff /> : <IoMdEye />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-                <FormErrorMessage>
-                  {context.formik.errors.password}
-                </FormErrorMessage>
-              </FormControl>
-            )}
+                )}
+                <InputRightElement width="3.5rem">
+                  <Button
+                    size="sm"
+                    onClick={() => setShow(!show)}
+                    variant="icon"
+                    fontSize="1.2rem"
+                  >
+                    {show ? <IoMdEyeOff /> : <IoMdEye />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <FormErrorMessage>
+                {context.formik.errors.password}
+              </FormErrorMessage>
+            </FormControl>
           </>
         )}
       </Stack>

@@ -50,6 +50,9 @@ export const trimString = (
   str: string,
   trimSize: TrimSizeType = 'small',
 ): string => {
+  if (str.length < trimSizeMap[trimSize] * 2 + 3) {
+    return str;
+  }
   return `${str.substring(0, trimSizeMap[trimSize])}...${str.substring(
     str.length - trimSizeMap[trimSize],
   )}`;
