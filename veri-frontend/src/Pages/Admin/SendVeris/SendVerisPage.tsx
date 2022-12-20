@@ -14,6 +14,7 @@ import {
 import { getVeris } from '../../../api/services/veriService';
 import { RecipientsForm } from '../../../design-system/molecules/RecipientsForm';
 import { Recipient, RecipientsVeri, VeriDropDown } from '../../../types';
+import { isValidAddress } from '../../../utils/general';
 import { MapVeriToDropDown } from '../../../utils/veri';
 
 export const SendVerisPage = () => {
@@ -107,11 +108,6 @@ export const SendVerisPage = () => {
     },
     [getRecipients],
   );
-
-  const isValidAddress = (address: string | undefined) => {
-    const validation = validateAddress(address ?? '');
-    return validation === 3;
-  };
 
   const validationSchema = Yup.object().shape({
     selectedVeri: Yup.object().required('This field is required'),
