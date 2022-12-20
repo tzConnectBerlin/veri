@@ -1,6 +1,5 @@
 import renderer from 'react-test-renderer';
 import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { DataTable, DataTableProps } from './DataTable';
 
 const TestData: DataTableProps = {
