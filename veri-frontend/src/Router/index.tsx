@@ -6,7 +6,6 @@ import {
   useParams,
 } from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
-import { GeneralLayout } from '../layouts/General';
 import { DashboardLayout } from '../layouts/Admin';
 import { EventLayout } from '../layouts/Event';
 import {
@@ -42,7 +41,7 @@ const PrivateRoutes = () => {
 const AuthRoutes = () => {
   const { user } = useAuth();
   if (user) return <Navigate to="/admin" />;
-  return <GeneralLayout />;
+  return <Login />;
 };
 
 const EventRoutes = () => {
@@ -56,10 +55,11 @@ const EventRoutes = () => {
 };
 
 export const Router = () => {
-  const location = useLocation();
   return (
     <AnimatePresence>
-      <Routes location={location} key={location.pathname}>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/booth" element={<Booth />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -78,11 +78,7 @@ export const Router = () => {
         <Route element={<EventRoutes />}>
           <Route path="/event/:eventName" element={<VeriScanner />} />
         </Route>
-        <Route element={<GeneralLayout />}>
-          <Route index path="/" element={<Landing />} />
-          <Route path="/booth" element={<Booth />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
   );
