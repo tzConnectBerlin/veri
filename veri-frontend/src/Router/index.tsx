@@ -1,6 +1,11 @@
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import useAuth from '../contexts/useAuth';
-import { GeneralLayout } from '../layouts/General';
 import { DashboardLayout } from '../layouts/Admin';
 import { EventLayout } from '../layouts/Event';
 import {
@@ -36,28 +41,31 @@ const PrivateRoutes = () => {
 const AuthRoutes = () => {
   const { user } = useAuth();
   if (user) return <Navigate to="/admin" />;
-  return <GeneralLayout />;
+  return <Login />;
 };
 
 const EventRoutes = () => {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/login" />;
+  const prevRoute = useLocation();
+  const params = useParams();
+  const url = params.eventName || '';
+  const token = localStorage.getItem(url);
+  if (!token)
+    return <Navigate to="/booth" state={{ prevRoute, params }} replace />;
   return <EventLayout />;
 };
 
 export const Router = () => {
-  const location = useLocation();
   return (
     <AnimatePresence>
-      <Routes location={location} key={location.pathname}>
+      <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/booth" element={<Booth />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/reset" element={<ResetPassword />} />
         </Route>
-        <Route path="*" element={<NotFound />} />
         <Route path="/admin" element={<PrivateRoutes />}>
           <Route index element={<VerisOverviewPage />} />
           <Route path="veri" element={<VeriForm />} />
@@ -67,10 +75,10 @@ export const Router = () => {
           <Route path="send/:veri_id" element={<SendVeris />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-        <Route path="/booth" element={<Booth />} />
         <Route element={<EventRoutes />}>
           <Route path="/event/:eventName" element={<VeriScanner />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
   );

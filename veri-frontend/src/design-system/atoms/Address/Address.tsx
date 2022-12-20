@@ -9,12 +9,14 @@ export interface AddressProps {
   bgColor?: string;
   addr: string;
   trimSize?: TrimSizeType;
+  hasIcon?: boolean;
 }
 
 export const Address: React.FC<AddressProps> = ({
   bgColor = 'gray.100',
   trimSize = 'small',
   addr,
+  hasIcon = true,
 }) => {
   const toast = useToast();
   const [trimText, setTrimText] = useState<string>();
@@ -43,7 +45,7 @@ export const Address: React.FC<AddressProps> = ({
         fontSize="14px"
       >
         <Text>{trimText}</Text>
-        <MdOutlineFileCopy />
+        {hasIcon && <MdOutlineFileCopy />}
       </HStack>
     </CopyToClipboard>
   );

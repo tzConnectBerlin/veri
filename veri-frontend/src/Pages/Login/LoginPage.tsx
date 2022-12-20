@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import { Login } from '../../types';
 import useAuth from '../../contexts/useAuth';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
   const { login } = useAuth();

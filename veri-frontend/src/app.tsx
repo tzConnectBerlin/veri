@@ -1,23 +1,30 @@
-import { ColorModeScript } from '@chakra-ui/react';
+import {
+  ChakraProvider,
+  ColorModeScript,
+  useColorMode,
+} from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './Router';
 import { AuthProvider } from './contexts/useAuth';
 import Fonts from './design-system/fonts/Fonts';
 import { ToastProvider } from 'react-toast-notifications';
 import { Suspense } from 'react';
+import adminTheme from './design-system/theme/adminTheme';
 
 function App() {
   return (
     <Suspense fallback={'...Loading'}>
-      <ColorModeScript />
-      <ToastProvider placement="bottom-right" autoDismiss>
-        <Fonts />
-        <BrowserRouter>
-          <AuthProvider>
-            <Router />
-          </AuthProvider>
-        </BrowserRouter>
-      </ToastProvider>
+      <ChakraProvider theme={adminTheme}>
+        <ColorModeScript />
+        <ToastProvider placement="bottom-right" autoDismiss>
+          <Fonts />
+          <BrowserRouter>
+            <AuthProvider>
+              <Router />
+            </AuthProvider>
+          </BrowserRouter>
+        </ToastProvider>
+      </ChakraProvider>
     </Suspense>
   );
 }

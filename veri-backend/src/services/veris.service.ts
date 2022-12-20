@@ -27,19 +27,21 @@ class VeriService {
         'veris.status'
       );
 
-    for await (const veri of veris) {
-      try {
-        const getCurrentStatus = await axios.get(
-          `${PEPPERMINTERY_URL}/tokens/${veri.id}`
-        );
-        veri.status = getCurrentStatus.data.status;
-      } catch {
-        throw new HttpException(
-          500,
-          'Service unavilable, Please try again later.'
-        );
-      }
-    }
+    // for await (const veri of veris) {
+    //   console.log(veri.id);
+    //   try {
+    //     const getCurrentStatus = await axios.get(
+    //       `${PEPPERMINTERY_URL}/tokens/${veri.id}`
+    //     );
+    //     veri.status = getCurrentStatus.data.status;
+    //   } catch (e) {
+    //     // console.log(e);
+    //     throw new HttpException(
+    //       500,
+    //       'Service unavilable, Please try again later.'
+    //     );
+    //   }
+    // }
 
     return veris;
   }
@@ -66,17 +68,17 @@ class VeriService {
 
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
-    try {
-      const getCurrentStatus = await axios.get(
-        `${PEPPERMINTERY_URL}/tokens/${veriId}`
-      );
-      findVeri.status = getCurrentStatus.data.status;
-    } catch {
-      throw new HttpException(
-        500,
-        'Service unavilable, Please try again later.'
-      );
-    }
+    // try {
+    //   const getCurrentStatus = await axios.get(
+    //     `${PEPPERMINTERY_URL}/tokens/${veriId}`
+    //   );
+    //   findVeri.status = getCurrentStatus.data.status;
+    // } catch {
+    //   throw new HttpException(
+    //     500,
+    //     'Service unavilable, Please try again later.'
+    //   );
+    // }
 
     return findVeri;
   }
@@ -151,7 +153,10 @@ class VeriService {
       throw new HttpException(500, `Internal server error`);
     }
 
-    if (veriData.status === 'created') {
+    if (veriData.status.toLowerCase() === 'created') {
+      console.log(createVeriData.id);
+      console.log(createTokenDetails(veriData));
+      console.log(createImageAsset(file, buffer));
       try {
         await axios.put(
           `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
