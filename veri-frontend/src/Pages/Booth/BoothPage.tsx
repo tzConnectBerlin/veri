@@ -9,93 +9,111 @@ import {
   useColorModeValue,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { useFormik } from 'formik';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Login } from '../../types';
-import useAuth from '../../contexts/useAuth';
-import { useState } from 'react';
-import { useToast } from '@chakra-ui/react';
+import { useEffect, useState, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { eventLogin } from '../../api/services/recipientsService';
+import { EventAuth } from '../../types';
 
 export const BoothPage = () => {
-  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setisLoading] = useState(false);
-  const toast = useToast();
+  const [prevPath, setPrevPath] = useState();
+  const [eventName, setEventName] = useState<string | undefined>('');
+  const bgColor = useColorModeValue('gray.50', 'gray.800');
+  const boxBgColor = useColorModeValue('white', 'gray.700');
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .trim()
-      .email('Should be a valid email')
-      .required('This field is required'),
     password: Yup.string().trim().required('This field is required'),
   });
 
-  const onSubmit = async (values: Login) => {
+  useEffect(() => {
+    const prev = location.state?.prevRoute?.pathname;
+    const event = location.state?.params?.eventName;
+    if (prev && event) {
+      setPrevPath(prev);
+      setEventName(event);
+    } else {
+      navigate('/');
+    }
+  }, [location, navigate]);
+
+  const onSubmit = (values: EventAuth) => {
     try {
       setisLoading(true);
-      login(values);
+      if (eventName) {
+        localStorage.setItem(eventName, '5');
+      }
+      if (prevPath) navigate(prevPath, { state: 5 });
+      // eventLogin(values)
+      //   .then(res => {
+      //     console.log(res);
+      //     if (prevPath) navigate(prevPath, { state: res.data.data.id });
+      //   })
+      //   .catch(error => console.error(error));
     } catch (error) {
-      // console.error(error);
+      console.error(error);
     } finally {
       setisLoading(false);
     }
   };
 
-  const formik = useFormik({
-    initialValues: {
-      email: '',
+  const initialValues = useMemo(
+    () => ({
+      eventName: eventName ?? '',
       password: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit,
-  });
+    }),
+    [eventName],
+  );
 
   return (
-    <Flex
-      minH={'100vh'}
-      align={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}
-    >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'}>
-        <Box
-          rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
-          boxShadow={'lg'}
-          p={8}
-          w="550px"
-        >
-          <form onSubmit={formik.handleSubmit}>
-            <Stack spacing={4} align={'center'}>
-              <Heading fontSize={'2xl'} pb={4}>
-                Please enter the password
-              </Heading>
-              <FormControl
-                id="password"
-                isRequired
-                isInvalid={formik.touched.password && !!formik.errors.password}
-              >
-                <Input
-                  type="password"
-                  name="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
-              </FormControl>
-              <Stack style={{ alignSelf: 'stretch' }} pt={4}>
-                <Button
-                  type="submit"
-                  colorScheme="primary"
-                  style={{ alignSelf: 'stretch' }}
-                  isLoading={isLoading}
-                >
-                  Get Access
-                </Button>
-              </Stack>
-            </Stack>
-          </form>
-        </Box>
-      </Stack>
+    <Flex minH={'100vh'} align={'center'} bg={bgColor}>
+      {prevPath && (
+        <Stack spacing={8} mx={'auto'} maxW={'lg'}>
+          <Box rounded={'lg'} bg={boxBgColor} boxShadow={'lg'} p={8} w="550px">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+            >
+              {({ values, errors, touched, handleChange, handleBlur }) => (
+                <Form>
+                  <Stack spacing={4} align={'center'}>
+                    <Heading fontSize={'2xl'} pb={4}>
+                      Please enter the password
+                    </Heading>
+                    <FormControl
+                      isRequired
+                      isInvalid={touched.password && !!errors.password}
+                    >
+                      <Input
+                        type="password"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <FormErrorMessage>{errors.password}</FormErrorMessage>
+                    </FormControl>
+                    <Stack style={{ alignSelf: 'stretch' }} pt={4}>
+                      <Button
+                        type="submit"
+                        colorScheme="primary"
+                        style={{ alignSelf: 'stretch' }}
+                        isLoading={isLoading}
+                      >
+                        Get Access
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </Form>
+              )}
+            </Formik>
+          </Box>
+        </Stack>
+      )}
     </Flex>
   );
 };

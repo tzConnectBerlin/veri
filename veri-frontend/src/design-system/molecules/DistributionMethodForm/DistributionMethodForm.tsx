@@ -12,13 +12,17 @@ import {
   Input,
   HStack,
   Button,
+  InputGroup,
+  InputRightElement,
+  Link,
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
-import { VERI_URL } from '../../../Global';
 import { VeriFormStatus } from '../../../types';
 import { MakeURL } from '../../../utils/general';
+import Address from '../../atoms/Address';
 
 export interface DistributionMethodFormProps {
   title?: string;
@@ -28,6 +32,8 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
 }) => {
   const context = useContext(VeriContext);
   const [editMode, setEditMode] = useState<VeriFormStatus>();
+  const [show, setShow] = React.useState(false);
+  const URL = `${window.origin}/event`;
 
   useEffect(() => {
     setEditMode(context.formType);
@@ -115,30 +121,66 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
             <FormControl>
               <FormLabel>URL</FormLabel>
               <Text display="flex" color="primary.main">
-                {VERI_URL + '' + MakeURL(context.formik.values.eventName)}
+                {context.formType === 'View' ? (
+                  <Link
+                    href={URL + '/' + MakeURL(context.formik.values.eventName)}
+                    target="_blank"
+                  >
+                    {URL + '/' + MakeURL(context.formik.values.eventName)}
+                  </Link>
+                ) : (
+                  URL + '/' + MakeURL(context.formik.values.eventName)
+                )}
               </Text>
             </FormControl>
-            {editMode !== 'View' && (
-              <FormControl
-                isRequired
-                isInvalid={
-                  context.formik.touched.password &&
-                  !!context.formik.errors.password
-                }
-              >
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  name="password"
-                  value={context.formik.values.password}
-                  onChange={context.formik.handleChange}
-                  onBlur={context.formik.handleBlur}
-                />
-                <FormErrorMessage>
-                  {context.formik.errors.password}
-                </FormErrorMessage>
-              </FormControl>
-            )}
+
+            <FormControl
+              isReadOnly={editMode === 'View' ? true : false}
+              isRequired
+              isInvalid={
+                context.formik.touched.password &&
+                !!context.formik.errors.password
+              }
+            >
+              <FormLabel>Password</FormLabel>
+              <InputGroup height={editMode === 'View' ? '29' : 'auto'}>
+                {editMode === 'View' ? (
+                  <>
+                    {show ? (
+                      <Address
+                        addr={context.formik.values.password ?? ''}
+                        trimSize="large"
+                        bgColor="transparent"
+                      />
+                    ) : (
+                      <Text>● ● ● ● ●</Text>
+                    )}
+                  </>
+                ) : (
+                  <Input
+                    type={show ? 'text' : 'password'}
+                    name="password"
+                    pr="3.5rem"
+                    value={context.formik.values.password}
+                    onChange={context.formik.handleChange}
+                    onBlur={context.formik.handleBlur}
+                  />
+                )}
+                <InputRightElement width="3.5rem">
+                  <Button
+                    size="sm"
+                    onClick={() => setShow(!show)}
+                    variant="icon"
+                    fontSize="1.2rem"
+                  >
+                    {show ? <IoMdEyeOff /> : <IoMdEye />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <FormErrorMessage>
+                {context.formik.errors.password}
+              </FormErrorMessage>
+            </FormControl>
           </>
         )}
       </Stack>

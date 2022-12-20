@@ -37,7 +37,7 @@ export class CreateVeriDto {
   public live_distribution: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   public live_distribution_url?: string;
 
   @IsOptional()

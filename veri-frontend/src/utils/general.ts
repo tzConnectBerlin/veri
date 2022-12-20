@@ -50,6 +50,9 @@ export const trimString = (
   str: string,
   trimSize: TrimSizeType = 'small',
 ): string => {
+  if (str.length < trimSizeMap[trimSize] * 2 + 3) {
+    return str;
+  }
   return `${str.substring(0, trimSizeMap[trimSize])}...${str.substring(
     str.length - trimSizeMap[trimSize],
   )}`;
@@ -57,4 +60,13 @@ export const trimString = (
 
 export const CapitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+export const getEventNameUrl = (str: string) => {
+  if (!str) return '';
+  return str
+    .split('/')
+    .filter((word: string) => word !== '')
+    .slice(-1)
+    .toString();
 };

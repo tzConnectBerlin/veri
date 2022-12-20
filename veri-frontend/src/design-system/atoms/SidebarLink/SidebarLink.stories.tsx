@@ -22,5 +22,5 @@ Default.args = {
 export const ActiveLink = Template.bind({});
 ActiveLink.args = {
   ...SamleLink,
-  isActive: true,
+  isMatch: true,
 };

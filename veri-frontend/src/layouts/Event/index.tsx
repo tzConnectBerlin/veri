@@ -40,13 +40,11 @@ const FooterData: FooterProps = {
 };
 
 export const EventLayout = () => {
-  const { toggleColorMode, colorMode } = useColorMode();
+  const { setColorMode } = useColorMode();
 
   useEffect(() => {
-    if (colorMode === 'light') {
-      toggleColorMode();
-    }
-  }, [colorMode, toggleColorMode]);
+    setColorMode('dark');
+  }, [setColorMode]);
 
   return (
     <ChakraProvider theme={eventTheme}>

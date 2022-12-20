@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from '../../Global';
+import { EventAuth } from '../../types';
 
 export const getRecipients = () => {
   return axios.get(`${BASE_URL}/recipients`, {
@@ -17,4 +18,8 @@ export const postRcipientsByVeriId = (veriId: number, body: any) => {
   return axios.post(`${BASE_URL}/recipients/${veriId}`, body, {
     withCredentials: true,
   });
+};
+
+export const eventLogin = (loginData: EventAuth) => {
+  return axios.post(`${BASE_URL}/events`, loginData);
 };

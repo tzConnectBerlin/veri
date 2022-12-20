@@ -12,3 +12,7 @@ export interface Recipient {
   status: string;
   veri: string;
 }
+export interface EventAuth {
+  eventName: string;
+  password: string;
+}
