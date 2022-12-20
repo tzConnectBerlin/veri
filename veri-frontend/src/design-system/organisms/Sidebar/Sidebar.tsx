@@ -12,8 +12,6 @@ import {
   BoxProps,
   Button,
 } from '@chakra-ui/react';
-import { useLocation } from 'react-router-dom';
-import { ADMIN_URL } from '../../../Global';
 
 export interface SidebarProps extends BoxProps {
   links: SidebarLinkProps[];
@@ -29,11 +27,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   userName,
   ...rest
 }) => {
-  const location = useLocation();
-
-  // const activeRoute = (routeName: string) => {
-  //   return location.pathname === ADMIN_URL + routeName;
-  // };
   return (
     <Box
       transition="3s ease"

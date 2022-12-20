@@ -1,3 +1,4 @@
+import { validateAddress } from '@taquito/utils';
 import { trimSizeMap, TrimSizeType } from '../types/general';
 
 export const GetImageSize = (
@@ -69,4 +70,9 @@ export const getEventNameUrl = (str: string) => {
     .filter((word: string) => word !== '')
     .slice(-1)
     .toString();
+};
+
+export const isValidAddress = (address: string | undefined) => {
+  const validation = validateAddress(address ?? '');
+  return validation === 3;
 };

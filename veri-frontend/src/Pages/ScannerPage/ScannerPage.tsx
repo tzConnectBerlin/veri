@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Scanner from '../../design-system/atoms/Scanner';
-import { validateAddress } from '@taquito/utils';
 import { messageType } from '../../design-system/atoms/Scanner/Scanner';
 import { postRcipientsByVeriId } from '../../api/services/recipientsService';
+import { isValidAddress } from '../../utils/general';
 
 export const ScannerPage = () => {
   const [tzAddress, setTzAddress] = useState('');
@@ -30,16 +30,20 @@ export const ScannerPage = () => {
         });
         console.error(err);
       });
-
-    refreshPage();
   };
 
   const handleScan = (scanData: string) => {
-    console.log(scanData);
     setMessage({
       type: 'Processing',
     });
     if (scanData && scanData !== tzAddress) {
+      if (!isValidAddress(scanData)) {
+        setMessage({
+          type: 'Error',
+          msg: 'Address is not valid!',
+        });
+        return;
+      }
       sendData(scanData);
     }
   };
@@ -48,16 +52,9 @@ export const ScannerPage = () => {
     console.log(err);
     setMessage({
       type: 'Error',
-      msg: 'Somethig is wrong!',
+      msg: err.message || 'Somethig is wrong!',
     });
-    refreshPage();
   }, []);
-
-  const refreshPage = () => {
-    setTimeout(() => {
-      setMessage(undefined);
-    }, 3000);
-  };
 
   useEffect(() => {
     setVeriId(location.state);

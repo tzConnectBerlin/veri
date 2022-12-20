@@ -1,4 +1,5 @@
 import { Button, Container, Heading, Stack } from '@chakra-ui/react';
+import { validateAddress } from '@taquito/utils';
 import { Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
@@ -13,6 +14,7 @@ import {
 import { getVeris } from '../../../api/services/veriService';
 import { RecipientsForm } from '../../../design-system/molecules/RecipientsForm';
 import { Recipient, RecipientsVeri, VeriDropDown } from '../../../types';
+import { isValidAddress } from '../../../utils/general';
 import { MapVeriToDropDown } from '../../../utils/veri';
 
 export const SendVerisPage = () => {
@@ -110,7 +112,11 @@ export const SendVerisPage = () => {
   const validationSchema = Yup.object().shape({
     selectedVeri: Yup.object().required('This field is required'),
     recipients: Yup.array()
-      .of(Yup.string())
+      .of(
+        Yup.string().test('is-valid-address', 'Invalid Tezos address', value =>
+          isValidAddress(value),
+        ),
+      )
       .min(1)
       .required('This field is required'),
   });
