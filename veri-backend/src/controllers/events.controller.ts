@@ -13,7 +13,6 @@ class EventController {
   ): Promise<void> => {
     try {
       const eventData: ValidateEventDto = req.body;
-      console.log(eventData);
       const eventInfo: Event = await this.eventService.validate(eventData);
 
       res.status(201).json({ data: eventInfo, message: 'eventinfo' });

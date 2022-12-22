@@ -15,7 +15,6 @@ const imageMiddleware = async (
   try {
     const roundedImage = await createRoundedCorners(req.file);
     const thumbnail = await createThumbnailImage(req.file);
-    console.log(thumbnail);
     // fix this ugly section
     req.file.buffer = roundedImage;
     req.thumbnail = JSON.parse(JSON.stringify(req.file));

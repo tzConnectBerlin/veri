@@ -5,7 +5,13 @@ import {
   IsUrl,
   IsBooleanString,
   IsOptional,
+  IsEnum,
 } from 'class-validator';
+
+export enum Status {
+  draft = 'draft',
+  created = 'created',
+}
 
 export class CreateVeriDto {
   @IsString()
@@ -45,5 +51,6 @@ export class CreateVeriDto {
   public live_distribution_password?: string;
 
   @IsString()
+  @IsEnum(Status)
   public status: string;
 }

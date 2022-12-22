@@ -27,21 +27,28 @@ class VeriService {
         'veris.status'
       );
 
-    // for await (const veri of veris) {
-    //   console.log(veri.id);
-    //   try {
-    //     const getCurrentStatus = await axios.get(
-    //       `${PEPPERMINTERY_URL}/tokens/${veri.id}`
-    //     );
-    //     veri.status = getCurrentStatus.data.status;
-    //   } catch (e) {
-    //     // console.log(e);
-    //     throw new HttpException(
-    //       500,
-    //       'Service unavilable, Please try again later.'
-    //     );
-    //   }
-    // }
+    for await (const veri of veris) {
+      if (veri.status !== 'draft') {
+        try {
+          const getCurrentStatus = await axios.get(
+            `${PEPPERMINTERY_URL}/tokens/${veri.id}`
+          );
+          console.log(typeof veri.event_start_date);
+          if (veri.live_distribution) {
+            if (getCurrentStatus.data.status.minted == 'true') {
+              veri.status = 'enabled';
+            } else {
+              veri.status = 'disabled';
+            }
+          }
+        } catch (e) {
+          throw new HttpException(
+            500,
+            'Service unavilable, Please try again later.'
+          );
+        }
+      }
+    }
 
     return veris;
   }
@@ -68,17 +75,23 @@ class VeriService {
 
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
-    // try {
-    //   const getCurrentStatus = await axios.get(
-    //     `${PEPPERMINTERY_URL}/tokens/${veriId}`
-    //   );
-    //   findVeri.status = getCurrentStatus.data.status;
-    // } catch {
-    //   throw new HttpException(
-    //     500,
-    //     'Service unavilable, Please try again later.'
-    //   );
-    // }
+    try {
+      const getCurrentStatus = await axios.get(
+        `${PEPPERMINTERY_URL}/tokens/${veriId}`
+      );
+      if (findVeri.live_distribution) {
+        if (getCurrentStatus.data.status.minted == 'true') {
+          findVeri.status = 'enabled';
+        } else {
+          findVeri.status = 'disabled';
+        }
+      }
+    } catch {
+      throw new HttpException(
+        500,
+        'Service unavilable, Please try again later.'
+      );
+    }
 
     return findVeri;
   }
@@ -153,10 +166,7 @@ class VeriService {
       throw new HttpException(500, `Internal server error`);
     }
 
-    if (veriData.status.toLowerCase() === 'created') {
-      console.log(createVeriData.id);
-      console.log(createTokenDetails(veriData));
-      console.log(createImageAsset(file, buffer));
+    if (veriData.status === 'created') {
       try {
         await axios.put(
           `${PEPPERMINTERY_URL}/tokens/${createVeriData.id}`,
@@ -171,21 +181,25 @@ class VeriService {
           }
         );
       } catch {
-        veriData.status = 'draft';
-        await Veris.query()
-          .update({
-            ...veriData,
-            file_id: createFileEntry.id,
-            thumb_id: createThumbEntry.id,
-            updated_by: user.id,
-          })
-          .where('id', '=', createVeriData.id)
-          .into('veris');
+        try {
+          veriData.status = 'draft';
+          await Veris.query()
+            .update({
+              ...veriData,
+              file_id: createFileEntry.id,
+              thumb_id: createThumbEntry.id,
+              updated_by: user.id,
+            })
+            .where('id', '=', createVeriData.id)
+            .into('veris');
 
-        throw new HttpException(
-          500,
-          `Service unavailable, please try again later.`
-        );
+          this.findVeriById(createVeriData.id);
+        } catch {
+          throw new HttpException(
+            500,
+            `Service unavailable, please try again later.`
+          );
+        }
       }
     }
 
