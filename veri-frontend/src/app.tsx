@@ -1,5 +1,6 @@
 import {
   ChakraProvider,
+  ColorModeProvider,
   ColorModeScript,
   useColorMode,
 } from '@chakra-ui/react';
@@ -12,17 +13,15 @@ import { Suspense, useEffect } from 'react';
 import adminTheme from './design-system/theme/adminTheme';
 
 function App() {
-  const { setColorMode, colorMode } = useColorMode();
-  useEffect(() => {
-    if (colorMode) {
-      setColorMode('light');
-    }
-  }, [colorMode, setColorMode]);
+  const { setColorMode } = useColorMode();
 
+  useEffect(() => {
+    setColorMode('light');
+  }, [setColorMode]);
   return (
     <Suspense fallback={'...Loading'}>
       <ChakraProvider theme={adminTheme}>
-        <ColorModeScript />
+        <ColorModeScript initialColorMode="light" />
         <ToastProvider placement="bottom-right" autoDismiss>
           <Fonts />
           <BrowserRouter>
