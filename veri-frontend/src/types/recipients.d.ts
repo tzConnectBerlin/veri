@@ -13,6 +13,6 @@ export interface Recipient {
   veri: string;
 }
 export interface EventAuth {
-  eventName: string;
+  name: string;
   password: string;
 }
