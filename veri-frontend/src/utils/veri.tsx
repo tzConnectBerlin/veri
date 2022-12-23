@@ -31,7 +31,7 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
     live_distribution: GetDistributionMethodBoolean(veri.distributionMethod),
     live_distribution_url: URL + '/' + MakeURL(veri.eventName),
     live_distribution_password: veri.password,
-    status: veri.status,
+    status: veri.status.toLowerCase(),
   };
 };
 
@@ -53,7 +53,7 @@ export const MapServerValueToVeri = (veri: any): VeriFormValues => {
     description: veri.artwork_description,
     distributionMethod: GetDistributionMethodString(veri.live_distribution),
     password: veri.live_distribution_password,
-    status: veri.status,
+    status: CapitalizeFirstLetter(veri.status),
   };
 };
 

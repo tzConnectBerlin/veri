@@ -41,18 +41,16 @@ export const BoothPage = () => {
   }, [location, navigate]);
 
   const onSubmit = (values: EventAuth) => {
+    console.log(values);
     try {
       setisLoading(true);
-      if (eventName) {
-        localStorage.setItem(eventName, '5');
-      }
-      if (prevPath) navigate(prevPath, { state: 5 });
-      // eventLogin(values)
-      //   .then(res => {
-      //     console.log(res);
-      //     if (prevPath) navigate(prevPath, { state: res.data.data.id });
-      //   })
-      //   .catch(error => console.error(error));
+      eventLogin(values)
+        .then(res => {
+          console.log(res);
+          if (eventName) localStorage.setItem(eventName, res.data.data.id);
+          if (prevPath) navigate(prevPath, { state: res.data.data.id });
+        })
+        .catch(error => console.error(error));
     } catch (error) {
       console.error(error);
     } finally {
@@ -62,7 +60,7 @@ export const BoothPage = () => {
 
   const initialValues = useMemo(
     () => ({
-      eventName: eventName ?? '',
+      name: eventName ?? '',
       password: '',
     }),
     [eventName],
