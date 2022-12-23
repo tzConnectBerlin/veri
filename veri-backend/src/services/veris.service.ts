@@ -24,7 +24,8 @@ class VeriService {
         'veris.organizer',
         'veris.event_start_date',
         'veris.event_end_date',
-        'veris.status'
+        'veris.status',
+        'veris.live_distribution'
       );
 
     for await (const veri of veris) {
@@ -33,19 +34,28 @@ class VeriService {
           const getCurrentStatus = await axios.get(
             `${PEPPERMINTERY_URL}/tokens/${veri.id}`
           );
-          console.log(typeof veri.event_start_date);
-          if (veri.live_distribution) {
-            if (getCurrentStatus.data.status.minted == 'true') {
+
+          //fix next line
+          if (Boolean(veri.live_distribution) === true) {
+            const startTime = new Date(veri.event_start_date).toDateString();
+            const currentTime = new Date().toDateString();
+            const endTime = new Date(veri.event_end_date).toDateString();
+            if (
+              getCurrentStatus.data.status.minted == 'true' &&
+              startTime <= currentTime &&
+              endTime >= currentTime
+            ) {
               veri.status = 'enabled';
             } else {
               veri.status = 'disabled';
             }
           }
         } catch (e) {
-          throw new HttpException(
-            500,
-            'Service unavilable, Please try again later.'
-          );
+          // handle error
+          // throw new HttpException(
+          //   500,
+          //   'Service unavilable, Please try again later.'
+          // );
         }
       }
     }
@@ -79,18 +89,27 @@ class VeriService {
       const getCurrentStatus = await axios.get(
         `${PEPPERMINTERY_URL}/tokens/${veriId}`
       );
-      if (findVeri.live_distribution) {
-        if (getCurrentStatus.data.status.minted == 'true') {
+      //fix next line
+      if (Boolean(findVeri.live_distribution) === true) {
+        const startTime = new Date(findVeri.event_start_date).toDateString();
+        const currentTime = new Date().toDateString();
+        const endTime = new Date(findVeri.event_end_date).toDateString();
+        if (
+          getCurrentStatus.data.status.minted == 'true' &&
+          startTime <= currentTime &&
+          endTime >= currentTime
+        ) {
           findVeri.status = 'enabled';
         } else {
           findVeri.status = 'disabled';
         }
       }
-    } catch {
-      throw new HttpException(
-        500,
-        'Service unavilable, Please try again later.'
-      );
+    } catch (e) {
+      // handle error
+      // throw new HttpException(
+      //   500,
+      //   'Service unavilable, Please try again later.'
+      // );
     }
 
     return findVeri;

@@ -41,14 +41,18 @@ class RecipientService {
             (recipient: any) =>
               recipient.recipient == task.details.recipient_address
           );
-          findRecipients[idx].status = task.status;
+          if (task.status.minted == 'true') {
+            findRecipients[idx].status = 'minted';
+          } else {
+            findRecipients[idx].status = 'minting';
+          }
           findRecipients[idx].operation = task.details.operation_group_hash;
         });
-      } catch {
-        throw new HttpException(
-          500,
-          'Service unavilable, Please try again later.'
-        );
+      } catch (e) {
+        // throw new HttpException(
+        //   500,
+        //   'Service unavilable, Please try again later.'
+        // );
       }
     }
     return findRecipients;
@@ -92,14 +96,19 @@ class RecipientService {
           (recipient: any) =>
             recipient.recipient == task.details.recipient_address
         );
-        findRecipient[idx].status = task.status;
+        if (task.status.minted == 'true') {
+          findRecipient[idx].status = 'minted';
+        } else {
+          findRecipient[idx].status = 'in progress';
+        }
+
         findRecipient[idx].operation = task.details.operation_group_hash;
       });
-    } catch {
-      throw new HttpException(
-        500,
-        'Service unavilable, Please try again later.'
-      );
+    } catch (e) {
+      // throw new HttpException(
+      //   500,
+      //   'Service unavilable, Please try again later.'
+      // );
     }
 
     return findRecipient;
