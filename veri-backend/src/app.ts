@@ -8,7 +8,14 @@ import morgan from 'morgan';
 import { Model } from 'objection';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from './config';
+import {
+  NODE_ENV,
+  PORT,
+  LOG_FORMAT,
+  ORIGIN,
+  CREDENTIALS,
+  BASE_PATH,
+} from './config';
 import knex from './databases';
 import { Routes } from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
@@ -67,7 +74,7 @@ class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach((route) => {
-      this.app.use('/', route.router);
+      this.app.use(BASE_PATH, route.router);
     });
   }
 
@@ -84,7 +91,11 @@ class App {
     };
 
     const specs = swaggerJSDoc(options);
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+    this.app.use(
+      `${BASE_PATH}api-docs`,
+      swaggerUi.serve,
+      swaggerUi.setup(specs)
+    );
   }
 
   private initializeErrorHandling() {

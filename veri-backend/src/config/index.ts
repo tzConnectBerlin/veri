@@ -19,4 +19,5 @@ export const {
   ORIGIN,
   PEPPERMINTERY_URL,
   DATA_PATH,
+  BASE_PATH,
 } = process.env;
