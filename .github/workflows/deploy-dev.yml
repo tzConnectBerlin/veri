@@ -90,12 +90,18 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_CLOUD_RUN_SERVICE_ACCOUNT }}
 
-      - name: Deploy backend to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v0
-        with:
-          image: ${{ secrets.ARTIFACTORY_BE_DOCKER_IMAGE_NAME }}:${{ github.sha }}
-          service: "veri-dev-backend"
-          region: europe-west1
+      # Setup gcloud CLI
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+
+      - name: Deploy backend to Compute Engine
+        run: |-
+          gcloud compute instances update-container veri-dev-backend \
+            --zone europe-west1-b \
+            --container-image ${{ secrets.ARTIFACTORY_BE_DOCKER_IMAGE_NAME }}:${{ github.sha }}
 
       - name: Deploy frontend to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v0
@@ -103,4 +109,3 @@ jobs:
           image: ${{ secrets.ARTIFACTORY_FE_DOCKER_IMAGE_NAME }}:${{ github.sha }}
           service: "veri-dev-frontend"
           region: europe-west1
-
