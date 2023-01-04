@@ -69,7 +69,7 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    this.app.use(express.static(__dirname + '/../uploads'));
+    this.app.use(BASE_PATH, express.static(__dirname + '/../uploads'));
   }
 
   private initializeRoutes(routes: Routes[]) {
