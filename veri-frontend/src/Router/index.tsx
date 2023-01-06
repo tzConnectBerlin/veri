@@ -70,7 +70,9 @@ export const Router = () => {
           <Route index element={<VerisOverviewPage />} />
           <Route path="create-new-veri" element={<VeriForm />} />
           <Route path=":id" element={<VeriForm />} />
-          <Route path="recipients" element={<RecipientsPage />} />
+        </Route>
+        <Route path="/recipients" element={<PrivateRoutes />}>
+          <Route index element={<RecipientsPage />} />
           <Route path="send-veris" element={<SendVeris />} />
           <Route path="send-veris/:veri_id" element={<SendVeris />} />
           <Route path="settings" element={<Settings />} />

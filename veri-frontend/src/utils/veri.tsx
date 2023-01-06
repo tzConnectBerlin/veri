@@ -1,7 +1,7 @@
 import { Badge, Image } from '@chakra-ui/react';
 import moment from 'moment';
 import { row } from '../design-system/atoms/DataTable/DataTable';
-import { ADMIN_URL, BASE_URL } from '../Global';
+import { VERI_URL, BASE_URL } from '../Global';
 import {
   VeriDropDown,
   VeriFormValues,
@@ -101,7 +101,7 @@ export const MapVerisToDataTable = (veris: VeriListType[]): row[] => {
           sortable: true,
         },
       ],
-      actionLink: `${ADMIN_URL}/${item.id}`,
+      actionLink: `${VERI_URL}/${item.id}`,
     };
   });
   return newVeris;

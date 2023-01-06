@@ -1,6 +1,6 @@
 import { Box, Heading, Container, Text, Stack, Link } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_URL } from '../../Global';
+import { VERI_URL } from '../../Global';
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export const LandingPage = () => {
             </Text>
           </Heading>
           <Text as={'span'} color={'primary.main'}>
-            <Link onClick={() => navigate(ADMIN_URL)}>Go to Admin Panel</Link>
+            <Link onClick={() => navigate(VERI_URL)}>Go to Admin Panel</Link>
           </Text>
         </Stack>
       </Container>
