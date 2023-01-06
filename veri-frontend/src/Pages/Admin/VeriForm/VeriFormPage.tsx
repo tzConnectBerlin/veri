@@ -18,7 +18,7 @@ import {
 } from '../../../api/services/veriService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { VeriFormStatus } from '../../../types';
-import { ADMIN_URL } from '../../../Global';
+import { RECIPIENTS_URL, VERI_URL } from '../../../Global';
 import { useToasts } from 'react-toast-notifications';
 
 export const VeriFormPage = (): JSX.Element => {
@@ -42,7 +42,7 @@ export const VeriFormPage = (): JSX.Element => {
   const validationSchema = Yup.object().shape({
     eventName: Yup.string().trim().required('This field is required'),
     organizer: Yup.string().trim().required('This field is required'),
-    description: Yup.string().max(250).required('This field is required'),
+    description: Yup.string().required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
     organizerEmail: Yup.string()
       .trim()
@@ -63,7 +63,7 @@ export const VeriFormPage = (): JSX.Element => {
                 appearance: 'success',
               });
 
-              navigate(ADMIN_URL + '/');
+              navigate(`${VERI_URL}/`);
             })
             .catch(e => {
               addToast('Something went wrong.', {
@@ -108,7 +108,7 @@ export const VeriFormPage = (): JSX.Element => {
         addToast('Veri Successfully Deleted', {
           status: 'success',
         });
-        navigate(`${ADMIN_URL}/`);
+        navigate(`${VERI_URL}/`);
       })
       .catch(err => {
         console.warn(err);
@@ -120,7 +120,7 @@ export const VeriFormPage = (): JSX.Element => {
   }, [navigate, addToast, veri]);
 
   const handleSendVeri = useCallback(() => {
-    navigate(`${ADMIN_URL}/send/${id}`);
+    navigate(`${RECIPIENTS_URL}/send-veris/${id}`);
   }, [id, navigate]);
 
   const InitialValues: VeriFormValues = useMemo(() => {

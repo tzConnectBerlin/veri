@@ -63,7 +63,7 @@ export function AuthProvider({
       await authService.signUp(signUpData);
       const user = await userService.getUser();
       setUser(user.data.data);
-      navigate('/admin');
+      navigate('/veris');
     } catch (error) {
       setError(error);
     } finally {

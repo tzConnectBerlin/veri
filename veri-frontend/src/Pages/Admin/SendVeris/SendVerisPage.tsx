@@ -1,5 +1,4 @@
 import { Button, Container, Heading, Stack } from '@chakra-ui/react';
-import { validateAddress } from '@taquito/utils';
 import { Form, Formik } from 'formik';
 import { motion } from 'framer-motion';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
@@ -13,6 +12,7 @@ import {
 } from '../../../api/services/recipientsService';
 import { getVeris } from '../../../api/services/veriService';
 import { RecipientsForm } from '../../../design-system/molecules/RecipientsForm';
+import { RECIPIENTS_URL } from '../../../Global';
 import { Recipient, RecipientsVeri, VeriDropDown } from '../../../types';
 import { isValidAddress } from '../../../utils/general';
 import { MapVeriToDropDown } from '../../../utils/veri';
@@ -67,7 +67,7 @@ export const SendVerisPage = () => {
             addToast('VERIs minting', {
               appearance: 'success',
             });
-            navigate('/admin/recipients');
+            navigate(RECIPIENTS_URL);
           })
           .catch(err => {
             addToast('Something went wrong.', {

@@ -40,7 +40,7 @@ const PrivateRoutes = () => {
 
 const AuthRoutes = () => {
   const { user } = useAuth();
-  if (user) return <Navigate to="/admin" />;
+  if (user) return <Navigate to="/veris" />;
   return <Login />;
 };
 
@@ -66,13 +66,15 @@ export const Router = () => {
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/reset" element={<ResetPassword />} />
         </Route>
-        <Route path="/admin" element={<PrivateRoutes />}>
+        <Route path="/veris" element={<PrivateRoutes />}>
           <Route index element={<VerisOverviewPage />} />
-          <Route path="veri" element={<VeriForm />} />
-          <Route path="veri/:id" element={<VeriForm />} />
-          <Route path="recipients" element={<RecipientsPage />} />
-          <Route path="send" element={<SendVeris />} />
-          <Route path="send/:veri_id" element={<SendVeris />} />
+          <Route path="create-new-veri" element={<VeriForm />} />
+          <Route path=":id" element={<VeriForm />} />
+        </Route>
+        <Route path="/recipients" element={<PrivateRoutes />}>
+          <Route index element={<RecipientsPage />} />
+          <Route path="send-veris" element={<SendVeris />} />
+          <Route path="send-veris/:veri_id" element={<SendVeris />} />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route element={<EventRoutes />}>
