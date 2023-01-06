@@ -101,7 +101,7 @@ export const MapVerisToDataTable = (veris: VeriListType[]): row[] => {
           sortable: true,
         },
       ],
-      actionLink: `${ADMIN_URL}/veri/${item.id}`,
+      actionLink: `${ADMIN_URL}/${item.id}`,
     };
   });
   return newVeris;

@@ -42,7 +42,7 @@ export const VeriFormPage = (): JSX.Element => {
   const validationSchema = Yup.object().shape({
     eventName: Yup.string().trim().required('This field is required'),
     organizer: Yup.string().trim().required('This field is required'),
-    description: Yup.string().max(250).required('This field is required'),
+    description: Yup.string().required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
     organizerEmail: Yup.string()
       .trim()
@@ -120,7 +120,7 @@ export const VeriFormPage = (): JSX.Element => {
   }, [navigate, addToast, veri]);
 
   const handleSendVeri = useCallback(() => {
-    navigate(`${ADMIN_URL}/send/${id}`);
+    navigate(`${ADMIN_URL}/send-veris/${id}`);
   }, [id, navigate]);
 
   const InitialValues: VeriFormValues = useMemo(() => {

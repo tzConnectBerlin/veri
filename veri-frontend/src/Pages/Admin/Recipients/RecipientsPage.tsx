@@ -57,7 +57,7 @@ const RecipientsPage = (): JSX.Element => {
         <Heading>Recipients</Heading>
         <Button
           colorScheme="primary"
-          onClick={() => navigate(ADMIN_URL + '/send')}
+          onClick={() => navigate(ADMIN_URL + '/send-veris')}
         >
           Send VERIs
         </Button>

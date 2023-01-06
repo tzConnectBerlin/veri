@@ -18,16 +18,12 @@ export const AddVeri = () => {
     [context.formik],
   );
 
-  console.log(context.formik.values.status);
-
   return (
     <form>
       <Stack gap={8}>
         <EventDetailForm title="EVENT DETAILS" />
         <VeriDetailForm title="VERI DETAILS" />
         <DistributionMethodForm title="Distribution Method" />
-        {/* <>{JSON.stringify(context.formik.values)}</> */}
-
         <Box>
           <Stack spacing={4} width={80} mx="auto">
             {context.formType === 'Add' && (

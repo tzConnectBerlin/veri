@@ -67,7 +67,7 @@ export const SendVerisPage = () => {
             addToast('VERIs minting', {
               appearance: 'success',
             });
-            navigate('/admin/recipients');
+            navigate('/recipients');
           })
           .catch(err => {
             addToast('Something went wrong.', {
