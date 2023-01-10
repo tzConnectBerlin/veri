@@ -57,12 +57,11 @@ export const VeriFormPage = (): JSX.Element => {
         const body = MapVeriToServerValue(values);
         if (id && veri) {
           updateVeri(body, Number(id))
-            .then(res => {
+            .then(() => {
               addToast(`Veri Updated`, {
                 description: 'View on the list',
                 appearance: 'success',
               });
-
               navigate(`${VERI_URL}/`);
             })
             .catch(e => {
@@ -70,12 +69,14 @@ export const VeriFormPage = (): JSX.Element => {
                 description: 'Try again later.',
                 appearance: 'error',
               });
+              navigate(`${VERI_URL}/`);
               console.error(e);
             });
         } else {
           addVeri(body)
             .then(res => {
               setVeri(() => MapServerValueToVeri(res.data.data));
+              console.log(res.data.data);
               addToast(`Veri ${values.status}`, {
                 status: 'success',
               });
@@ -97,7 +98,7 @@ export const VeriFormPage = (): JSX.Element => {
         });
       }
     },
-    [navigate, id, veri, addToast],
+    [id, veri, addToast, navigate],
   );
 
   const handleDelete = useCallback(() => {
@@ -120,8 +121,10 @@ export const VeriFormPage = (): JSX.Element => {
   }, [navigate, addToast, veri]);
 
   const handleSendVeri = useCallback(() => {
-    navigate(`${RECIPIENTS_URL}/send-veris/${id}`);
-  }, [id, navigate]);
+    if (veri && veri.id) {
+      navigate(`${RECIPIENTS_URL}/send-veris/${veri.id}`);
+    }
+  }, [veri, navigate]);
 
   const InitialValues: VeriFormValues = useMemo(() => {
     return {

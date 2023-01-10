@@ -41,7 +41,6 @@ export const SendVerisPage = () => {
     getVeris()
       .then(res => {
         const veriDropDownList = MapVeriToDropDown(res.data.data);
-        console.log(res.data.data);
         setVeriList(veriDropDownList);
       })
       .catch(err => console.log(err));

@@ -68,6 +68,7 @@ export const AddVeri = () => {
                     colorScheme="primary"
                     leftIcon={<IoMdSend />}
                     onClick={context.onSend}
+                    disabled={!context.formik.values.id}
                   >
                     Send VERIs
                   </Button>
