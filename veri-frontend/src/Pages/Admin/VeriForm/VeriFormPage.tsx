@@ -57,12 +57,11 @@ export const VeriFormPage = (): JSX.Element => {
         const body = MapVeriToServerValue(values);
         if (id && veri) {
           updateVeri(body, Number(id))
-            .then(res => {
+            .then(() => {
               addToast(`Veri Updated`, {
                 description: 'View on the list',
                 appearance: 'success',
               });
-
               navigate(`${VERI_URL}/`);
             })
             .catch(e => {
@@ -70,6 +69,7 @@ export const VeriFormPage = (): JSX.Element => {
                 description: 'Try again later.',
                 appearance: 'error',
               });
+              navigate(`${VERI_URL}/`);
               console.error(e);
             });
         } else {
