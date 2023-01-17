@@ -151,3 +151,32 @@ Please check if `postgres` is running, you have the correct permission and the d
 Please check if the migratory *up* and *down* functions in a migration file complements each other. For more information visit https://knexjs.org/guide/migrations.html.
 4. ` app crashed - waiting for file changes before starting...`
 It mostly happens if you have more than one instance running at the same machine or in other words if one instance is blocking the port. There could also be other crashes which you can investigate through the log file located at `/src/logs/error`. 
+
+
+---
+
+
+# VERI-Frontend
+
+**VERI-Front**, is the Frontend services for the **VERI** project.
+
+## Getting started
+
+
+### Installation
+
+To install and run the project, follow these steps:
+
+Navigate to the project directory
+Run `yarn install` to install dependencies
+Run `yarn start` to start the project in development mode
+Run `yarn test` to run the tests in watch mode
+Run `yarn commit` to have integrated commit messages
+
+## Project configuration
+
+There is **Global.ts** file in **src** folder that you can change `BASE_URL` path if you need.
+It is mostly needed for local running that connect to **VERI-Backend**
+
+```
+BASE_URL = 'http://localhost:5000'
