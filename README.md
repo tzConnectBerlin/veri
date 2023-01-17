@@ -168,10 +168,10 @@ It mostly happens if you have more than one instance running at the same machine
 To install and run the project, follow these steps:
 
 Navigate to the project directory
-Run `yarn install` to install dependencies
-Run `yarn start` to start the project in development mode
-Run `yarn test` to run the tests in watch mode
-Run `yarn commit` to have integrated commit messages
+1. Run `yarn install` to install dependencies
+2. Run `yarn start` to start the project in development mode
+3. Run `yarn test` to run the tests in watch mode
+4. Run `yarn commit` to have integrated commit messages
 
 ## Project configuration
 
