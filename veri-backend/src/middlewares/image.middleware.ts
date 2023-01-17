@@ -13,32 +13,36 @@ const imageMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const roundedImage = await createRoundedCorners(req.file);
-    const thumbnail = await createThumbnailImage(req.file);
     // fix this ugly section
-    req.file.buffer = roundedImage;
-    req.thumbnail = JSON.parse(JSON.stringify(req.file));
-    req.thumbnail.buffer = thumbnail;
+    if (req.file) {
+      const roundedImage = await createRoundedCorners(req.file);
+      const thumbnail = await createThumbnailImage(req.file);
 
-    const fullFilename = uuidv4();
-    req.file.filename = 'original_' + uuidv4();
-    req.file.destination = 'uploads/';
-    req.file.path = fullFilename + path.extname(req.file.originalname);
+      req.file.buffer = roundedImage;
+      req.thumbnail = JSON.parse(JSON.stringify(req.file));
+      req.thumbnail.buffer = thumbnail;
 
-    const thumbFilename = uuidv4();
-    req.thumbnail.filename = 'thumb_' + uuidv4();
-    req.thumbnail.destination = 'uploads/';
-    req.thumbnail.path = thumbFilename + path.extname(req.file.originalname);
+      const fullFilename = uuidv4();
+      req.file.filename = 'original_' + uuidv4();
+      req.file.destination = 'uploads/';
+      req.file.path = fullFilename + path.extname(req.file.originalname);
 
-    fs.writeFileSync(req.file.destination + req.file.path, req.file.buffer);
-    fs.writeFileSync(
-      req.thumbnail.destination + req.thumbnail.path,
-      req.thumbnail.buffer
-    );
+      const thumbFilename = uuidv4();
+      req.thumbnail.filename = 'thumb_' + uuidv4();
+      req.thumbnail.destination = 'uploads/';
+      req.thumbnail.path = thumbFilename + path.extname(req.file.originalname);
 
-    req.files = JSON.parse(JSON.stringify(req.file));
-    req.thumbnail = JSON.parse(JSON.stringify(req.thumbnail));
+      fs.writeFileSync(req.file.destination + req.file.path, req.file.buffer);
+      fs.writeFileSync(
+        req.thumbnail.destination + req.thumbnail.path,
+        req.thumbnail.buffer
+      );
 
+      req.files = JSON.parse(JSON.stringify(req.file));
+      req.thumbnail = JSON.parse(JSON.stringify(req.thumbnail));
+    } else {
+      delete req.body.artwork_file;
+    }
     next();
   } catch (error) {
     next(new HttpException(500, 'Cannot process file, please try again.'));

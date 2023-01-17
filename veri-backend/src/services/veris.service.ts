@@ -245,36 +245,41 @@ class VeriService {
       .from('veris')
       .where('event_name', '=', veriData.event_name)
       .first();
-    if (findEvent)
-      throw new HttpException(
-        409,
-        `Event ${veriData.event_name} already exists`
-      );
+    if (findEvent) {
+      if (Number(findEvent.id) !== veriId) {
+        throw new HttpException(
+          409,
+          `Event ${veriData.event_name} already exists`
+        );
+      }
+    }
 
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
-    delete file.buffer;
-    delete thumbnail.buffer;
+    if (file) {
+      delete file.buffer;
+      delete thumbnail.buffer;
 
-    const fileUpdate = await Files.query()
-      .update({ ...file })
-      .where('id', '=', findVeri.file_id)
-      .into('files');
+      const fileUpdate = await Files.query()
+        .update({ ...file })
+        .where('id', '=', findVeri.file_id)
+        .into('files');
 
-    if (!fileUpdate) throw new HttpException(500, `Internal server error`);
+      if (!fileUpdate) throw new HttpException(500, `Internal server error`);
 
-    const thumbUpdate = await Files.query()
-      .update({ ...thumbnail })
-      .where('id', '=', findVeri.thumb_id)
-      .into('files');
+      const thumbUpdate = await Files.query()
+        .update({ ...thumbnail })
+        .where('id', '=', findVeri.thumb_id)
+        .into('files');
 
-    if (!thumbUpdate) throw new HttpException(500, `Internal server error`);
+      if (!thumbUpdate) throw new HttpException(500, `Internal server error`);
+    }
 
     await Veris.query()
       .update({
         ...veriData,
-        file_id: findVeri.file_id,
-        thumb_id: findVeri.file_id,
+        file_id: file && findVeri.file_id,
+        thumb_id: file && findVeri.file_id,
         updated_by: user.id,
       })
       .where('id', '=', veriId)
