@@ -8,21 +8,29 @@ import { SidebarLinkProps } from '../../design-system/atoms/SidebarLink';
 import { Sidebar } from '../../design-system/organisms/Sidebar';
 import adminTheme from '../../design-system/theme/adminTheme';
 import { useEffect } from 'react';
-import { ADMIN_URL } from '../../Global';
+import { RECIPIENTS_URL, VERI_URL } from '../../Global';
 
 export const DashboardLayout = () => {
   const { setColorMode } = useColorMode();
   const { logout, user } = useAuth();
-  const veriMatch = useMatch({ path: `${ADMIN_URL}/veri`, end: false });
-  const recipientsMatch = useMatch({ path: `${ADMIN_URL}/send`, end: false });
+  const veriMatch = useMatch({ path: VERI_URL, end: false });
+  const recipientsMatch = useMatch({
+    path: RECIPIENTS_URL,
+    end: false,
+  });
   const logo = 'VERI Admin';
 
   const adminRoutes: SidebarLinkProps[] = [
-    { name: 'VERIs', icon: <MdViewList />, path: '', isMatch: !!veriMatch },
+    {
+      name: 'VERIs',
+      icon: <MdViewList />,
+      path: VERI_URL,
+      isMatch: !!veriMatch,
+    },
     {
       name: 'Recipients',
       icon: <HiUser />,
-      path: 'recipients',
+      path: RECIPIENTS_URL,
       isMatch: !!recipientsMatch,
     },
   ];

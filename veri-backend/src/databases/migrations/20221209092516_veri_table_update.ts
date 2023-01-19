@@ -4,7 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.table('veris', (table) => {
     table.renameColumn('event_contact_email', 'organizer_email');
     table.dropColumn('event_description');
-    table.string('organizer', 32);
+    table.string('organizer', 255);
   });
 }
 

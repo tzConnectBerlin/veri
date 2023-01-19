@@ -11,6 +11,8 @@ import {
 export enum Status {
   draft = 'draft',
   created = 'created',
+  disabled = 'disabled',
+  enabled = 'enabled',
 }
 
 export class CreateVeriDto {
@@ -52,5 +54,5 @@ export class CreateVeriDto {
 
   @IsString()
   @IsEnum(Status)
-  public status: string;
+  public status?: string;
 }

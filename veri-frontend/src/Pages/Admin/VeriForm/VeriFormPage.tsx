@@ -18,7 +18,7 @@ import {
 } from '../../../api/services/veriService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { VeriFormStatus } from '../../../types';
-import { ADMIN_URL } from '../../../Global';
+import { RECIPIENTS_URL, VERI_URL } from '../../../Global';
 import { useToasts } from 'react-toast-notifications';
 
 export const VeriFormPage = (): JSX.Element => {
@@ -42,7 +42,7 @@ export const VeriFormPage = (): JSX.Element => {
   const validationSchema = Yup.object().shape({
     eventName: Yup.string().trim().required('This field is required'),
     organizer: Yup.string().trim().required('This field is required'),
-    description: Yup.string().max(250).required('This field is required'),
+    description: Yup.string().required('This field is required'),
     distributionMethod: Yup.string().trim().required('This field is required'),
     organizerEmail: Yup.string()
       .trim()
@@ -57,25 +57,26 @@ export const VeriFormPage = (): JSX.Element => {
         const body = MapVeriToServerValue(values);
         if (id && veri) {
           updateVeri(body, Number(id))
-            .then(res => {
+            .then(() => {
               addToast(`Veri Updated`, {
                 description: 'View on the list',
                 appearance: 'success',
               });
-
-              navigate(ADMIN_URL + '/');
+              navigate(`${VERI_URL}/`);
             })
             .catch(e => {
               addToast('Something went wrong.', {
                 description: 'Try again later.',
                 appearance: 'error',
               });
+              navigate(`${VERI_URL}/`);
               console.error(e);
             });
         } else {
           addVeri(body)
             .then(res => {
               setVeri(() => MapServerValueToVeri(res.data.data));
+              console.log(res.data.data);
               addToast(`Veri ${values.status}`, {
                 status: 'success',
               });
@@ -97,7 +98,7 @@ export const VeriFormPage = (): JSX.Element => {
         });
       }
     },
-    [navigate, id, veri, addToast],
+    [id, veri, addToast, navigate],
   );
 
   const handleDelete = useCallback(() => {
@@ -108,7 +109,7 @@ export const VeriFormPage = (): JSX.Element => {
         addToast('Veri Successfully Deleted', {
           status: 'success',
         });
-        navigate(`${ADMIN_URL}/`);
+        navigate(`${VERI_URL}/`);
       })
       .catch(err => {
         console.warn(err);
@@ -120,8 +121,10 @@ export const VeriFormPage = (): JSX.Element => {
   }, [navigate, addToast, veri]);
 
   const handleSendVeri = useCallback(() => {
-    navigate(`${ADMIN_URL}/send/${id}`);
-  }, [id, navigate]);
+    if (veri && veri.id) {
+      navigate(`${RECIPIENTS_URL}/send-veris/${veri.id}`);
+    }
+  }, [veri, navigate]);
 
   const InitialValues: VeriFormValues = useMemo(() => {
     return {

@@ -6,7 +6,7 @@ import { getRecipients } from '../../../api/services/recipientsService';
 import { DataTable } from '../../../design-system/atoms/DataTable';
 import { row } from '../../../design-system/atoms/DataTable/DataTable';
 import Wrapper from '../../../design-system/atoms/Wrapper';
-import { ADMIN_URL, RECIPIENT_STATUS } from '../../../Global';
+import { RECIPIENTS_URL, RECIPIENT_STATUS } from '../../../Global';
 import { Recipient } from '../../../types';
 import { MapRecipientsToDataTable } from '../../../utils/recipients';
 
@@ -57,7 +57,7 @@ const RecipientsPage = (): JSX.Element => {
         <Heading>Recipients</Heading>
         <Button
           colorScheme="primary"
-          onClick={() => navigate(ADMIN_URL + '/send')}
+          onClick={() => navigate(RECIPIENTS_URL + '/send-veris')}
         >
           Send VERIs
         </Button>

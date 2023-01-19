@@ -41,26 +41,26 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: Setup Node
-      uses: actions/setup-node@v3
-      with:
-        node-version: "18"
-        cache: npm
-        cache-dependency-path: "**/package-lock.json"
-    - name: Test frontend individual
-      working-directory: veri-frontend
-      run: npm install --legacy-peer-deps && npm run test --passWithNoTests
-    - name: Test backend individual
-      working-directory: veri-backend
-      run: npm install && npm run test --passWithNoTests
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: npm
+          cache-dependency-path: "**/package-lock.json"
+      - name: Test frontend individual
+        working-directory: veri-frontend
+        run: npm install --legacy-peer-deps && npm run test --passWithNoTests
+      - name: Test backend individual
+        working-directory: veri-backend
+        run: npm install && npm run test --passWithNoTests
   full_test:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: Run complete solution
-      run: docker-compose up -d
-    - name: Health check
-      run: docker ps -a
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Run complete solution
+        run: docker-compose up -d
+      - name: Health check
+        run: docker ps -a
