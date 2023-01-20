@@ -6,7 +6,6 @@ import { HttpException } from '@exceptions/HttpException';
 
 const adminMiddleware = (): RequestHandler => {
   return (req: CustomRequest, res: Response, next) => {
-    const email = ADMIN_USER.email;
     Users.query()
       .select()
       .from('users')
@@ -25,7 +24,7 @@ const adminMiddleware = (): RequestHandler => {
 
         req.user = {
           id: Number(userId),
-          email,
+          email: ADMIN_USER.email,
           password: ADMIN_USER.password,
         };
         next();
