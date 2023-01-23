@@ -1,16 +1,16 @@
-import { File } from '../interfaces/file.interface';
-import { Files } from '../models/files.model';
-import { HttpException } from '../exceptions/HttpException';
-import { Veri } from '../interfaces/veris.interface';
-import { Veris } from '../models/veris.model';
-import { isEmpty } from '../utils/util';
+import { File } from '@interfaces/file.interface';
+import { Files } from '@models/files.model';
+import { HttpException } from '@exceptions/HttpException';
+import { Veri } from '@interfaces/veris.interface';
+import { Veris } from '@models/veris.model';
+import { isEmpty } from '@utils/util';
 import { User } from '@/interfaces/users.interface';
 import { hash } from 'bcryptjs';
 import { createImageAsset, createTokenDetails } from '@/utils/token';
 import axios from 'axios';
 import { CreateVeriDto } from '@/dtos/veris.dto';
 import { CreateFileDto } from '@/dtos/files.dto';
-import { PEPPERMINTERY_URL } from '../config';
+import { PEPPERMINTERY_URL } from '@config';
 
 class VeriService {
   public async findAllVeri(): Promise<Veri[]> {
@@ -234,19 +234,19 @@ class VeriService {
   ): Promise<Veri> {
     if (isEmpty(veriData)) throw new HttpException(400, 'veriData is empty');
 
-    const findVeri: Veri = await Veris.query()
+    const selectedVeri: Veri = await Veris.query()
       .select()
       .from('veris')
       .where('id', '=', veriId)
       .first();
 
-    const findEvent: Veri = await Veris.query()
+    const selectedEvent: Veri = await Veris.query()
       .select()
       .from('veris')
       .where('event_name', '=', veriData.event_name)
       .first();
-    if (findEvent) {
-      if (Number(findEvent.id) !== veriId) {
+    if (selectedEvent) {
+      if (Number(selectedEvent.id) !== veriId) {
         throw new HttpException(
           409,
           `Event ${veriData.event_name} already exists`
@@ -254,7 +254,7 @@ class VeriService {
       }
     }
 
-    if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
+    if (!selectedVeri) throw new HttpException(409, "Veri doesn't exist");
 
     if (file) {
       delete file.buffer;
@@ -262,24 +262,26 @@ class VeriService {
 
       const fileUpdate = await Files.query()
         .update({ ...file })
-        .where('id', '=', findVeri.file_id)
+        .where('id', '=', selectedVeri.file_id)
         .into('files');
 
       if (!fileUpdate) throw new HttpException(500, `Internal server error`);
 
       const thumbUpdate = await Files.query()
         .update({ ...thumbnail })
-        .where('id', '=', findVeri.thumb_id)
+        .where('id', '=', selectedVeri.thumb_id)
         .into('files');
 
       if (!thumbUpdate) throw new HttpException(500, `Internal server error`);
     }
 
+    const newPassword = await hash(veriData.live_distribution_password, 10);
     await Veris.query()
       .update({
         ...veriData,
-        file_id: file && findVeri.file_id,
-        thumb_id: file && findVeri.file_id,
+        file_id: file && selectedVeri.file_id,
+        thumb_id: file && selectedVeri.file_id,
+        live_distribution_password: newPassword,
         updated_by: user.id,
       })
       .where('id', '=', veriId)
