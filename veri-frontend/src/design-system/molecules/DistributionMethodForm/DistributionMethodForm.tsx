@@ -22,6 +22,7 @@ import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormStatus } from '../../../types';
 import { MakeURL } from '../../../utils/general';
+import { VERI_STATUS } from '../../../Global';
 
 export interface DistributionMethodFormProps {
   title?: string;
@@ -120,7 +121,8 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
             <FormControl>
               <FormLabel>URL</FormLabel>
               <Text display="flex" color="primary.main">
-                {context.formType === 'View' ? (
+                {context.formType === 'View' &&
+                context.formik.values.status !== 'Disabled' ? (
                   <Link
                     href={URL + '/' + MakeURL(context.formik.values.eventName)}
                     target="_blank"
