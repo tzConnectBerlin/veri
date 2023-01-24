@@ -22,6 +22,7 @@ import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormStatus } from '../../../types';
 import { MakeURL } from '../../../utils/general';
+import { Address } from '../../atoms/Address';
 
 export interface DistributionMethodFormProps {
   title?: string;
@@ -144,7 +145,17 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
               <FormLabel>Password</FormLabel>
               <InputGroup height={editMode === 'View' ? '29' : 'auto'}>
                 {editMode === 'View' ? (
-                  <Text>● ● ● ● ●</Text>
+                  <>
+                    {show ? (
+                      <Address
+                        addr={context.formik.values.password ?? ''}
+                        trimSize="large"
+                        bgColor="transparent"
+                      />
+                    ) : (
+                      <Text>● ● ● ● ●</Text>
+                    )}
+                  </>
                 ) : (
                   <>
                     <Input
@@ -152,6 +163,7 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
                       name="password"
                       pr="3.5rem"
                       onChange={context.formik.handleChange}
+                      value={context.formik.values.password}
                       onBlur={context.formik.handleBlur}
                     />
                     <InputRightElement width="3.5rem">
