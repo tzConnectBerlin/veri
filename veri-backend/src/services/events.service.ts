@@ -16,6 +16,9 @@ class EventService {
 
     if (!findEvent) throw new HttpException(409, "Event doesn't exist");
 
+    if (findEvent.status === 'disabled')
+      throw new HttpException(409, 'Event is disabled');
+
     if (!findEvent.live_distribution)
       throw new HttpException(
         500,
