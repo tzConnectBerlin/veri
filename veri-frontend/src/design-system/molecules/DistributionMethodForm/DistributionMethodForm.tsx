@@ -22,7 +22,6 @@ import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormStatus } from '../../../types';
 import { MakeURL } from '../../../utils/general';
-import Address from '../../atoms/Address';
 
 export interface DistributionMethodFormProps {
   title?: string;
@@ -78,7 +77,7 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
       </HStack>
       <Stack spacing={10}>
         <FormControl
-          isReadOnly={editMode === 'View' ? true : false}
+          isReadOnly={editMode === 'View'}
           isRequired
           isInvalid={
             context.formik.touched.distributionMethod &&
@@ -135,7 +134,7 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
             </FormControl>
 
             <FormControl
-              isReadOnly={editMode === 'View' ? true : false}
+              isReadOnly={editMode === 'View'}
               isRequired
               isInvalid={
                 context.formik.touched.password &&
@@ -145,37 +144,28 @@ export const DistributionMethodForm: React.FC<DistributionMethodFormProps> = ({
               <FormLabel>Password</FormLabel>
               <InputGroup height={editMode === 'View' ? '29' : 'auto'}>
                 {editMode === 'View' ? (
-                  <>
-                    {show ? (
-                      <Address
-                        addr={context.formik.values.password ?? ''}
-                        trimSize="large"
-                        bgColor="transparent"
-                      />
-                    ) : (
-                      <Text>● ● ● ● ●</Text>
-                    )}
-                  </>
+                  <Text>● ● ● ● ●</Text>
                 ) : (
-                  <Input
-                    type={show ? 'text' : 'password'}
-                    name="password"
-                    pr="3.5rem"
-                    value={context.formik.values.password}
-                    onChange={context.formik.handleChange}
-                    onBlur={context.formik.handleBlur}
-                  />
+                  <>
+                    <Input
+                      type={show ? 'text' : 'password'}
+                      name="password"
+                      pr="3.5rem"
+                      onChange={context.formik.handleChange}
+                      onBlur={context.formik.handleBlur}
+                    />
+                    <InputRightElement width="3.5rem">
+                      <Button
+                        size="sm"
+                        onClick={() => setShow(!show)}
+                        variant="icon"
+                        fontSize="1.2rem"
+                      >
+                        {show ? <IoMdEyeOff /> : <IoMdEye />}
+                      </Button>
+                    </InputRightElement>
+                  </>
                 )}
-                <InputRightElement width="3.5rem">
-                  <Button
-                    size="sm"
-                    onClick={() => setShow(!show)}
-                    variant="icon"
-                    fontSize="1.2rem"
-                  >
-                    {show ? <IoMdEyeOff /> : <IoMdEye />}
-                  </Button>
-                </InputRightElement>
               </InputGroup>
               <FormErrorMessage>
                 {context.formik.errors.password}
