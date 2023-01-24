@@ -47,7 +47,7 @@ export const BoothPage = () => {
       eventLogin(values)
         .then(res => {
           console.log(res);
-          if (eventName) localStorage.setItem(eventName, res.data.data.id);
+          if (eventName) sessionStorage.setItem(eventName, res.data.data.id);
           if (prevPath) navigate(prevPath, { state: res.data.data.id });
         })
         .catch(error => console.error(error));
