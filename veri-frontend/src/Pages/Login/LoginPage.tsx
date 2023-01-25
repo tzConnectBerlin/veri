@@ -14,10 +14,11 @@ import * as Yup from 'yup';
 import { Login } from '../../types';
 import useAuth from '../../contexts/useAuth';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 
 export const LoginPage = () => {
   const { login } = useAuth();
+  const { addToast } = useToasts();
   const [isLoading, setisLoading] = useState(false);
 
   const validationSchema = Yup.object().shape({
@@ -33,6 +34,10 @@ export const LoginPage = () => {
       setisLoading(true);
       login(values);
     } catch (error) {
+      addToast('Something went wrong.', {
+        description: 'Try again later.',
+        appearance: 'error',
+      });
       // console.error(error);
     } finally {
       setisLoading(false);
