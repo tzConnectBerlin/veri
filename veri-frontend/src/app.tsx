@@ -1,6 +1,5 @@
 import {
   ChakraProvider,
-  ColorModeProvider,
   ColorModeScript,
   useColorMode,
 } from '@chakra-ui/react';

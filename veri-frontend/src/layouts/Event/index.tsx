@@ -3,6 +3,7 @@ import {
   Stack,
   Container,
   useColorMode,
+  ColorModeScript,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
@@ -48,6 +49,7 @@ export const EventLayout = () => {
 
   return (
     <ChakraProvider theme={eventTheme}>
+      <ColorModeScript initialColorMode="dark" />
       <Container>
         <Stack minH="100vh">
           <Header {...HeaderData} />

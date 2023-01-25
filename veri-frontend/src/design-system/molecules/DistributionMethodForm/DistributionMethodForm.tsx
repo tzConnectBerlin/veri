@@ -22,7 +22,6 @@ import { MdEdit, MdSave } from 'react-icons/md';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormStatus } from '../../../types';
 import { MakeURL } from '../../../utils/general';
-import { VERI_STATUS } from '../../../Global';
 
 export interface DistributionMethodFormProps {
   title?: string;
