@@ -33,9 +33,12 @@ const imageMiddleware = async (
       req.thumbnail.destination = DATA_PATH;
       req.thumbnail.path = thumbFilename + path.extname(req.file.originalname);
 
-      fs.writeFileSync(req.file.destination + req.file.path, req.file.buffer);
       fs.writeFileSync(
-        req.thumbnail.destination + req.thumbnail.path,
+        req.file.destination + '/' + req.file.path,
+        req.file.buffer
+      );
+      fs.writeFileSync(
+        req.thumbnail.destination + '/' + req.thumbnail.path,
         req.thumbnail.buffer
       );
 
