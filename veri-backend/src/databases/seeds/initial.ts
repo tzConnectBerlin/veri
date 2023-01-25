@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 import bcrypt from 'bcryptjs';
-import { ADMIN_USER } from '@/constants/admin';
+import { ADMIN_USER } from '../../constants/admin';
 
 const hash = bcrypt.hashSync(ADMIN_USER.password, 10);
 
