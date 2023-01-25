@@ -15,6 +15,7 @@ import {
   ORIGIN,
   CREDENTIALS,
   BASE_PATH,
+  DATA_PATH,
 } from './config';
 import knex from './databases';
 import { Routes } from './interfaces/routes.interface';
@@ -69,7 +70,7 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    this.app.use(BASE_PATH, express.static(__dirname + '/../uploads'));
+    this.app.use(BASE_PATH, express.static(__dirname + DATA_PATH));
   }
 
   private initializeRoutes(routes: Routes[]) {
