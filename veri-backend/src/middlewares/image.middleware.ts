@@ -6,6 +6,7 @@ import * as fs from 'fs';
 
 import { createRoundedCorners, createThumbnailImage } from '@/utils/image';
 import path from 'path';
+import { DATA_PATH } from '@config';
 
 const imageMiddleware = async (
   req: CustomRequest,
@@ -24,12 +25,12 @@ const imageMiddleware = async (
 
       const fullFilename = uuidv4();
       req.file.filename = 'original_' + uuidv4();
-      req.file.destination = 'uploads/';
+      req.file.destination = DATA_PATH;
       req.file.path = fullFilename + path.extname(req.file.originalname);
 
       const thumbFilename = uuidv4();
       req.thumbnail.filename = 'thumb_' + uuidv4();
-      req.thumbnail.destination = 'uploads/';
+      req.thumbnail.destination = DATA_PATH;
       req.thumbnail.path = thumbFilename + path.extname(req.file.originalname);
 
       fs.writeFileSync(req.file.destination + req.file.path, req.file.buffer);
