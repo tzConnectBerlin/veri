@@ -70,7 +70,7 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    this.app.use(BASE_PATH, express.static(__dirname + DATA_PATH));
+    this.app.use(BASE_PATH + '/', express.static(DATA_PATH));
   }
 
   private initializeRoutes(routes: Routes[]) {
