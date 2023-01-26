@@ -13,8 +13,8 @@ import { CreateFileDto } from '@/dtos/files.dto';
 import { PEPPERMINTERY_URL } from '@config';
 
 class VeriService {
-  public async findAllVeri(): Promise<Veri[]> {
-    const veris: Veri[] = await Veris.query()
+  private async getAllVeri(): Promise<Veri[]> {
+    return Veris.query()
       .from('veris')
       .join('files', 'files.id', '=', 'veris.thumb_id')
       .select(
@@ -27,27 +27,68 @@ class VeriService {
         'veris.status',
         'veris.live_distribution'
       );
+  }
+
+  private async updateVeriStatusById({
+    id,
+    status,
+  }: {
+    id: number;
+    status: string;
+  }) {
+    await Veris.query()
+      .update({
+        status,
+      })
+      .where('id', '=', id)
+      .into('veris');
+  }
+
+  public async findAllVeri(): Promise<Veri[]> {
+    const veris: Veri[] = await this.getAllVeri();
 
     for await (const veri of veris) {
       if (veri.status !== 'draft') {
         try {
-          const getCurrentStatus = await axios.get(
+          const minteryResult = await axios.get(
             `${PEPPERMINTERY_URL}/tokens/${veri.id}`
           );
 
-          //fix next line
+          const { minted } = minteryResult.data.status;
+
           if (Boolean(veri.live_distribution) === true) {
             const startTime = new Date(veri.event_start_date).toDateString();
             const currentTime = new Date().toDateString();
             const endTime = new Date(veri.event_end_date).toDateString();
-            if (
-              getCurrentStatus.data.status.minted == 'true' &&
-              startTime <= currentTime &&
-              endTime >= currentTime
-            ) {
-              veri.status = 'enabled';
+
+            if (minted && startTime <= currentTime && endTime >= currentTime) {
+              if (veri.status !== 'enabled') {
+                await this.updateVeriStatusById({
+                  id: veri.id,
+                  status: 'enabled',
+                });
+              }
             } else {
-              veri.status = 'disabled';
+              if (veri.status !== 'disabled') {
+                await this.updateVeriStatusById({
+                  id: veri.id,
+                  status: 'disabled',
+                });
+              }
+            }
+          } else {
+            if (minted) {
+              if (veri.status !== 'created') {
+                await this.updateVeriStatusById({
+                  id: veri.id,
+                  status: 'created',
+                });
+              }
+            } else {
+              await this.updateVeriStatusById({
+                id: veri.id,
+                status: 'draft',
+              });
             }
           }
         } catch (e) {
@@ -60,7 +101,7 @@ class VeriService {
       }
     }
 
-    return veris;
+    return this.getAllVeri();
   }
 
   public async findVeriById(veriId: number): Promise<Veri> {
