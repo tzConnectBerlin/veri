@@ -8,6 +8,7 @@ const styles = {
     },
     body: {
       bg: mode('#FFF', '#000')(props),
+      color: mode('gray.700', '#FFF')(props),
     },
   }),
 };

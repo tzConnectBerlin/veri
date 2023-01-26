@@ -20,6 +20,12 @@ export const postRcipientsByVeriId = (veriId: number, body: any) => {
   });
 };
 
+export const postScanByVeriId = (veriId: number, body: any) => {
+  return axios.post(`${BASE_URL}/scan/${veriId}`, body, {
+    withCredentials: true,
+  });
+};
+
 export const eventLogin = (loginData: EventAuth) => {
   return axios.post(`${BASE_URL}/events`, loginData);
 };

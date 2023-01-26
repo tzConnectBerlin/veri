@@ -1,18 +1,23 @@
 import { HttpException } from '@exceptions/HttpException';
 import { ValidateEventDto } from '@/dtos/event.dto';
-import { Veris } from '@/models/veris.model';
 import { Event } from '@/interfaces/events.interface';
 import { Veri } from '@/interfaces/veris.interface';
 import { compare } from 'bcryptjs';
+import findAllVeriWithPassword from '@services/helper/findAllVeriWithPassword';
 
 class EventService {
   public async validate(eventData: ValidateEventDto): Promise<Event> {
-    const findEvent: Veri = await Veris.query()
-      .where('veris.event_name', '=', eventData.name)
-      .first()
-      .select();
+    const allVeris: Veri[] = await findAllVeriWithPassword();
+    const findEvent = allVeris.find((event) => {
+      const urlArr = event.live_distribution_url.split('/');
+      const eventPath = urlArr.at(urlArr.length - 1);
+      return eventPath === eventData.name;
+    });
 
     if (!findEvent) throw new HttpException(409, "Event doesn't exist");
+
+    if (findEvent.status === 'disabled')
+      throw new HttpException(409, 'Event is disabled');
 
     if (!findEvent.live_distribution)
       throw new HttpException(

@@ -15,9 +15,11 @@ import { useEffect, useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { eventLogin } from '../../api/services/recipientsService';
 import { EventAuth } from '../../types';
+import { useToasts } from 'react-toast-notifications';
 
 export const BoothPage = () => {
   const navigate = useNavigate();
+  const { addToast } = useToasts();
   const location = useLocation();
   const [isLoading, setisLoading] = useState(false);
   const [prevPath, setPrevPath] = useState();
@@ -41,18 +43,26 @@ export const BoothPage = () => {
   }, [location, navigate]);
 
   const onSubmit = (values: EventAuth) => {
-    console.log(values);
     try {
       setisLoading(true);
       eventLogin(values)
         .then(res => {
-          console.log(res);
-          if (eventName) localStorage.setItem(eventName, res.data.data.id);
+          if (eventName) sessionStorage.setItem(eventName, res.data.data.id);
           if (prevPath) navigate(prevPath, { state: res.data.data.id });
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error);
+          addToast('Something went wrong.', {
+            description: 'Try again later.',
+            appearance: 'error',
+          });
+        });
     } catch (error) {
       console.error(error);
+      addToast('Something went wrong.', {
+        description: 'Try again later.',
+        appearance: 'error',
+      });
     } finally {
       setisLoading(false);
     }

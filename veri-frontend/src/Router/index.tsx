@@ -48,7 +48,7 @@ const EventRoutes = () => {
   const prevRoute = useLocation();
   const params = useParams();
   const url = params.eventName || '';
-  const token = localStorage.getItem(url);
+  const token = sessionStorage.getItem(url);
   if (!token)
     return <Navigate to="/booth" state={{ prevRoute, params }} replace />;
   return <EventLayout />;

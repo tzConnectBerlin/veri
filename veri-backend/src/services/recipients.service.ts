@@ -119,9 +119,11 @@ class RecipientService {
     token_id: number,
     addresses: string[]
   ): Promise<Recipient[]> {
-    if (addresses.length === 0)
+    if (addresses.length === 0) {
       throw new HttpException(400, 'Recipient list is empty');
+    }
     addresses = [...new Set(addresses)];
+
     let duplicate_addresses = '';
     const duplicates = await this.findDuplicate(token_id, addresses);
     duplicates.forEach((duplicate) => {

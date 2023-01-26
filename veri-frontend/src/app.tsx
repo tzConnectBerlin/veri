@@ -1,9 +1,4 @@
-import {
-  ChakraProvider,
-  ColorModeProvider,
-  ColorModeScript,
-  useColorMode,
-} from '@chakra-ui/react';
+import { ChakraProvider, useColorMode } from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './Router';
 import { AuthProvider } from './contexts/useAuth';
@@ -21,7 +16,6 @@ function App() {
   return (
     <Suspense fallback={'...Loading'}>
       <ChakraProvider theme={adminTheme}>
-        <ColorModeScript initialColorMode="light" />
         <ToastProvider placement="bottom-right" autoDismiss>
           <Fonts />
           <BrowserRouter>

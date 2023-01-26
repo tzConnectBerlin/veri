@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Scanner from '../../design-system/atoms/Scanner';
 import { messageType } from '../../design-system/atoms/Scanner/Scanner';
-import { postRcipientsByVeriId } from '../../api/services/recipientsService';
+import { postScanByVeriId } from '../../api/services/recipientsService';
 import { isValidAddress } from '../../utils/general';
 
 export const ScannerPage = () => {
@@ -16,7 +16,7 @@ export const ScannerPage = () => {
     const body = {
       addresses: address.toString(),
     };
-    postRcipientsByVeriId(Number(veriId), body)
+    postScanByVeriId(Number(veriId), body)
       .then(() => {
         setMessage({
           type: 'Success',
