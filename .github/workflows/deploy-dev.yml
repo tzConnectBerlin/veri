@@ -11,7 +11,7 @@ jobs:
       SSH_KEY_PATH: ~/.ssh/private.key
     runs-on: ubuntu-latest
     steps:
-      - name: Create SSH key
+      - name: Create SSH requirements
         run: |
           mkdir -p ~/.ssh/
           echo "$SSH_PRIVATE_KEY" > $SSH_KEY_PATH
