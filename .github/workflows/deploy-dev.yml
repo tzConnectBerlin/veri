@@ -5,6 +5,10 @@ on:
       - develop
 jobs:
   deploy:
+    env:
+      SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+      SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+      SSH_KEY_PATH: ~/.ssh/private.key
     runs-on: ubuntu-latest
     steps:
       - name: Create SSH key
@@ -14,16 +18,13 @@ jobs:
           sudo chmod 600 $SSH_KEY_PATH
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
         shell: bash
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
       - name: checkout
         uses: actions/checkout@v2
       - name: Remove old codes
-        run: ssh -i ~/.ssh/private.key github-user@getveri.xyz "rm -fr /home/github-user/dev/veri/veri-*"
+        run: ssh -i $SSH_KEY_PATH github-user@getveri.xyz "rm -fr /home/github-user/dev/veri/veri-*"
       - name: Copy new codes
         run: |
           tar czf - veri-*end | \
-          ssh -i ~/.ssh/private.key github-user@getveri.xyz "cd /home/github-user/dev/veri/ && tar xvzf -"
+          ssh -i $SSH_KEY_PATH github-user@getveri.xyz "cd /home/github-user/dev/veri/ && tar xvzf -"
       - name: run update script
-        run: ssh -i ~/.ssh/private.key github-user@getveri.xyz "sudo ./automation.sh dev"
+        run: ssh -i $SSH_KEY_PATH github-user@getveri.xyz "sudo ./automation.sh dev"
