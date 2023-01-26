@@ -1,0 +1,42 @@
+version: '3.8'
+
+volumes:
+    backend_data: {}
+
+services:
+  backend:
+    container_name: veri-backend
+    restart: unless-stopped
+    build:
+      context: veri-backend/
+      target: test-build-stage
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - backend_data:/data
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+
+  db:
+    container_name: postgres
+    restart: unless-stopped
+    image: postgres
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+
+  frontend:
+    container_name: veri-frontend
+    restart: unless-stopped
+    build: 
+      context: veri-frontend/
+      args:
+        - REACT_APP_BASE_URL=http://localhost:5000
+    ports:
+      - 80:80
+    depends_on:
+      - backend

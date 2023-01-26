@@ -1,0 +1,468 @@
+
+tags:
+- name: veris
+  description: veris API
+- name: authorize
+  description: authotization API
+- name: users
+  description: Experimental users API
+
+paths:
+# [GET] veris
+  /veris:
+    get:
+        tags:
+        - veris
+        summary: Find All Veris
+        responses:
+          200:
+            description: 'OK'
+          500:
+            description: 'Server Error'
+
+# [POST] veris
+    post:
+      tags:
+      - veris
+      summary: Add Veris
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/definitions/veris'
+            encoding:
+              artwork:
+                contentType: image/png, image/jpeg, image/gif
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [GET] veris/id
+  /veris/{id}:
+    get:
+      tags:
+      - veris
+      summary: Find Veri By Id
+      parameters:
+      - name: id
+        in: path
+        description: Veri Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [PUT] veris/id
+    put:
+      tags:
+      - veris
+      summary: Update Veri By Id
+      parameters:
+      - name: id
+        in: path
+        description: veri Id
+        required: true
+        type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/definitions/veris'
+            encoding:
+              artwork:
+                contentType: image/png, image/jpeg, image/gif
+        description: veri Data
+        required: true
+        schema:
+          $ref: '#/definitions/veris'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [DELETE] veris/id
+    delete:
+      tags:
+      - veris
+      summary: Delete Veri By Id
+      parameters:
+      - name: id
+        in: path
+        description: veri Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+      
+
+# [POST] login
+  /login:
+    # [POST] users
+    post:
+      tags:
+      - authorize
+      summary: Login user
+      requestBody:
+         content:
+           application/json:
+              schema:
+                $ref: '#/definitions/login'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [POST] signup
+  /signup:
+    post:
+      tags:
+      - authorize
+      summary: Register a user
+      parameters:
+      - email: id
+        password: path
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] users
+  /users:
+    get:
+      tags:
+      - users
+      summary: Find All Users
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] users
+    post:
+      tags:
+      - users
+      summary: Add User
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] users/id
+  /users/{id}:
+    get:
+      tags:
+      - users
+      summary: Find User By Id
+      parameters:
+      - name: id
+        in: path
+        description: User Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] users/id
+    put:
+      tags:
+      - users
+      summary: Update User By Id
+      parameters:
+      - name: id
+        in: path
+        description: user Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] users/id
+    delete:
+      tags:
+      - users
+      summary: Delete User By Id
+      parameters:
+      - name: id
+        in: path
+        description: user Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] recipients
+  /recipients:
+    get:
+      tags:
+      - recipients
+      summary: Find All recipients
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [GET] recipients/id
+  /recipients/{id}:
+    get:
+      tags:
+      - recipients
+      summary: Find Recipients By Token Id
+      parameters:
+      - name: id
+        in: path
+        description: Token Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+# [POST] recipients
+    post:
+      tags:
+      - recipients
+      summary: Add Recipients By Token Id
+      parameters:
+      - name: id
+        in: path
+        description: Veri Id
+        required: true
+        type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/definitions/recipients'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [POST] events
+  /events:
+    post:
+      tags:
+      - events
+      summary: Validate event
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/definitions/events'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# definitions
+definitions:
+  users:
+    type: object
+    required:
+        - email
+        - password
+    properties:
+      email:
+        type: string
+        description: user Email
+      password:
+        type: string
+        description: user Password
+  login:
+    type: object
+    required:
+        - email
+        - password
+    properties:
+      email:
+        type: string
+        description: user Email
+        example: superadmin@veri.com
+      password:
+        type: string
+        description: user Password
+        example: veriisawesome
+  veris:
+    type: object
+    required:
+        - event_name
+        - organizer_email
+        - event_type
+        - event_start_date
+        - event_end_date
+        - artwork_name
+        - artwork_file
+        - live_distribution
+        - status
+    optional:
+        - organizer
+        - artwork_description
+        - live_distribution_url
+        - live_distribution_password
+    properties:
+      event_name:
+        type: string
+        description: Event name
+        example: Test Event
+      organizer:
+        type: string
+        description: Event organizer
+        example: Veri INC.
+      organizer_email:
+        type: string
+        description: Event contact person
+        example: contactperson@event.com
+      event_type:
+        type: string
+        description: Single/multiday event
+        example: single
+        enum:
+          - single
+          - multi
+      event_start_date:
+        type: string
+        description: Event starting date
+        example: '2022-09-29 14:48:17.845045+02'
+      event_end_date:
+        type: string
+        description: Event ending date
+        example: '2022-09-29 14:48:17.845045+02'
+      artwork_name:
+        type: string
+        description: Name of the included artwork
+        example: Test artwork
+      artwork_description:
+        type: string
+        description: Artwork description
+        example: Test artwork description
+      artwork_file:
+        type: string
+        format: binary
+        description: Artwork file
+      live_distribution:
+        type: boolean
+        description: Artwork distribution option
+        example: true
+      live_distribution_url:
+        type: string
+        description: Live distribution url
+        example: 'https://formallyverified.com/distribute/123456/authorize'
+      live_distribution_password:
+        type: string
+        description: Password for live distribution page
+        example: 'supersecurepass'
+      status:
+        type: string
+        description: Current status of Veri 
+        example: 'created'
+  recipients:
+    type: object
+    required:
+        - addresses
+    properties:
+      addresses:
+        type: array
+        description: Recipient list
+        items:
+          type: string
+        example: ["tz1LJtXoZoTiSHSTcpPPAs5rBZCftngyLe4x"]
+  events:
+    type: object
+    required:
+        - name
+        - password
+    properties:
+      name:
+          type: string
+          description: Event name
+          example: 'Test Event'
+      password:
+        type: string
+        description: Event password
+        example: 'supersecurepass'
+schemes:
+ - https
+ - http
+
