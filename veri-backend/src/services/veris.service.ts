@@ -207,6 +207,7 @@ class VeriService {
               ...veriData,
               file_id: createFileEntry.id,
               thumb_id: createThumbEntry.id,
+              live_distribution_password: hashedPassword,
               updated_by: user.id,
             })
             .where('id', '=', createVeriData.id)
