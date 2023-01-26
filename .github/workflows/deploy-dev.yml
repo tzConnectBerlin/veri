@@ -4,108 +4,27 @@ on:
     branches:
       - develop
 jobs:
-  build-docker-image:
-    name: Build Docker Image
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Google Cloud Auth
-        id: 'auth'
-        uses: 'google-github-actions/auth@v0'
-        with:
-          token_format: 'access_token'
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_CLOUD_RUN_SERVICE_ACCOUNT }}
-
-      - name: Login to Google Artifact Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ secrets.ARTIFACT_REGISTRY_URL }}
-          username: oauth2accesstoken
-          password: ${{ steps.auth.outputs.access_token }}
-
-      - name: Docker meta for backend
-        id: meta-be
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ secrets.ARTIFACTORY_BE_DOCKER_IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=raw,value=${{ github.sha }}
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
-
-      - name: Docker meta for frontend
-        id: meta-fe
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ secrets.ARTIFACTORY_FE_DOCKER_IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=raw,value=${{ github.sha }}
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
-
-      - name: Build and push backend
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          context: veri-backend
-          file: veri-backend/Dockerfile
-          tags: ${{ steps.meta-be.outputs.tags }}
-          labels: ${{ steps.meta-be.outputs.labels }}
-          target: production-build-stage
-
-      - name: Build and push frontend
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          context: veri-frontend
-          file: veri-frontend/Dockerfile
-          tags: ${{ steps.meta-fe.outputs.tags }}
-          labels: ${{ steps.meta-fe.outputs.labels }}
-          build-args: REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}
-
-  deploy-to-gcp:
-    name: Deploy to GCP
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    runs-on: ubuntu-latest
-    needs: build-docker-image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Google Cloud Auth
-        id: 'auth'
-        uses: 'google-github-actions/auth@v0'
-        with:
-          token_format: 'access_token'
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_CLOUD_RUN_SERVICE_ACCOUNT }}
-
-      # Setup gcloud CLI
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-
-      - name: Authorize Docker push
-        run: gcloud auth configure-docker
-
-      - name: Deploy backend to Compute Engine
-        run: |-
-          gcloud compute instances update-container veri-dev-backend \
-            --zone europe-west1-b \
-            --container-image ${{ secrets.ARTIFACTORY_BE_DOCKER_IMAGE_NAME }}:${{ github.sha }}
-
-      - name: Deploy frontend to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v0
-        with:
-          image: ${{ secrets.ARTIFACTORY_FE_DOCKER_IMAGE_NAME }}:${{ github.sha }}
-          service: "veri-dev-frontend"
-          region: europe-west1
+      - name: Create SSH key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/private.key
+          sudo chmod 600 ~/.ssh/private.key
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+          SSH_KEY_PATH: ~/.ssh/private.key
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Remove old codes
+        run: ssh -i $SSH_KEY_PATH github-user@getveri.xyz "rm -fr /home/github-user/dev/veri/veri-*"
+      - name: Copy new codes
+        run: |
+          tar czf - veri-*end | \
+          ssh -i $SSH_KEY_PATH github-user@getveri.xyz "cd /home/github-user/dev/veri/ && tar xvzf -"
+      - name: run update script
+        run: ssh -i $SSH_KEY_PATH github-user@getveri.xyz "sudo ./automation.sh dev"
