@@ -41,7 +41,8 @@ const FooterData: FooterProps = {
 };
 
 export const EventLayout = () => {
-  const { setColorMode } = useColorMode();
+  const { setColorMode, colorMode } = useColorMode();
+  console.log(colorMode);
 
   useEffect(() => {
     setColorMode('dark');

@@ -31,6 +31,7 @@ const VerisOverviewPage = React.lazy(
 
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
+import { GeneralLayout } from '../layouts/General';
 
 const PrivateRoutes = () => {
   const { user } = useAuth();
@@ -41,7 +42,7 @@ const PrivateRoutes = () => {
 const AuthRoutes = () => {
   const { user } = useAuth();
   if (user) return <Navigate to="/veris" />;
-  return <Login />;
+  return <GeneralLayout />;
 };
 
 const EventRoutes = () => {
@@ -58,8 +59,6 @@ export const Router = () => {
   return (
     <AnimatePresence>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/booth" element={<Booth />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -80,7 +79,11 @@ export const Router = () => {
         <Route element={<EventRoutes />}>
           <Route path="/event/:eventName" element={<VeriScanner />} />
         </Route>
-        <Route path="*" element={<NotFound />} />
+        <Route element={<GeneralLayout />}>
+          <Route path="/" element={<Landing />} />
+          <Route path="/booth" element={<Booth />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </AnimatePresence>
   );
