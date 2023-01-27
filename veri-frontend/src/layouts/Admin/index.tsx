@@ -9,6 +9,7 @@ import { Sidebar } from '../../design-system/organisms/Sidebar';
 import adminTheme from '../../design-system/theme/adminTheme';
 import { useEffect } from 'react';
 import { RECIPIENTS_URL, VERI_URL } from '../../Global';
+import { ForceColorMode } from '../../utils/ColorMode';
 
 export const DashboardLayout = () => {
   const { setColorMode } = useColorMode();
@@ -49,18 +50,20 @@ export const DashboardLayout = () => {
 
   return (
     <ChakraProvider theme={adminTheme}>
-      <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
-        <Sidebar
-          links={adminRoutes}
-          logo={logo}
-          onLogout={onLogout}
-          display={{ base: 'none', md: 'block' }}
-          userName={user.email}
-        />
-        <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
-          <Outlet />
+      <ForceColorMode colorMode="light">
+        <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
+          <Sidebar
+            links={adminRoutes}
+            logo={logo}
+            onLogout={onLogout}
+            display={{ base: 'none', md: 'block' }}
+            userName={user.email}
+          />
+          <Box ml={{ base: 0, md: 60 }} py={10} px={14}>
+            <Outlet />
+          </Box>
         </Box>
-      </Box>
+      </ForceColorMode>
     </ChakraProvider>
   );
 };

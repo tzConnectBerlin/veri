@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getRecipients } from '../../../api/services/recipientsService';
 import { DataTable } from '../../../design-system/atoms/DataTable';
 import { row } from '../../../design-system/atoms/DataTable/DataTable';
+import Loading from '../../../design-system/atoms/Loading';
 import Wrapper from '../../../design-system/atoms/Wrapper';
 import { RECIPIENTS_URL, RECIPIENT_STATUS } from '../../../Global';
 import { Recipient } from '../../../types';
@@ -24,12 +25,15 @@ const RecipientsPage = (): JSX.Element => {
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState<row[]>();
   const [recipientList, setRecipientList] = useState<Recipient[]>();
+  const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
+    setIsLoading(true);
     getRecipients()
       .then(res => {
         setRecipientList(res.data.data);
         setDataTable(() => MapRecipientsToDataTable(res.data.data));
+        setIsLoading(false);
       })
       .catch(err => console.log(err));
   }, []);
@@ -53,24 +57,34 @@ const RecipientsPage = (): JSX.Element => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <HStack justifyContent="space-between" mb={10}>
-        <Heading>Recipients</Heading>
-        <Button
-          colorScheme="primary"
-          onClick={() => navigate(RECIPIENTS_URL + '/send-veris')}
-        >
-          Send VERIs
-        </Button>
-      </HStack>
-      <Wrapper>
-        {dataTable && dataTable.length > 0 ? (
-          <DataTable header={header} rows={dataTable} handleSort={handleSort} />
-        ) : (
-          <Heading textAlign="center" color="gray.600" size="md" p={8}>
-            There is no Recipients
-          </Heading>
-        )}
-      </Wrapper>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <HStack justifyContent="space-between" mb={10}>
+            <Heading>Recipients</Heading>
+            <Button
+              colorScheme="primary"
+              onClick={() => navigate(RECIPIENTS_URL + '/send-veris')}
+            >
+              Send VERIs
+            </Button>
+          </HStack>
+          <Wrapper>
+            {dataTable && dataTable.length > 0 ? (
+              <DataTable
+                header={header}
+                rows={dataTable}
+                handleSort={handleSort}
+              />
+            ) : (
+              <Heading textAlign="center" color="gray.600" size="md" p={8}>
+                There is no Recipients
+              </Heading>
+            )}
+          </Wrapper>
+        </>
+      )}
     </motion.div>
   );
 };
