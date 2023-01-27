@@ -2,7 +2,7 @@ import { Badge, Box, Container, Heading, Stack } from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
-import AddVeri from '../../../design-system/organisms/AddVeri';
+import { AddVeri } from '../../../design-system/organisms/AddVeri';
 import { useFormik } from 'formik';
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -20,20 +20,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { VeriFormStatus } from '../../../types';
 import { RECIPIENTS_URL, VERI_URL } from '../../../Global';
 import { useToasts } from 'react-toast-notifications';
+import { Loading } from '../../../design-system/atoms/Loading';
 
 export const VeriFormPage = (): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [veri, setVeri] = useState<VeriFormValues>();
   const [type, setType] = useState<VeriFormStatus>('Add');
   const { addToast } = useToasts();
 
   useEffect(() => {
     if (id) {
+      setIsLoading(true);
       getVeriById(Number(id))
         .then(res => {
           setType('View');
           setVeri(() => MapServerValueToVeri(res.data.data));
+          setIsLoading(false);
         })
         .catch(err => console.log(err));
     }
@@ -174,19 +178,23 @@ export const VeriFormPage = (): JSX.Element => {
       exit={{ opacity: 0 }}
     >
       <Container maxW="2xl">
-        <Stack justifyContent="space-between">
-          <Box mb={10}>
-            <Heading>
-              {type === 'Add' ? 'Create New VERI' : veri?.eventName + ' Veri'}
-            </Heading>
-            {veri && type !== 'Add' && (
-              <Badge variant={veri.status.toLowerCase()}>{veri.status}</Badge>
-            )}
-          </Box>
-          <VeriContext.Provider value={veriDefaultValue}>
-            <AddVeri />
-          </VeriContext.Provider>
-        </Stack>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Stack justifyContent="space-between">
+            <Box mb={10}>
+              <Heading>
+                {type === 'Add' ? 'Create New VERI' : veri?.eventName + ' Veri'}
+              </Heading>
+              {veri && type !== 'Add' && (
+                <Badge variant={veri.status.toLowerCase()}>{veri.status}</Badge>
+              )}
+            </Box>
+            <VeriContext.Provider value={veriDefaultValue}>
+              <AddVeri />
+            </VeriContext.Provider>
+          </Stack>
+        )}
       </Container>
     </motion.div>
   );

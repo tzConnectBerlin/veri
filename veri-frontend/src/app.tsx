@@ -8,22 +8,30 @@ import { Suspense, useEffect } from 'react';
 import adminTheme from './design-system/theme/adminTheme';
 
 function App() {
-  const { setColorMode } = useColorMode();
+  const ForceLightMode = (props: { children: JSX.Element }) => {
+    const { colorMode, toggleColorMode } = useColorMode();
 
-  useEffect(() => {
-    setColorMode('light');
-  }, [setColorMode]);
+    useEffect(() => {
+      if (colorMode === 'light') return;
+      toggleColorMode();
+    }, [colorMode, toggleColorMode]);
+
+    return props.children;
+  };
+
   return (
     <Suspense fallback={'...Loading'}>
       <ChakraProvider theme={adminTheme}>
-        <ToastProvider placement="bottom-right" autoDismiss>
-          <Fonts />
-          <BrowserRouter>
-            <AuthProvider>
-              <Router />
-            </AuthProvider>
-          </BrowserRouter>
-        </ToastProvider>
+        <ForceLightMode>
+          <ToastProvider placement="bottom-right" autoDismiss>
+            <Fonts />
+            <BrowserRouter>
+              <AuthProvider>
+                <Router />
+              </AuthProvider>
+            </BrowserRouter>
+          </ToastProvider>
+        </ForceLightMode>
       </ChakraProvider>
     </Suspense>
   );
