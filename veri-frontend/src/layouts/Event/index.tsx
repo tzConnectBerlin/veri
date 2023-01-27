@@ -1,16 +1,10 @@
-import {
-  ChakraProvider,
-  Stack,
-  Container,
-  useColorMode,
-  ColorModeScript,
-} from '@chakra-ui/react';
+import { ChakraProvider, Stack, Container } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer, FooterProps } from '../../design-system/organisms/Footer';
 import { Header, HeaderProps } from '../../design-system/organisms/Header';
 import eventTheme from '../../design-system/theme/eventTheme';
+import { ForceColorMode } from '../../utils/ColorMode';
 
 const MainContainer = styled.main`
   flex: 1 1 0;
@@ -41,25 +35,19 @@ const FooterData: FooterProps = {
 };
 
 export const EventLayout = () => {
-  const { setColorMode, colorMode } = useColorMode();
-  console.log(colorMode);
-
-  useEffect(() => {
-    setColorMode('dark');
-  }, [setColorMode]);
-
   return (
     <ChakraProvider theme={eventTheme}>
-      <ColorModeScript initialColorMode="dark" />
-      <Container>
-        <Stack minH="100vh">
-          <Header {...HeaderData} />
-          <MainContainer>
-            <Outlet />
-          </MainContainer>
-          <Footer {...FooterData} />
-        </Stack>
-      </Container>
+      <ForceColorMode colorMode="dark">
+        <Container>
+          <Stack minH="100vh">
+            <Header {...HeaderData} />
+            <MainContainer>
+              <Outlet />
+            </MainContainer>
+            <Footer {...FooterData} />
+          </Stack>
+        </Container>
+      </ForceColorMode>
     </ChakraProvider>
   );
 };
