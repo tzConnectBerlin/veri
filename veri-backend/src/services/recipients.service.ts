@@ -6,10 +6,8 @@ import { PEPPERMINTERY_URL } from '@/config';
 import axios from 'axios';
 
 class RecipientService {
-  public async findRecipients(userId: number): Promise<Recipient[]> {
-    if (isEmpty(userId))
-      throw new HttpException(400, 'Please provide a valid user id');
-    const findRecipients: Recipient[] = await Recipients.query()
+  private async getRecipients(userId: number): Promise<Recipient[]> {
+    return Recipients.query()
       .select()
       .from('recipients')
       .where('recipients.created_by', '=', userId)
@@ -23,30 +21,80 @@ class RecipientService {
         'recipients.operation',
         'recipients.state as status'
       );
+  }
+
+  private async updateRecipientById({
+    recipient,
+    task,
+    tokenId,
+    state,
+  }: {
+    recipient: any;
+    task: any;
+    tokenId: number;
+    state: string;
+  }) {
+    await Recipients.query()
+      .update({
+        operation: task.details.operation_group_hash,
+        state,
+      })
+      .where('token_id', '=', tokenId)
+      .andWhere('address', '=', recipient.recipient)
+      .into('recipients');
+  }
+
+  public async findRecipients(userId: number): Promise<Recipient[]> {
+    if (isEmpty(userId))
+      throw new HttpException(400, 'Please provide a valid user id');
+    const foundRecipients: Recipient[] = await this.getRecipients(userId);
 
     const veri_ids = [
       ...new Set(
-        findRecipients.map((recipient: Recipient) => recipient.token_id)
+        foundRecipients.map((recipient: Recipient) => recipient.token_id)
       ),
     ];
 
     for await (const id of veri_ids) {
+      const isAlreadyMinted = foundRecipients.find(
+        (recipient) =>
+          recipient.token_id === id && recipient.status === 'minted'
+      );
+      if (isAlreadyMinted) {
+        continue;
+      }
       try {
-        const getTaskStatus = await axios.get(
+        const taskStatus = await axios.get(
           `${PEPPERMINTERY_URL}/tokens/${id}/recipients`
         );
-        getTaskStatus.data.forEach((task: any) => {
+
+        taskStatus.data.forEach((task: any) => {
           //fix any
-          const idx = findRecipients.findIndex(
+          const idx = foundRecipients.findIndex(
             (recipient: any) =>
               recipient.recipient == task.details.recipient_address
           );
-          if (task.status.minted == 'true') {
-            findRecipients[idx].status = 'minted';
+          if (task.status.minted) {
+            this.updateRecipientById({
+              recipient: foundRecipients[idx],
+              task,
+              tokenId: id,
+              state: 'minted',
+            });
           } else {
-            findRecipients[idx].status = 'minting';
+            const isAlreadyMinting = foundRecipients.find(
+              (recipient) =>
+                recipient.token_id === id && recipient.status === 'minting'
+            );
+            if (!isAlreadyMinting) {
+              this.updateRecipientById({
+                recipient: foundRecipients[idx],
+                task,
+                tokenId: id,
+                state: 'minting',
+              });
+            }
           }
-          findRecipients[idx].operation = task.details.operation_group_hash;
         });
       } catch (e) {
         // throw new HttpException(
@@ -55,20 +103,19 @@ class RecipientService {
         // );
       }
     }
-    return findRecipients;
+
+    return this.getRecipients(userId);
   }
 
   public async findDuplicate(
     tokenId: number,
     recipients: any
   ): Promise<Recipient[]> {
-    const findDup: Recipient[] = await Recipients.query()
+    return Recipients.query()
       .select()
       .from('recipients')
       .whereIn('recipients.address', recipients)
       .where('recipients.token_id', '=', tokenId);
-
-    return findDup;
   }
 
   public async findRecipientByTokenId(tokenId: number): Promise<Recipient[]> {
