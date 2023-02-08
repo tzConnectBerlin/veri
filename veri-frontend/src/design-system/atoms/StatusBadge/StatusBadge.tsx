@@ -1,7 +1,7 @@
 import { Badge, Tooltip } from '@chakra-ui/react';
 import { CapitalizeFirstLetter } from '../../../utils/general';
 import { FC, useState } from 'react';
-import { VeriListType } from '../../../types/veris';
+import { VeriFormValues, VeriListType } from '../../../types/veris';
 import { Recipient } from '../../../types';
 
 const getTooltipLabel = (status: string) => {
@@ -26,7 +26,7 @@ const getTooltipLabel = (status: string) => {
 };
 
 interface BadgeWithTouchFriendlyTooltipProps {
-  item: VeriListType | Recipient;
+  item: VeriListType | Recipient | VeriFormValues;
 }
 
 const StatusBadge: FC<BadgeWithTouchFriendlyTooltipProps> = ({ item }) => {

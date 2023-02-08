@@ -1,4 +1,4 @@
-import { Badge, Box, Container, Heading, Stack } from '@chakra-ui/react';
+import { Box, Container, Heading, Stack } from '@chakra-ui/react';
 import { VeriContext } from '../../../contexts/veri';
 import { VeriFormValues, VeriFormikType } from '../../../types/veris';
 import * as Yup from 'yup';
@@ -21,6 +21,7 @@ import { VeriFormStatus } from '../../../types';
 import { RECIPIENTS_URL, VERI_URL } from '../../../Global';
 import { useToasts } from 'react-toast-notifications';
 import { Loading } from '../../../design-system/atoms/Loading';
+import StatusBadge from '../../../design-system/atoms/StatusBadge/StatusBadge';
 
 export const VeriFormPage = (): JSX.Element => {
   const { id } = useParams();
@@ -186,9 +187,7 @@ export const VeriFormPage = (): JSX.Element => {
               <Heading>
                 {type === 'Add' ? 'Create New VERI' : veri?.eventName + ' Veri'}
               </Heading>
-              {veri && type !== 'Add' && (
-                <Badge variant={veri.status.toLowerCase()}>{veri.status}</Badge>
-              )}
+              {veri && type !== 'Add' && <StatusBadge item={veri} />}
             </Box>
             <VeriContext.Provider value={veriDefaultValue}>
               <AddVeri />
