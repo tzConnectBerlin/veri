@@ -194,6 +194,7 @@ class VeriService {
     const createVeriData: Veri = await Veris.query()
       .insert({
         ...veriData,
+        status: veriData.live_distribution ? 'disabled' : 'draft',
         file_id: createFileEntry.id,
         thumb_id: createThumbEntry.id,
         live_distribution_password: hashedPassword,
@@ -232,10 +233,10 @@ class VeriService {
         );
       } catch {
         try {
-          veriData.status = 'draft';
           await Veris.query()
             .update({
               ...veriData,
+              status: 'draft',
               file_id: createFileEntry.id,
               thumb_id: createThumbEntry.id,
               live_distribution_password: hashedPassword,
@@ -243,8 +244,6 @@ class VeriService {
             })
             .where('id', '=', createVeriData.id)
             .into('veris');
-
-          this.findVeriById(createVeriData.id);
         } catch {
           throw new HttpException(
             500,
