@@ -194,7 +194,7 @@ class VeriService {
     const createVeriData: Veri = await Veris.query()
       .insert({
         ...veriData,
-        status: veriData.live_distribution ? 'disabled' : 'draft',
+        status: veriData.live_distribution === 'true' ? 'disabled' : 'draft',
         file_id: createFileEntry.id,
         thumb_id: createThumbEntry.id,
         live_distribution_password: hashedPassword,
