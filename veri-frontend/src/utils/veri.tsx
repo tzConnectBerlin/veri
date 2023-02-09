@@ -1,4 +1,4 @@
-import { Badge, Image } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import moment from 'moment';
 import { row } from '../design-system/atoms/DataTable/DataTable';
 import { VERI_URL, BASE_URL } from '../Global';
@@ -9,6 +9,7 @@ import {
   VeriFormType,
 } from '../types/veris';
 import { CapitalizeFirstLetter, getDisplayTimeRange, MakeURL } from './general';
+import StatusBadge from '../design-system/atoms/StatusBadge/StatusBadge';
 
 export const MapVeriToServerValue = (veri: VeriFormValues) => {
   const URL = `${window.origin}/event`;
@@ -93,11 +94,7 @@ export const MapVerisToDataTable = (veris: VeriListType[]): row[] => {
         },
         {
           field: 'status',
-          value: (
-            <Badge variant={item.status.toLowerCase()}>
-              {CapitalizeFirstLetter(item.status)}
-            </Badge>
-          ),
+          value: <StatusBadge item={item} />,
           sortable: true,
         },
       ],

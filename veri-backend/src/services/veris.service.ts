@@ -44,53 +44,60 @@ class VeriService {
       .into('veris');
   }
 
+  private async getMintedStatus(veriId: number): Promise<boolean> {
+    const minteryResult = await axios.get(
+      `${PEPPERMINTERY_URL}/tokens/${veriId}`
+    );
+    return minteryResult.data.status.minted;
+  }
+
+  private async updateVeriStatusByMinted(veri: Veri) {
+    const veriIsMinted = await this.getMintedStatus(veri.id);
+
+    if (Boolean(veri.live_distribution) === true) {
+      const startTime = new Date(veri.event_start_date).toDateString();
+      const currentTime = new Date().toDateString();
+      const endTime = new Date(veri.event_end_date).toDateString();
+
+      if (veriIsMinted && startTime <= currentTime && endTime >= currentTime) {
+        if (veri.status !== 'enabled') {
+          await this.updateVeriStatusById({
+            id: veri.id,
+            status: 'enabled',
+          });
+        }
+      } else {
+        if (veri.status !== 'disabled') {
+          await this.updateVeriStatusById({
+            id: veri.id,
+            status: 'disabled',
+          });
+        }
+      }
+    } else {
+      if (veriIsMinted) {
+        if (veri.status !== 'created') {
+          await this.updateVeriStatusById({
+            id: veri.id,
+            status: 'created',
+          });
+        }
+      } else {
+        await this.updateVeriStatusById({
+          id: veri.id,
+          status: 'draft',
+        });
+      }
+    }
+  }
+
   public async findAllVeri(): Promise<Veri[]> {
     const veris: Veri[] = await this.getAllVeri();
 
     for await (const veri of veris) {
       if (veri.status !== 'draft') {
         try {
-          const minteryResult = await axios.get(
-            `${PEPPERMINTERY_URL}/tokens/${veri.id}`
-          );
-
-          const { minted } = minteryResult.data.status;
-
-          if (Boolean(veri.live_distribution) === true) {
-            const startTime = new Date(veri.event_start_date).toDateString();
-            const currentTime = new Date().toDateString();
-            const endTime = new Date(veri.event_end_date).toDateString();
-
-            if (minted && startTime <= currentTime && endTime >= currentTime) {
-              if (veri.status !== 'enabled') {
-                await this.updateVeriStatusById({
-                  id: veri.id,
-                  status: 'enabled',
-                });
-              }
-            } else {
-              if (veri.status !== 'disabled') {
-                await this.updateVeriStatusById({
-                  id: veri.id,
-                  status: 'disabled',
-                });
-              }
-            }
-          } else {
-            if (minted) {
-              if (veri.status !== 'created') {
-                await this.updateVeriStatusById({
-                  id: veri.id,
-                  status: 'created',
-                });
-              }
-            } else {
-              await this.updateVeriStatusById({
-                id: veri.id,
-                status: 'draft',
-              });
-            }
-          }
+          await this.updateVeriStatusByMinted(veri);
         } catch (e) {
           // handle error
           // throw new HttpException(
@@ -127,24 +134,7 @@ class VeriService {
     if (!findVeri) throw new HttpException(409, "Veri doesn't exist");
 
     try {
-      const getCurrentStatus = await axios.get(
-        `${PEPPERMINTERY_URL}/tokens/${veriId}`
-      );
-      //fix next line
-      if (Boolean(findVeri.live_distribution) === true) {
-        const startTime = new Date(findVeri.event_start_date).toDateString();
-        const currentTime = new Date().toDateString();
-        const endTime = new Date(findVeri.event_end_date).toDateString();
-        if (
-          getCurrentStatus.data.status.minted == 'true' &&
-          startTime <= currentTime &&
-          endTime >= currentTime
-        ) {
-          findVeri.status = 'enabled';
-        } else {
-          findVeri.status = 'disabled';
-        }
-      }
+      await this.updateVeriStatusByMinted(findVeri);
     } catch (e) {
       // handle error
       // throw new HttpException(
@@ -204,6 +194,7 @@ class VeriService {
     const createVeriData: Veri = await Veris.query()
       .insert({
         ...veriData,
+        status: veriData.live_distribution === 'true' ? 'disabled' : 'draft',
         file_id: createFileEntry.id,
         thumb_id: createThumbEntry.id,
         live_distribution_password: hashedPassword,
@@ -242,10 +233,10 @@ class VeriService {
         );
       } catch {
         try {
-          veriData.status = 'draft';
           await Veris.query()
             .update({
               ...veriData,
+              status: 'draft',
               file_id: createFileEntry.id,
               thumb_id: createThumbEntry.id,
               live_distribution_password: hashedPassword,
@@ -253,8 +244,6 @@ class VeriService {
             })
             .where('id', '=', createVeriData.id)
             .into('veris');
-
-          this.findVeriById(createVeriData.id);
         } catch {
           throw new HttpException(
             500,

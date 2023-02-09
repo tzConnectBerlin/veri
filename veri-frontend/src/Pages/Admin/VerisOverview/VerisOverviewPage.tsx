@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getVeris } from '../../../api/services/veriService';
 import { DataTable } from '../../../design-system/atoms/DataTable';
 import { row } from '../../../design-system/atoms/DataTable/DataTable';
+import Loading from '../../../design-system/atoms/Loading';
 import { Wrapper } from '../../../design-system/atoms/Wrapper';
 import { VERI_URL, VERI_STATUS } from '../../../Global';
 import { MapVerisToDataTable } from '../../../utils/veri';
@@ -27,6 +28,7 @@ const header = [
 const VerisOverviewPage = (): JSX.Element => {
   const [dataTable, setDataTable] = useState<row[]>();
   const [veriList, setVeriList] = useState<any[]>();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleVeriSort = (accessor: string, sortOrder: string) => {
@@ -57,10 +59,12 @@ const VerisOverviewPage = (): JSX.Element => {
   };
 
   React.useEffect(() => {
+    setIsLoading(true);
     getVeris()
       .then(res => {
         setVeriList(res.data.data);
         setDataTable(() => MapVerisToDataTable(res.data.data));
+        setIsLoading(false);
       })
       .catch(err => console.log(err));
   }, []);
@@ -71,28 +75,35 @@ const VerisOverviewPage = (): JSX.Element => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <HStack justifyContent="space-between" mb={10}>
-        <Heading>All VERIs</Heading>
-        <Button
-          colorScheme="primary"
-          onClick={() => navigate(VERI_URL + '/create-new-veri')}
-        >
-          Create New Veri
-        </Button>
-      </HStack>
-      <Wrapper>
-        {dataTable && dataTable.length > 0 ? (
-          <DataTable
-            header={header}
-            rows={dataTable}
-            handleSort={handleVeriSort}
-          />
-        ) : (
-          <Heading textAlign="center" color="gray.600" size="md" p={8}>
-            There is no VERIs
-          </Heading>
-        )}
-      </Wrapper>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <HStack justifyContent="space-between" mb={10}>
+            <Heading>All VERIs</Heading>
+            <Button
+              colorScheme="primary"
+              onClick={() => navigate(VERI_URL + '/create-new-veri')}
+            >
+              Create New Veri
+            </Button>
+          </HStack>
+
+          <Wrapper>
+            {dataTable && dataTable.length > 0 ? (
+              <DataTable
+                header={header}
+                rows={dataTable}
+                handleSort={handleVeriSort}
+              />
+            ) : (
+              <Heading textAlign="center" color="gray.600" size="md" p={8}>
+                There is no VERIs
+              </Heading>
+            )}
+          </Wrapper>
+        </>
+      )}
     </motion.div>
   );
 };
