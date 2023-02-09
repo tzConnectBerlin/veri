@@ -51,11 +51,16 @@ export const BoothPage = () => {
           if (prevPath) navigate(prevPath, { state: res.data.data.id });
         })
         .catch(error => {
-          console.error(error);
-          addToast('Something went wrong.', {
-            description: 'Try again later.',
-            appearance: 'error',
-          });
+          if (error.response.status === 409) {
+            addToast(error.response.data.message, {
+              appearance: 'error',
+            });
+          } else {
+            addToast('Something went wrong.', {
+              description: 'Try again later.',
+              appearance: 'error',
+            });
+          }
         });
     } catch (error) {
       console.error(error);

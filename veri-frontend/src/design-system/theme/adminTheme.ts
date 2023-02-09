@@ -48,6 +48,7 @@ const Badge = defineStyleConfig({
     fontsize: '14px',
     padding: '4px 8px',
     borderRadius: '6px',
+    cursor: 'default',
   },
   variants: {
     error: {
