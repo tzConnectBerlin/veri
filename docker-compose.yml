@@ -1,24 +1,6 @@
 version: '3.8'
 
-volumes:
-    backend_data: {}
-
 services:
-  backend:
-    container_name: veri-backend
-    restart: unless-stopped
-    build:
-      context: veri-backend/
-      target: test-build-stage
-      dockerfile: Dockerfile
-    env_file: .env
-    volumes:
-      - backend_data:/data
-    ports:
-      - 5000:5000
-    depends_on:
-      - db
-
   db:
     container_name: postgres
     restart: unless-stopped
@@ -28,15 +10,60 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+       - ./data/db:/var/lib/postgresql/data
+
+  backend:
+    container_name: veri-backend
+    restart: unless-stopped
+    build:
+      context: veri/veri-backend/
+      target: production-build-stage
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      PORT: 5000
+    volumes:
+      - ./data/backend:/data
+    ports:
+      - 127.0.0.1:5100:5000
+    depends_on:
+      - db
+
+  peppermint:
+    image: peppermint
+    container_name: peppermint
+    restart: unless-stopped
+    stop_signal: SIGINT
+    env_file: .env
+    entrypoint: ["./entry_point.sh"]
+    depends_on:
+      - db
+
+  peppermintery:
+    image: peppermintery
+    container_name: peppermintery
+    restart: unless-stopped
+    env_file: .env
+    entrypoint: |-
+      sh -c '
+        set -e
+        echo "$PEPPERMINTERY_CONFIG" > config.json
+        psql -d "${DB_PROTOCOL}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}" < dataaccess/create.sql
+        node worker/main.mjs &
+        node endpoint/svc.mjs
+      '
+    depends_on:
+      - db
 
   frontend:
     container_name: veri-frontend
     restart: unless-stopped
-    build: 
-      context: veri-frontend/
+    build:
+      context: veri/veri-frontend/
       args:
-        - REACT_APP_BASE_URL=http://localhost:5000
+        - REACT_APP_BASE_URL=http://localhost:5100/api
     ports:
-      - 80:80
+      - 127.0.0.1:180:80
     depends_on:
       - backend
