@@ -55,16 +55,37 @@ class VeriService {
     const veriIsMinted = await this.getMintedStatus(veri.id);
 
     if (Boolean(veri.live_distribution) === true) {
-      const startTime = new Date(veri.event_start_date).toDateString();
-      const currentTime = new Date().toDateString();
-      const endTime = new Date(veri.event_end_date).toDateString();
+      const startTime = new Date(veri.event_start_date).toISOString();
+      const currentTime = new Date().toISOString();
+      const endTime = new Date(veri.event_end_date).toISOString();
+      const startTimeReached = startTime <= currentTime;
+      const datesAreTheSame = startTime === endTime;
+      const endTimeReached = endTime >= currentTime;
 
-      if (veriIsMinted && startTime <= currentTime && endTime >= currentTime) {
-        if (veri.status !== 'enabled') {
-          await this.updateVeriStatusById({
-            id: veri.id,
-            status: 'enabled',
-          });
+      if (veriIsMinted && startTimeReached) {
+        if (datesAreTheSame) {
+          if (veri.status !== 'enabled') {
+            await this.updateVeriStatusById({
+              id: veri.id,
+              status: 'enabled',
+            });
+          }
+        } else {
+          if (endTimeReached) {
+            if (veri.status !== 'disabled') {
+              await this.updateVeriStatusById({
+                id: veri.id,
+                status: 'disabled',
+              });
+            }
+          } else {
+            if (veri.status !== 'enabled') {
+              await this.updateVeriStatusById({
+                id: veri.id,
+                status: 'enabled',
+              });
+            }
+          }
         }
       } else {
         if (veri.status !== 'disabled') {
