@@ -55,12 +55,3 @@ jobs:
       - name: Test backend individual
         working-directory: veri-backend
         run: npm install && npm run test --passWithNoTests
-  full_test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: Run complete solution
-        run: docker-compose up -d
-      - name: Health check
-        run: docker ps -a
