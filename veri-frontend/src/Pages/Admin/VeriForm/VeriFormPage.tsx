@@ -81,7 +81,6 @@ export const VeriFormPage = (): JSX.Element => {
           addVeri(body)
             .then(res => {
               setVeri(() => MapServerValueToVeri(res.data.data));
-              console.log(res.data.data);
               addToast(`Veri ${values.status}`, {
                 status: 'success',
               });
