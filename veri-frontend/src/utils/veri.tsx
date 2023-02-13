@@ -17,7 +17,7 @@ export const MapVeriToServerValue = (veri: VeriFormValues) => {
   const endDate =
     veri.eventDuration === 'Single'
       ? startDate
-      : new Date(veri.eventStartDate).toISOString();
+      : new Date(veri.eventEndDate).toISOString();
 
   return {
     event_name: veri.eventName,
@@ -113,5 +113,5 @@ export const GetDistributionMethodString = (
 export const GetDistributionMethodBoolean = (
   isLive?: 'QR-code' | 'Post-event',
 ): boolean => {
-  return isLive === 'QR-code' ? true : false;
+  return isLive === 'QR-code';
 };
