@@ -64,6 +64,6 @@ services:
       args:
         - REACT_APP_BASE_URL=http://localhost:5100/api
     ports:
-      - 127.0.0.1:180:80
+      - 127.0.0.1:80:80
     depends_on:
       - backend
