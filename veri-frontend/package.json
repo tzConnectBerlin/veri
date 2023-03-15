@@ -89,7 +89,7 @@
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
-    "webpack": "^5.74.0"
+    "webpack": "^5.76.0"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
